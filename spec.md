@@ -136,3 +136,4 @@ flowchart TD
 | 27/11 | Chốt chuẩn đạt trong §7 theo bản đề xuất; cập nhật metric spec | Theo yêu cầu đội trưởng; chưa ghi giờ họp nhóm |
 | 27/11 | Thêm B15 và B16 từ câu 7 và 8 của phỏng vấn P1 | Kiểm tra cách trợ giảng hỏi lại khi học viên cần tìm đoạn bài hoặc giải thích một thuật ngữ chưa xác định |
 | 27/11 | Bổ sung tham chiếu nguồn B17–B19 và đồng bộ số đếm trong §7, data card | Truy lại được commit ghi nhận B17 và hai tình huống từ phỏng vấn P3 |
+| 27/11 | Bổ sung hướng dẫn áp dụng ba metric CP2 cho B01–B19 | Làm rõ mẫu số, cách chấm các câu hỏi lại và điều kiện đủ mẫu để kết luận |
