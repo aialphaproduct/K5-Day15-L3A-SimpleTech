@@ -45,8 +45,8 @@ Sắp theo thứ tự hạn: CP2 → CP3 → CP4 → reflection. Mỗi việc c�
 
 | Người | Vai trò | Việc | Issue | File chính | Hạn | Trạng thái |
 |---|---|---|---|---|---|---|
-| Lưu Thanh Mỹ | Đội trưởng | Khảo sát học viên về câu hỏi dưới video | [#2](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/2) | `evidence/survey/` | CP2 (bắt đầu sớm) | Chưa bắt đầu |
 | Khổng Tiến Dương | Thành viên | Chốt metric và chuẩn đạt | [#11](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/11) | `eval/metric_spec.yaml`, `spec.md` §7 | CP2 19:30 Thứ Sáu | Chưa bắt đầu |
+| Lưu Thanh Mỹ | Đội trưởng | Khảo sát học viên về câu hỏi dưới video | [#2](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/2) | `evidence/survey/` | CP2 (bắt đầu sớm) | Chưa bắt đầu |
 | Lưu Thanh Mỹ | Đội trưởng | Giao diện web cho bản chạy thử | [#1](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/1) | `codebase/app.py` | CP3 | Chưa bắt đầu |
 | Nguyễn Hoa Thanh Tùng | Thành viên | Chạy lại bằng chứng và đối chiếu số | [#5](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/5) | `evidence/` | CP3 | Chưa bắt đầu |
 | Nguyễn Hoa Thanh Tùng | Thành viên | Hoàn thiện data card | [#6](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/6) | `data/DATA_CARD.md` | CP3 | Chưa bắt đầu |
