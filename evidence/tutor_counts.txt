@@ -1,0 +1,35 @@
+1. Tổng câu hỏi trợ giảng AI (kind=question, agent=teaching_assistant): 1091
+2. Học viên có ≥1 câu hỏi: 143
+3. Học viên chỉ hỏi đúng 1 câu: 38 (26.6%)
+4. Median câu / học viên: 4.0 · trung bình: 7.6 · max: 72
+5. Top 10% học viên hỏi nhiều nhất chiếm: 43.3% câu hỏi
+6. Câu hỏi theo ngày học (day → số câu):
+day
+Day01    333
+Day02    113
+Day03    140
+Day04    134
+Day05     78
+Day06     40
+Day07     77
+Day08     86
+Day09     54
+Day10      5
+Day11     13
+Day13     17
+7. 10 video có nhiều câu hỏi nhất (transcript → số câu):
+transcript
+Day01/d01-r1-v02.txt    115
+Day01/d01-r1-v01.txt     86
+Day01/d01-r1-v05.txt     68
+Day02/d02-r2-v01.txt     52
+Day01/d01-r1-v03.txt     41
+Day03/d03-r2-v01.txt     36
+Day04/d04-r3-v02.txt     33
+Day04/d04-r3-v03.txt     31
+Day04/d04-r3-v01.txt     31
+Day07/d07-r2-v01.txt     30
+8. Trả lời dùng lại từ câu cũ (cached=True): 1.4%
+9. Dòng ghi rõ đoạn bài AI dựa vào (ngu_canh không trống): 9 / 1091
+10. Dòng có dùng gợi ý đã duyệt (guidance_ids khác []): 45.1%
+11. Độ dài câu hỏi median (ký tự): 57.0 · độ dài trả lời median: 384.0

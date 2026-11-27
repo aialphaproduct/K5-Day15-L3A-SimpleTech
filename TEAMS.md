@@ -7,7 +7,7 @@
 - Tên nhóm: Simple Tech
 - Lớp: L3A
 - Track: A
-- Link repo: ____
+- Link repo: https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech
 
 | STT | Họ và tên | Mã học viên | Vai trò | Phần việc chính |
 |---|---|---|---|---|

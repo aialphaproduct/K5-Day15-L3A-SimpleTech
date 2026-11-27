@@ -1,48 +1,30 @@
-# Tổng hợp bằng chứng pain
+# Bằng chứng pain — A1 Trợ giảng bài học
 
-> Điền ở guide bước 1.2, xong trước **CP3 10:00 Thứ Bảy 28/11**. Chấm ở rubric R1.
-> Ba nguồn ngang nhau — tối thiểu **≥1 nguồn đạt ngưỡng**. Mạnh nhất: đào data ra insight → hỏi người dùng để kiểm lại (hoặc ngược lại).
+> Số lấy từ `data/preclass/chat.csv` bằng `evidence/count_tutor.py` (chạy lại được; kết quả đầy đủ ở `evidence/tutor_counts.txt`). Không có tên, không có nội dung câu hỏi. Dữ liệu ẩn danh, 05/11 → 25/11/2026.
 
-## 1. Nguồn đã dùng
+## Số đo từ data
 
-| Nguồn | Đạt ngưỡng? | File |
-|---|---|---|
-| Đào data (x/N, %, cách đếm chạy lại được, ≥5 ví dụ) | ☐ | `evidence/data-mining.md` |
-| Phỏng vấn (≥3 người ngoài nhóm, đúng người dùng) | ☐ | `evidence/interviews/P1.md`… |
-| Khảo sát (≥20 người ngoài nhóm, đúng người dùng) | ☐ | `evidence/survey/` |
+| Chỉ số | Giá trị |
+|---|---|
+| Câu hỏi gửi trợ giảng AI dưới video | 1.091 câu |
+| Học viên có ≥1 câu hỏi | 143 học viên |
+| Học viên chỉ hỏi đúng 1 câu | 38 (26,6%) |
+| Median câu hỏi / học viên | 4 (max 72) |
+| Top 10% học viên hỏi nhiều nhất | 43,3% câu hỏi |
+| Câu hỏi ở Day01 | 333 (31%) |
+| 3 video Day01 có nhiều câu hỏi nhất | 269 câu (25%) |
+| Câu có dòng ghi rõ đoạn bài AI đã dựa vào (`ngu_canh`) | 9 / 1.091 |
+| Câu có dùng gợi ý đã duyệt | 45,1% |
 
-## 2. Số chính
+## Đọc số thế nào
 
-- Đào data: __/__ (__%) …
-- Phỏng vấn: __/3 người gặp *(n nhỏ không ghi %)* · số lần / tháng: P1 __, P2 __, P3 __ · mỗi lần mất __–__ phút
-- Khảo sát: n = __ · __/__ (__%) …
+- **Câu hỏi tập trung ở đầu khoá và vài video.** Day01 có nhiều câu nhất; ba video đầu của Day01 chiếm một phần lớn. Chưa biết vì sao (bài khó, video không rõ, hay chỉ là nhiều học viên mới). Cần phỏng vấn học viên để biết.
+- **Một nhóm nhỏ hỏi rất nhiều.** 10% học viên hỏi gần nửa số câu. Chưa rõ họ là người cần giúp nhất hay đang dùng trợ giảng thay cho việc đọc bài.
+- **Gần như không ghi được đoạn bài AI đã dựa vào.** Chỉ 9/1.091 dòng có `ngu_canh`. Nghĩa là hiện không ai kiểm lại được câu trả lời có căn cứ trong bài hay không. Đây là lý do thiết kế đòi mã đoạn trong mỗi câu trả lời.
+- **Data không có nội dung câu hỏi và câu trả lời.** Không đo được chất lượng câu trả lời từ data. Chất lượng phải đo bằng bộ câu thử (`eval/benchmark.csv`) và người chấm.
 
-Phỏng vấn nhiều vai thì đếm theo từng vai, không cộng chung.
+## Giới hạn: chưa đủ làm bằng chứng
 
-| | Vai | Gặp pain? | Số lần / 1 tháng qua | Lần gần nhất mất | Đang xoay xở bằng |
-|---|---|---|---|---|---|
-| P1 | | | | | |
-| P2 | | | | | |
-| P3 | | | | | |
-
-## 3. ≥5 trích dẫn hoặc ví dụ nguyên văn (có nguồn, bỏ tên)
-
-1. "…" — P_ / dòng data __ / phiếu khảo sát __
-2.
-3.
-4.
-5.
-
-## 4. Các nguồn có khớp nhau không
-
-Data nói __; người dùng nói __. Khớp / lệch ở đâu, vì sao: __
-
-## 5. Kết luận
-
-Giả thuyết ở `evidence/hypothesis.md`: **đúng / sai / phải đổi** — vì __. Điều vẫn chưa biết: __
-
-## Lịch hẹn (dùng cho CP2 — chỉ ghi vai và giờ, không tên)
-
-| Vai | Giờ hẹn | Đã xong? |
-|---|---|---|
-| | | |
+- Mới chỉ là số đếm. Chưa có phỏng vấn học viên nào. Nhóm phải hỏi ít nhất vài học viên về câu hỏi họ đã hỏi và vì sao hỏi.
+- Ngày 10–13 có ít câu hỏi; có thể do ít học viên hơn chứ không phải do học viên ít cần hỏi.
+- Không có dữ liệu về câu trả lời đúng hay sai, nên chưa biết trợ giảng đang sai ở đâu.
