@@ -98,8 +98,8 @@ Data BTC cấp đã dùng: `data/preclass/` (chỉ đếm, không đưa vào b�
 
 ## §10. Phân công & changelog
 - Phân công có tên (xem TEAMS.md):
-  - Lưu Thanh Mỹ (đội trưởng): giao diện, demo, slide, triển khai AWS
-  - Nguyễn Hoa Thanh Tùng: phỏng vấn, khảo sát, bằng chứng, data card, câu thử người dùng thật
+  - Lưu Thanh Mỹ (đội trưởng): giao diện, demo, slide, triển khai AWS; khảo sát học viên
+  - Nguyễn Hoa Thanh Tùng: phân tích bằng chứng, data card, mở rộng câu thử lên 20–30 câu
   - Vũ Trí Dũng: bản chạy thử (`codebase/`), đoạn bài thật, nối model
   - Khổng Tiến Dương: bộ đánh giá (`eval/`), chi phí (`cost/`)
 - Dùng AI vào việc gì (2–3 dòng; chi tiết `docs/ai-usage.md`): Claude soạn khung code, script đếm bằng chứng, bản nháp spec và câu thử. Nhóm kiểm và sửa.

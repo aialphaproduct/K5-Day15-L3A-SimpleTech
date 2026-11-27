@@ -11,7 +11,7 @@
 
 | STT | Họ và tên | Mã học viên | Vai trò | Phần việc chính |
 |---|---|---|---|---|
-| 1 | Lưu Thanh Mỹ | 2A202603532 | Đội trưởng | Giao diện web, demo, slide, triển khai AWS (theo region của project) |
-| 2 | Nguyễn Hoa Thanh Tùng | 2A202603519 | Thành viên | Phỏng vấn và khảo sát học viên; bằng chứng `evidence/`; data card; câu thử từ người dùng thật |
+| 1 | Lưu Thanh Mỹ | 2A202603532 | Đội trưởng | Giao diện web, demo, slide, triển khai AWS (theo region của project); khảo sát học viên |
+| 2 | Nguyễn Hoa Thanh Tùng | 2A202603519 | Thành viên | Phân tích bằng chứng `evidence/` (chạy lại script đếm, đối chiếu số); data card; mở rộng câu thử lên 20–30 câu |
 | 3 | Vũ Trí Dũng | 2A202603478 | Thành viên | Bản chạy thử `codebase/`: thay đoạn bài thật, nối model qua `.env`, luồng trả lời |
 | 4 | Khổng Tiến Dương | 2A202603467 | Thành viên | Bộ đánh giá `eval/`: mở rộng câu thử, chấm người thứ hai, `cost/` mô phỏng chi phí |
