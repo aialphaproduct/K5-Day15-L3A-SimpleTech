@@ -25,6 +25,6 @@
 
 ## Giới hạn: chưa đủ làm bằng chứng
 
-- Mới chỉ là số đếm. Chưa có phỏng vấn học viên nào. Nhóm phải hỏi ít nhất vài học viên về câu hỏi họ đã hỏi và vì sao hỏi.
+- Đã ghi nhận một cuộc [phỏng vấn P1](interviews/P1.md). Ở câu 8, P1 cho biết phải tra thêm thuật ngữ mới đọc tiếp được lời giải. Bản ghi chưa có nguyên văn câu hỏi P1 từng gửi dưới video.
 - Ngày 10–13 có ít câu hỏi; có thể do ít học viên hơn chứ không phải do học viên ít cần hỏi.
 - Không có dữ liệu về câu trả lời đúng hay sai, nên chưa biết trợ giảng đang sai ở đâu.

@@ -28,6 +28,5 @@
 | | |
 |---|---|
 | Dùng để làm gì | đo `trich_dung_ma`, `khong_bia`, `dung_y_tra_loi` |
-| Từ đâu | `tu_viet`: nhóm soạn 12 câu (6 thuong · 3 kho · 3 tu_choi). **Chưa** có câu từ học viên thật |
-| Nhãn | `tu_viet` |
-| Giới hạn | cần thêm câu từ phỏng vấn học viên (`nguoi_dung`) để đạt độ phủ |
+| Từ đâu | 16 câu (6 thuong · 7 kho · 3 tu_choi). Nhóm tự soạn 14 câu. Hai tình huống lấy từ [phỏng vấn P1](../evidence/interviews/P1.md): B15 giữ câu hỏi và phương án P1 chọn ở câu 7 để có ngữ cảnh; B16 trích lời P1 ở câu 8. Đáp án kỳ vọng và tiêu chí chấm do nhóm biên soạn. |
+| Nhãn | `tu_viet` (14), `nguoi_dung` (2) |

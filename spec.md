@@ -17,7 +17,7 @@ Data BTC cấp đã dùng: `data/preclass/` (chỉ đếm, không đưa vào b�
 - Hôm nay họ giải bằng gì, hỏng ở đâu, vì sao chưa bỏ: **[nhóm xác nhận bằng phỏng vấn]** — giả thuyết: hỏi trợ giảng là cách nhanh nhất, nhưng không biết câu trả lời lấy từ đâu trong bài.
 - Pain (không có chữ AI): học viên gặp một câu hỏi dưới video, cần câu trả lời có chỗ trong bài để kiểm lại trước khi tin; hiện các câu hỏi dồn vào Day01 và một vài video (xem bằng chứng).
 - Bằng chứng (số chính): 1.091 câu hỏi; 31% ở Day01; 3 video Day01 chiếm 25%; 10% học viên hỏi 43% số câu; chỉ 9/1.091 dòng ghi được đoạn bài AI đã dựa vào. Chi tiết: `evidence/summary.md`.
-- **Còn thiếu:** chưa có phỏng vấn học viên. Đây là việc con người phải làm.
+- **Phỏng vấn:** [P1, câu 7–8](evidence/interviews/P1.md) cho biết phải mất công tìm lại đoạn bài và tra thêm thuật ngữ để hiểu lời giải.
 
 ## §2. Impact & quyết định chọn
 
@@ -38,7 +38,32 @@ Data BTC cấp đã dùng: `data/preclass/` (chỉ đếm, không đưa vào b�
 
 - **Lát cắt MỘT CÂU** (1 người dùng · 1 việc · 1 quyết định AI · 1 kết quả): *Một học viên hỏi một câu dưới video · trợ giảng trả lời kèm mã đoạn, hoặc nói "Không có trong bài" · học viên mở đúng đoạn để kiểm.*
 - **Không làm:** chấm bài hay chấm điểm; làm bài hộ; sửa bài giảng; gửi tin ra ngoài; trả lời lịch, điểm, hạn của từng học viên; trả lời khi không có đoạn khớp.
-- **Sơ đồ:** câu hỏi → `search_passages` → (không có đoạn → "Không có trong bài") → model trả lời kèm [MÃ] → kiểm mã trong code → trả về hoặc "Không có trong bài". **[nhóm vẽ sơ đồ đẹp hơn ở slide]**
+- **Sơ đồ kiến trúc trợ giảng bài học**
+
+```mermaid
+flowchart TD
+    accTitle: Từ câu hỏi dưới video đến đoạn bài để học viên kiểm lại
+    learner["Học viên hỏi về một đoạn video"]
+    lessons[("Kho đoạn bài<br/>data/lessons/passages.csv")]
+    subgraph tutor["Trợ giảng · workflow cố định"]
+        search["search_passages<br/>Tìm theo từ khóa trong câu hỏi"]
+        model["call_model · câu hỏi + các đoạn tìm được<br/>AI chỉ trả lời từ bài và không làm bài hộ"]
+        check{"agent.py · Có mã trích dẫn và mọi mã<br/>đều thuộc các đoạn vừa tìm?"}
+        search -->|"1–3 đoạn kèm mã"| model
+        model -->|"Câu trả lời đề xuất"| check
+    end
+    learner --> search
+    lessons -->|"Mã và nội dung đoạn"| search
+    search -->|"0 đoạn"| fallback["Không có trong bài."]
+    model -->|"Đoạn tìm được chưa đủ căn cứ"| fallback
+    check -->|"Thiếu mã hoặc sai mã"| fallback
+    check -->|"Đúng mã"| answer["Học viên nhận câu trả lời kèm [MÃ]"]
+    answer -.-> review["Học viên mở đoạn theo mã để đối chiếu"]
+    fallback -.-> retry["Học viên có thể hỏi lại hoặc tự liên hệ TA"]
+```
+
+Ở CP2, `python run.py` nhận câu hỏi qua dòng lệnh, đọc đoạn bài mẫu và gọi AI giả khi tìm được đoạn. Hai mũi tên nét đứt là việc học viên chủ động làm sau khi nhận kết quả.
+
 - **Hình dạng:** [x] workflow cố định. Lý do: một bước tìm, một bước trả lời, một bước kiểm mã. Không cần agent tự chọn bước; chọn hình dạng phức tạp hơn sẽ khó kiểm.
 - **AI dựa vào đâu:**
 
@@ -82,7 +107,7 @@ Data BTC cấp đã dùng: `data/preclass/` (chỉ đếm, không đưa vào b�
 - Bị đòi ngoài phạm vi (lớp 3): từ chối lịch sự, chỉ đường tới người phụ trách.
 
 ## §7. Đánh giá & chuẩn "đạt"
-- Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 12 câu (thuong 6 · kho 3 · tu_choi 3), nguồn đều `tu_viet` · metric: `eval/metric_spec.yaml` (3 metric)
+- Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 16 câu (thuong 6 · kho 7 · tu_choi 3), gồm 14 câu `tu_viet` và 2 câu `nguoi_dung` từ phỏng vấn P1 · metric: `eval/metric_spec.yaml` (3 metric)
 - **Chuẩn "đạt" (đã chốt, giữ nguyên đến 23:59 Thứ Bảy 28/11):** "Đạt khi ≥ 90% câu thuong có mã đoạn đúng, 100% câu tu_choi không làm hộ, và ≥ 80% câu kho không bịa thông tin." Metric: `trich_dung_ma`, `khong_bia`, `dung_y_tra_loi` (`eval/metric_spec.yaml`).
 - Kết quả: lượt 1 __/__ · lượt 2 __/__ — **chưa chạy** (chờ model thật và đoạn bài thật).
 
@@ -109,3 +134,4 @@ Data BTC cấp đã dùng: `data/preclass/` (chỉ đếm, không đưa vào b�
 |---|---|---|
 | 27/11 | Khung A1: bằng chứng, thiết kế, câu thử, metric đề xuất | Bản nháp khởi đầu |
 | 27/11 | Chốt chuẩn đạt trong §7 theo bản đề xuất; cập nhật metric spec | Theo yêu cầu đội trưởng; chưa ghi giờ họp nhóm |
+| 27/11 | Thêm B15 và B16 từ câu 7 và 8 của phỏng vấn P1 | Kiểm tra cách trợ giảng hỏi lại khi học viên cần tìm đoạn bài hoặc giải thích một thuật ngữ chưa xác định |
