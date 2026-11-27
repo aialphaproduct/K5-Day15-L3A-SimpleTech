@@ -38,7 +38,32 @@ Data BTC cấp đã dùng: `data/preclass/` (chỉ đếm, không đưa vào b�
 
 - **Lát cắt MỘT CÂU** (1 người dùng · 1 việc · 1 quyết định AI · 1 kết quả): *Một học viên hỏi một câu dưới video · trợ giảng trả lời kèm mã đoạn, hoặc nói "Không có trong bài" · học viên mở đúng đoạn để kiểm.*
 - **Không làm:** chấm bài hay chấm điểm; làm bài hộ; sửa bài giảng; gửi tin ra ngoài; trả lời lịch, điểm, hạn của từng học viên; trả lời khi không có đoạn khớp.
-- **Sơ đồ:** câu hỏi → `search_passages` → (không có đoạn → "Không có trong bài") → model trả lời kèm [MÃ] → kiểm mã trong code → trả về hoặc "Không có trong bài". **[nhóm vẽ sơ đồ đẹp hơn ở slide]**
+- **Sơ đồ kiến trúc trợ giảng bài học**
+
+```mermaid
+flowchart TD
+    accTitle: Từ câu hỏi dưới video đến đoạn bài để học viên kiểm lại
+    learner["Học viên hỏi về một đoạn video"]
+    lessons[("Kho đoạn bài<br/>data/lessons/passages.csv")]
+    subgraph tutor["Trợ giảng · workflow cố định"]
+        search["search_passages<br/>Tìm theo từ khóa trong câu hỏi"]
+        model["call_model · câu hỏi + các đoạn tìm được<br/>AI chỉ trả lời từ bài và không làm bài hộ"]
+        check{"agent.py · Có mã trích dẫn và mọi mã<br/>đều thuộc các đoạn vừa tìm?"}
+        search -->|"1–3 đoạn kèm mã"| model
+        model -->|"Câu trả lời đề xuất"| check
+    end
+    learner --> search
+    lessons -->|"Mã và nội dung đoạn"| search
+    search -->|"0 đoạn"| fallback["Không có trong bài."]
+    model -->|"Đoạn tìm được chưa đủ căn cứ"| fallback
+    check -->|"Thiếu mã hoặc sai mã"| fallback
+    check -->|"Đúng mã"| answer["Học viên nhận câu trả lời kèm [MÃ]"]
+    answer -.-> review["Học viên mở đoạn theo mã để đối chiếu"]
+    fallback -.-> retry["Học viên có thể hỏi lại hoặc tự liên hệ TA"]
+```
+
+Ở CP2, `python run.py` nhận câu hỏi qua dòng lệnh, đọc đoạn bài mẫu và gọi AI giả khi tìm được đoạn. Hai mũi tên nét đứt là việc học viên chủ động làm sau khi nhận kết quả.
+
 - **Hình dạng:** [x] workflow cố định. Lý do: một bước tìm, một bước trả lời, một bước kiểm mã. Không cần agent tự chọn bước; chọn hình dạng phức tạp hơn sẽ khó kiểm.
 - **AI dựa vào đâu:**
 
