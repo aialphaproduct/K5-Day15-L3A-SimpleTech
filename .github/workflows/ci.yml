@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          if [ -s requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+
+      - name: Kiểm TEAMS.md + eval/benchmark.csv
+        run: python run.py check
+
+      - name: Chạy eval fake (không gọi model)
+        run: python run.py eval --fake
