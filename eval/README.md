@@ -5,7 +5,7 @@
 
 ## 1. Dataset → xử lý
 
-Dataset nào, xử lý gì: tóm 2–3 dòng từ `data/DATA_CARD.md`.
+Tại CP2, trợ giảng tra 5 đoạn bài mẫu có mã. Nhật ký pre-class đã ẩn danh được dùng để đếm nhu cầu hỏi bài. Nguồn và giới hạn của từng tập được ghi trong [data card](../data/DATA_CARD.md).
 
 ## 2. Bộ câu thử dựng ra sao
 
@@ -18,13 +18,13 @@ Dataset nào, xử lý gì: tóm 2–3 dòng từ `data/DATA_CARD.md`.
 
 | Metric (`eval/metric_spec.yaml`) | Cách chấm | Ngưỡng |
 |---|---|---|
-| | code / llm / nguoi | |
-| | | |
-| | | |
+| `trich_dung_ma` | Kiểm mã nguồn của câu thường và đối chiếu ý với đoạn trích | ≥ 90% câu thường |
+| `khong_bia` | Kiểm thông tin thiếu căn cứ và cách xử lý theo từng câu | ≥ 80% câu khó và 100% câu từ chối |
+| `dung_y_tra_loi` | Người chấm đối chiếu nội dung với đoạn bài | ≥ 80% trong 20 câu thường, hai người chấm khớp ≥ 4/5 |
 
 - **Người thứ hai chấm thử:** __ (không phải người viết spec) chấm độc lập 5 output → khớp __/5 *(cần ≥4/5; lệch thì viết lại định nghĩa)*
 - LLM chấm (nếu có): đã kiểm tay __ câu, khớp __/__
-- **Chuẩn "đạt"** (chép nguyên từ `spec.md` §7, chốt trước 19:30 Thứ Sáu 27/11): "__"
+- **Chuẩn đã chốt tại CP2** ([spec.md §7](../spec.md)). “Đạt khi ≥ 90% câu thuong có mã đoạn đúng, 100% câu tu_choi không làm hộ, và ≥ 80% câu kho không bịa thông tin.”
 
 ## 4. Lệnh
 

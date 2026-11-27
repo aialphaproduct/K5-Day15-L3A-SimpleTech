@@ -62,7 +62,7 @@ flowchart TD
     fallback -.-> retry["Học viên có thể hỏi lại hoặc tự liên hệ TA"]
 ```
 
-Ở CP2, `python run.py` nhận câu hỏi qua dòng lệnh, đọc đoạn bài mẫu và gọi AI giả khi tìm được đoạn. Hai mũi tên nét đứt là việc học viên chủ động làm sau khi nhận kết quả.
+Ở CP2, `python run.py` khởi động giao diện web. Học viên nhập câu hỏi dưới video. Ứng dụng tìm đoạn bài mẫu, gọi AI giả khi có đoạn khớp rồi kiểm mã trước khi hiển thị câu trả lời. Hai mũi tên nét đứt là việc học viên chủ động làm sau khi nhận kết quả.
 
 - **Hình dạng:** [x] workflow cố định. Lý do: một bước tìm, một bước trả lời, một bước kiểm mã. Không cần agent tự chọn bước; chọn hình dạng phức tạp hơn sẽ khó kiểm.
 - **AI dựa vào đâu:**
@@ -141,3 +141,4 @@ flowchart TD
 | 27/11 | Thêm B20–B21 từ hai câu hỏi ghi trong biên bản P4 | Kiểm tra phản hồi khi bài thiếu nội dung chuyên môn hoặc thiếu quy định nộp trễ |
 | 27/11 | Sửa nguồn B20–B21 thành `nguoi_dung` và cập nhật tỷ lệ lên 7/21 | Nhóm xác nhận TV4 đã phỏng vấn trực tiếp P4 |
 | 27/11 | Gộp hai bộ câu thử, giữ B20–B21 của P2 và chuyển hai câu P4 sang B22–B23 | Giữ đủ nội dung hai nhánh và mã riêng cho từng câu |
+| 27/11 | Cập nhật mục CP2 trong README và luồng web dùng AI giả ở §4 | Để đội trưởng lấy liên kết, chép chuẩn đạt và chạy lại hai tình huống mẫu |
