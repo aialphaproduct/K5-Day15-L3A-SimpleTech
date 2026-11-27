@@ -49,7 +49,7 @@ python run.py check           # kiểm bộ câu thử, metric và TEAMS.md
 python run.py eval --fake     # thử bộ chạy, không gọi agent
 ```
 
-Máy dùng `python3` (macOS/Linux) hoặc `py` (Windows) thì gõ thay. Nối model thật: sao `.env.example` thành `.env`, điền khoá của nhóm theo [docs/connect-model.md](docs/connect-model.md). **Không commit `.env` hay key.**
+Máy dùng `python3` (macOS/Linux) hoặc `py` (Windows) thì gõ thay. Nối model thật: chép `.env.example` thành `.env`, điền khoá của nhóm theo [docs/connect-model.md](docs/connect-model.md). **Không commit `.env` hay key.**
 
 | Lệnh | Làm gì |
 |---|---|
