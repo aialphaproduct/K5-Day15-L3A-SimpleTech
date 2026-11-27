@@ -33,9 +33,10 @@ Không làm: chấm bài, làm bài hộ, trả lời lịch/điểm/hạn của
 
 | Phần | Trạng thái |
 |---|---|
-| Khung luồng trả lời và kiểm mã | Có (`codebase/agent.py`, `codebase/tools.py`) |
-| Đoạn bài | **Giả** (`data/lessons/passages.csv`, 5 đoạn). Đang thay bằng đoạn bài thật đã viết lại |
-| Nối model thật | **Chưa.** Đang chạy chế độ giả (`codebase/ai.py`) |
+| Khung luồng trả lời và kiểm mã | Đã cải tiến (`codebase/agent.py`, `codebase/tools.py`: IDF, phân biệt dấu, prompt 4 đường đi) |
+| Đoạn bài | **Đã xong** (`data/lessons/passages.csv`, 20 đoạn `tu_viet` cho Day01–Day04 và quy tắc pre-class) |
+| Nối model thật | **Đã xong** (`codebase/ai.py` hỗ trợ Gemini/OpenAI/Anthropic/Ollama qua `.env`, đã đo với `gemini-3.1-flash-lite`) |
+| Đánh giá | **Đã chạy 2 lượt** ([eval/report.md](eval/report.md)): lượt 1 `18/23 (78%)` → lượt 2 `22/23 (96%)` (**đạt chuẩn §7**) |
 | Khảo sát / phỏng vấn học viên | Đang làm |
 | Chi phí khi dùng thật | Chưa mô phỏng |
 | Slide, demo, triển khai AWS | Đang làm |
