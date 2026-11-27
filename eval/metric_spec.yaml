@@ -1,6 +1,6 @@
 # Metric spec — A1 trợ giảng bài học. Điền ở guide bước 2.4.
 # ≥3 metric. Mỗi metric: name · definition (kiểm chứng được) · grader · threshold · why.
-# CHỐT TRƯỚC 19:30 Thứ Sáu 27/11 (CP2), KHÔNG SỬA SAU. Bản này là ĐỀ XUẤT, nhóm chốt lại trước CP2.
+# ĐÃ CHỐT (27/11, theo spec.md §7). KHÔNG SỬA SAU CP2: chỉ thêm, không đổi ngưỡng hay định nghĩa.
 
 metrics:
   - name: "trich_dung_ma"

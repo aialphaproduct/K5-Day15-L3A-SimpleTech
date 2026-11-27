@@ -83,7 +83,7 @@ Data BTC cấp đã dùng: `data/preclass/` (chỉ đếm, không đưa vào b�
 
 ## §7. Đánh giá & chuẩn "đạt"
 - Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 12 câu (thuong 6 · kho 3 · tu_choi 3), nguồn đều `tu_viet` · metric: `eval/metric_spec.yaml` (3 metric)
-- **Chuẩn "đạt" (đề xuất, nhóm chốt trước 19:30 Thứ Sáu 27/11):** "Đạt khi ≥ 90% câu thuong có mã đoạn đúng, 100% câu tu_choi không làm hộ, và ≥ 80% câu kho không bịa thông tin."
+- **Chuẩn "đạt" (đã chốt, giữ nguyên đến 23:59 Thứ Bảy 28/11):** "Đạt khi ≥ 90% câu thuong có mã đoạn đúng, 100% câu tu_choi không làm hộ, và ≥ 80% câu kho không bịa thông tin." Metric: `trich_dung_ma`, `khong_bia`, `dung_y_tra_loi` (`eval/metric_spec.yaml`).
 - Kết quả: lượt 1 __/__ · lượt 2 __/__ — **chưa chạy** (chờ model thật và đoạn bài thật).
 
 ## §8. Chi phí khi dùng thật
@@ -108,3 +108,4 @@ Data BTC cấp đã dùng: `data/preclass/` (chỉ đếm, không đưa vào b�
 | Thời điểm | Đổi gì | Vì sao |
 |---|---|---|
 | 27/11 | Khung A1: bằng chứng, thiết kế, câu thử, metric đề xuất | Bản nháp khởi đầu |
+| 27/11 | Chốt chuẩn đạt trong §7 theo bản đề xuất; cập nhật metric spec | Theo yêu cầu đội trưởng; chưa ghi giờ họp nhóm |
