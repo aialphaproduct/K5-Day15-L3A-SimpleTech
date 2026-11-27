@@ -9,8 +9,8 @@ Dataset nào, xử lý gì: tóm 2–3 dòng từ `data/DATA_CARD.md`.
 
 ## 2. Bộ câu thử dựng ra sao
 
-- `eval/benchmark.csv`: __ câu (thuong __ · kho __ · tu_choi __, trong đó __ câu tấn công)
-- Nguồn (`python run.py check` in sẵn): nguoi_dung __ · data_that __ · tu_viet __ · sinh_seed __ → từ người dùng / data thật __/__ (cần ≥1/3)
+- `eval/benchmark.csv` có 21 câu (9 `thuong`, 9 `kho`, 3 `tu_choi`, gồm hai câu tấn công B11–B12).
+- Nguồn gồm 14 `tu_viet`, 7 `nguoi_dung`, 0 `data_that` và 0 `sinh_seed`. Tỷ lệ từ người dùng hoặc dữ liệu thật là 7/21 (1/3). B20–B21 trích hai câu hỏi trong [biên bản phỏng vấn P4, mục Ghi chép](../evidence/interviews/P4.md).
 - Độ phủ — lưới input 3–5 chiều (guide 2.4 bước 5): __
 - Câu `kho` trỏ về 4 lớp chỗ khó (`spec.md` §5): lớp 1: __ · lớp 2: __ · lớp 3: __ · lớp 4: __
 

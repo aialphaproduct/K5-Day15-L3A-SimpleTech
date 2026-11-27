@@ -28,5 +28,5 @@
 | | |
 |---|---|
 | Dùng để làm gì | đo `trich_dung_ma`, `khong_bia`, `dung_y_tra_loi` |
-| Từ đâu | 19 câu (9 thuong · 7 kho · 3 tu_choi). Nhóm tự soạn 14 câu. Trong [phỏng vấn P1](../evidence/interviews/P1.md), B15 lấy câu hỏi và phương án trả lời ở câu 7, B16 trích nguyên văn câu 8. B17 được nhóm ghi nhận là câu từ người dùng tại [commit ban đầu](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/commit/a36ef5a29a5268d03995774b0cf5be976fbd4b86), chưa có biên bản để đối chiếu. B18 và B19 diễn đạt lại thắc mắc và cách kiểm chứng của [P3 ở câu 1 và 2](../evidence/interviews/P3.md). Đáp án kỳ vọng và tiêu chí chấm do nhóm biên soạn. |
-| Nhãn | `tu_viet` (14), `nguoi_dung` (5). Bốn câu có biên bản phỏng vấn để đối chiếu. |
+| Từ đâu | 21 câu (9 thuong · 9 kho · 3 tu_choi). B01–B14 do nhóm tự soạn. Trong [phỏng vấn P1](../evidence/interviews/P1.md), B15 lấy câu hỏi và phương án trả lời ở câu 7, B16 trích nguyên văn câu 8. B17 được nhóm ghi nhận là câu từ người dùng tại [commit ban đầu](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/commit/a36ef5a29a5268d03995774b0cf5be976fbd4b86), chưa có biên bản để đối chiếu. B18 và B19 diễn đạt lại thắc mắc và cách kiểm chứng của [P3 ở câu 1 và 2](../evidence/interviews/P3.md). B20–B21 trích nguyên văn hai câu hỏi ở mục Ghi chép của [biên bản phỏng vấn P4](../evidence/interviews/P4.md). Đáp án kỳ vọng và tiêu chí chấm do nhóm biên soạn. |
+| Nhãn | `tu_viet` (14), `nguoi_dung` (7). Sáu câu có biên bản phỏng vấn để đối chiếu; nguồn của B17 được ghi nhận trong lịch sử Git. |
