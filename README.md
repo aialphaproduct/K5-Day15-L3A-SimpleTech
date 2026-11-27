@@ -49,7 +49,7 @@ Chạy trước: số liệu và câu thử phải có trước khi Dũng chạy
 
 | Thứ tự | Việc | Issue | File chính | Xong khi |
 |---|---|---|---|---|
-| 1 | Chốt metric và chuẩn đạt | [#11](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/11) | `eval/metric_spec.yaml`, `spec.md` §7 | Đã xong (27/11) |
+| 1 | Chốt metric và chuẩn đạt | [#11](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/11) | `eval/metric_spec.yaml`, `spec.md` §7 | Đã xong mẫu, chờ Tùng gửi bản chính thức (27/11) |
 | 2 | Chạy lại bằng chứng và đối chiếu số | [#5](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/5) | `evidence/` | Chạy `count_tutor.py`, khớp `summary.md` |
 | 3 | Hoàn thiện data card | [#6](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/6) | `data/DATA_CARD.md` | 3 dataset đủ mục, nhãn đúng |
 | 4 | Mở rộng bộ câu thử lên 20–30 câu | [#7](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/7) | `eval/benchmark.csv` | `run.py check` không còn cảnh báo số câu |
