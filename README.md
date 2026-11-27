@@ -41,26 +41,26 @@ Việc đang mở: [Issues](https://github.com/aialphaproduct/K5-Day15-L3A-Simpl
 
 ## Phân công
 
-Mỗi việc có một issue; tick việc trong issue khi xong. Mốc: CP2 19:30 Thứ Sáu 27/11 · CP3 10:00 Thứ Bảy 28/11 · CP4 14:30 Thứ Bảy 28/11 · hạn 23:59 Thứ Bảy 28/11.
+Sắp theo thứ tự hạn: CP2 → CP3 → CP4 → reflection. Mỗi việc có một issue; tick việc trong issue khi xong. Mốc: CP2 19:30 Thứ Sáu 27/11 · CP3 10:00 Thứ Bảy 28/11 · CP4 14:30 Thứ Bảy 28/11 · hạn 23:59 Thứ Bảy 28/11.
 
 | Người | Vai trò | Việc | Issue | File chính | Hạn | Trạng thái |
 |---|---|---|---|---|---|---|
 | Lưu Thanh Mỹ | Đội trưởng | Khảo sát học viên về câu hỏi dưới video | [#2](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/2) | `evidence/survey/` | CP2 (bắt đầu sớm) | Chưa bắt đầu |
+| Khổng Tiến Dương | Thành viên | Chốt metric và chuẩn đạt | [#11](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/11) | `eval/metric_spec.yaml`, `spec.md` §7 | CP2 19:30 Thứ Sáu | Chưa bắt đầu |
 | Lưu Thanh Mỹ | Đội trưởng | Giao diện web cho bản chạy thử | [#1](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/1) | `codebase/app.py` | CP3 | Chưa bắt đầu |
-| Lưu Thanh Mỹ | Đội trưởng | Slide và kịch bản demo | [#3](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/3) | `slides/` | CP4 | Chưa bắt đầu |
-| Lưu Thanh Mỹ | Đội trưởng | Triển khai AWS (theo region của project) | [#4](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/4) | `README.md` | CP4 | Chưa bắt đầu |
-| Lưu Thanh Mỹ | Đội trưởng | Reflection cá nhân | [#14](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/14) | `reflection/luu-thanh-my.md` | 23:59 Thứ Bảy | Chưa bắt đầu |
 | Nguyễn Hoa Thanh Tùng | Thành viên | Chạy lại bằng chứng và đối chiếu số | [#5](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/5) | `evidence/` | CP3 | Chưa bắt đầu |
 | Nguyễn Hoa Thanh Tùng | Thành viên | Hoàn thiện data card | [#6](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/6) | `data/DATA_CARD.md` | CP3 | Chưa bắt đầu |
 | Nguyễn Hoa Thanh Tùng | Thành viên | Mở rộng bộ câu thử lên 20–30 câu | [#7](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/7) | `eval/benchmark.csv` | CP3 | Chưa bắt đầu |
-| Nguyễn Hoa Thanh Tùng | Thành viên | Reflection cá nhân | [#15](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/15) | `reflection/nguyen-hoa-thanh-tung.md` | 23:59 Thứ Bảy | Chưa bắt đầu |
 | Vũ Trí Dũng | Thành viên | Thay đoạn bài giả bằng đoạn bài thật | [#8](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/8) | `data/lessons/passages.csv` | CP3 (nên sớm) | Chưa bắt đầu |
 | Vũ Trí Dũng | Thành viên | Nối model thật vào `ai.py` | [#9](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/9) | `codebase/ai.py` | CP3 | Chưa bắt đầu |
-| Vũ Trí Dũng | Thành viên | Chạy bộ đánh giá | [#10](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/10) | `eval/` | CP4 (lượt 2) | Chưa bắt đầu |
-| Vũ Trí Dũng | Thành viên | Reflection cá nhân | [#16](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/16) | `reflection/vu-tri-dung.md` | 23:59 Thứ Bảy | Chưa bắt đầu |
-| Khổng Tiến Dương | Thành viên | Chốt metric và chuẩn đạt | [#11](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/11) | `eval/metric_spec.yaml`, `spec.md` §7 | CP2 19:30 Thứ Sáu | Chưa bắt đầu |
 | Khổng Tiến Dương | Thành viên | Người thứ hai chấm 5 câu trả lời | [#12](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/12) | `eval/README.md` | CP3 | Chưa bắt đầu |
+| Lưu Thanh Mỹ | Đội trưởng | Slide và kịch bản demo | [#3](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/3) | `slides/` | CP4 | Chưa bắt đầu |
+| Lưu Thanh Mỹ | Đội trưởng | Triển khai AWS (theo region của project) | [#4](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/4) | `README.md` | CP4 | Chưa bắt đầu |
+| Vũ Trí Dũng | Thành viên | Chạy bộ đánh giá | [#10](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/10) | `eval/` | CP4 (lượt 2) | Chưa bắt đầu |
 | Khổng Tiến Dương | Thành viên | Mô phỏng chi phí khi dùng thật | [#13](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/13) | `cost/` | CP4 | Chưa bắt đầu |
+| Lưu Thanh Mỹ | Đội trưởng | Reflection cá nhân | [#14](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/14) | `reflection/luu-thanh-my.md` | 23:59 Thứ Bảy | Chưa bắt đầu |
+| Nguyễn Hoa Thanh Tùng | Thành viên | Reflection cá nhân | [#15](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/15) | `reflection/nguyen-hoa-thanh-tung.md` | 23:59 Thứ Bảy | Chưa bắt đầu |
+| Vũ Trí Dũng | Thành viên | Reflection cá nhân | [#16](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/16) | `reflection/vu-tri-dung.md` | 23:59 Thứ Bảy | Chưa bắt đầu |
 | Khổng Tiến Dương | Thành viên | Reflection cá nhân | [#17](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/17) | `reflection/khong-tien-duong.md` | 23:59 Thứ Bảy | Chưa bắt đầu |
 
 Ghi chú: Khi xong việc, đổi trạng thái trong bảng và đóng issue tương ứng.
