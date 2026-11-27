@@ -41,30 +41,55 @@ Việc đang mở: [Issues](https://github.com/aialphaproduct/K5-Day15-L3A-Simpl
 
 ## Phân công
 
-Thứ tự làm: Tùng → Dũng → Mỹ, Dương làm song song phần chuẩn đạt và chuyển sang AWS cùng Mỹ sau khi xong việc của mình. Mỗi việc có một issue; tick việc trong issue khi xong. Mốc: CP2 19:30 Thứ Sáu 27/11 · CP3 10:00 Thứ Bảy 28/11 · CP4 14:30 Thứ Bảy 28/11 · hạn 23:59 Thứ Bảy 28/11.
+Mỗi người làm xong phần của mình trong hôm nay theo thứ tự dưới đây. Việc của người sau phụ thuộc người trước: Tùng → Dũng → Dương (chấm, chi phí). Mỹ làm song song. Mỗi việc có một issue; tick trong issue khi xong. Mốc: CP2 19:30 Thứ Sáu 27/11 · CP3 10:00 Thứ Bảy 28/11 · CP4 14:30 Thứ Bảy 28/11 · hạn 23:59 Thứ Bảy 28/11.
 
-| Thứ tự | Người | Việc | Issue | File chính | Hạn | Trạng thái |
-|---|---|---|---|---|---|---|
-| Song song | Nguyễn Hoa Thanh Tùng | Chốt metric và chuẩn đạt | [#11](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/11) | `eval/metric_spec.yaml`, `spec.md` §7 | CP2 19:30 Thứ Sáu | Đã chốt (27/11), xem spec.md §7 |
-| 1 | Nguyễn Hoa Thanh Tùng | Chạy lại bằng chứng và đối chiếu số | [#5](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/5) | `evidence/` | CP3 | Chưa bắt đầu |
-| 2 | Nguyễn Hoa Thanh Tùng | Hoàn thiện data card | [#6](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/6) | `data/DATA_CARD.md` | CP3 | Chưa bắt đầu |
-| 3 | Nguyễn Hoa Thanh Tùng | Mở rộng bộ câu thử lên 20–30 câu | [#7](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/7) | `eval/benchmark.csv` | CP3 | Chưa bắt đầu |
-| 4 | Vũ Trí Dũng | Thay đoạn bài giả bằng đoạn bài thật | [#8](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/8) | `data/lessons/passages.csv` | CP3 | Chưa bắt đầu |
-| 5 | Vũ Trí Dũng | Nối model thật vào `ai.py` | [#9](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/9) | `codebase/ai.py` | CP3 | Chưa bắt đầu |
-| 6 | Vũ Trí Dũng | Chạy bộ đánh giá | [#10](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/10) | `eval/` | CP4 (lượt 2) | Chưa bắt đầu |
-| 7 | Khổng Tiến Dương | Người thứ hai chấm 5 câu trả lời | [#12](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/12) | `eval/README.md` | CP3 | Chưa bắt đầu |
-| 8 | Khổng Tiến Dương | Mô phỏng chi phí khi dùng thật | [#13](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/13) | `cost/` | CP4 | Chưa bắt đầu |
-| 9 | Lưu Thanh Mỹ | Khảo sát học viên về câu hỏi dưới video | [#2](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/2) | `evidence/survey/questions.md` | CP2 (bắt đầu sớm) | Đang làm: bản nháp câu hỏi đã có, chờ Mỹ rà |
-| 10 | Lưu Thanh Mỹ | Giao diện web cho bản chạy thử | [#1](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/1) | `codebase/app.py` | CP3 | Chưa bắt đầu |
-| 11 | Lưu Thanh Mỹ | Slide và kịch bản demo | [#3](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/3) | `slides/` | CP4 | Chưa bắt đầu |
-| 12 | Lưu Thanh Mỹ + Khổng Tiến Dương | Triển khai AWS (theo region của project) | [#4](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/4) | `README.md` | CP4 | Chưa bắt đầu |
-| 13 | Lưu Thanh Mỹ + Khổng Tiến Dương | Fix bug trong bản chạy thử và AWS | Chưa có issue | `codebase/`, cấu hình AWS | CP4 | Chưa bắt đầu |
-| 14 | Lưu Thanh Mỹ | Reflection cá nhân | [#14](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/14) | `reflection/luu-thanh-my.md` | 23:59 Thứ Bảy | Chưa bắt đầu |
-| 15 | Nguyễn Hoa Thanh Tùng | Reflection cá nhân | [#15](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/15) | `reflection/nguyen-hoa-thanh-tung.md` | 23:59 Thứ Bảy | Chưa bắt đầu |
-| 16 | Vũ Trí Dũng | Reflection cá nhân | [#16](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/16) | `reflection/vu-tri-dung.md` | 23:59 Thứ Bảy | Chưa bắt đầu |
-| 17 | Khổng Tiến Dương | Reflection cá nhân | [#17](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/17) | `reflection/khong-tien-duong.md` | 23:59 Thứ Bảy | Chưa bắt đầu |
+### Nguyễn Hoa Thanh Tùng
 
-Khi xong việc, đổi trạng thái trong bảng và đóng issue tương ứng.
+Chạy trước: số liệu và câu thử phải có trước khi Dũng chạy bộ đánh giá
+
+| Thứ tự | Việc | Issue | File chính | Xong khi |
+|---|---|---|---|---|
+| 1 | Chốt metric và chuẩn đạt | [#11](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/11) | `eval/metric_spec.yaml`, `spec.md` §7 | Đã xong (27/11) |
+| 2 | Chạy lại bằng chứng và đối chiếu số | [#5](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/5) | `evidence/` | Chạy `count_tutor.py`, khớp `summary.md` |
+| 3 | Hoàn thiện data card | [#6](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/6) | `data/DATA_CARD.md` | 3 dataset đủ mục, nhãn đúng |
+| 4 | Mở rộng bộ câu thử lên 20–30 câu | [#7](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/7) | `eval/benchmark.csv` | `run.py check` không còn cảnh báo số câu |
+| 5 | Reflection cá nhân | [#15](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/15) | `reflection/nguyen-hoa-thanh-tung.md` | Hạn 23:59 Thứ Bảy |
+
+### Vũ Trí Dũng
+
+Chạy sau Tùng: đoạn bài thật rồi nối model, sau đó chạy đánh giá
+
+| Thứ tự | Việc | Issue | File chính | Xong khi |
+|---|---|---|---|---|
+| 1 | Thay đoạn bài giả bằng đoạn bài thật | [#8](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/8) | `data/lessons/passages.csv` | 10–20 đoạn, nhãn `tu_viet` |
+| 2 | Nối model thật vào `ai.py` | [#9](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/9) | `codebase/ai.py`, `.env` (không commit) | `run.py eval --try 3` có token > 0 |
+| 3 | Chạy bộ đánh giá | [#10](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/10) | `eval/` | `run.py score` ra % đạt |
+| 4 | Reflection cá nhân | [#16](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/16) | `reflection/vu-tri-dung.md` | Hạn 23:59 Thứ Bảy |
+
+### Lưu Thanh Mỹ
+
+Đội trưởng: giao diện và khảo sát, rồi làm slide; AWS và fix bug làm cùng Dương
+
+| Thứ tự | Việc | Issue | File chính | Xong khi |
+|---|---|---|---|---|
+| 1 | Giao diện web cho bản chạy thử | [#1](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/1) | `codebase/app.py` | Chạy bằng `python run.py`, hiện mã đoạn và "Không có trong bài" |
+| 2 | Khảo sát học viên về câu hỏi dưới video | [#2](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/2) | `evidence/survey/questions.md` | Rà xong bộ câu hỏi; thu ≥20 người (có thể chưa xong hôm nay) |
+| 3 | Slide và kịch bản demo | [#3](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/3) | `slides/` | `demo-slides.pdf` ở gốc repo |
+| 4 | Triển khai AWS (cùng Dương) | [#4](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/4) | `README.md` | Link demo chạy được; region đúng project |
+| 5 | Reflection cá nhân | [#14](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/14) | `reflection/luu-thanh-my.md` | Hạn 23:59 Thứ Bảy |
+
+### Khổng Tiến Dương
+
+Chạy sau Dũng: chấm người thứ hai và chi phí; AWS và fix bug làm cùng Mỹ
+
+| Thứ tự | Việc | Issue | File chính | Xong khi |
+|---|---|---|---|---|
+| 1 | Người thứ hai chấm 5 câu trả lời | [#12](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/12) | `eval/README.md` | Khớp ≥4/5 với người viết |
+| 2 | Mô phỏng chi phí khi dùng thật | [#13](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/13) | `cost/` | `simulate` ≥50 phiên, có summary |
+| 3 | Triển khai AWS (cùng Mỹ) | [#4](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/4) | `README.md` | Cùng Mỹ |
+| 4 | Reflection cá nhân | [#17](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/17) | `reflection/khong-tien-duong.md` | Hạn 23:59 Thứ Bảy |
+
+Khi xong việc, đóng issue tương ứng. Việc fix bug trong bản chạy thử và AWS chưa có issue: Mỹ và Dương mở issue riêng khi gặp lỗi.
 
 ## Chạy bản chạy thử
 
