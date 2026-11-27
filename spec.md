@@ -97,7 +97,11 @@ Data BTC cấp đã dùng: `data/preclass/` (chỉ đếm, không đưa vào b�
 - Ai có thể bị hại nếu AI sai: học viên lỡ hạn hoặc hiểu nhầm nội dung. Nhóm chặn bằng bước kiểm mã và câu từ chối.
 
 ## §10. Phân công & changelog
-- Phân công có tên: **[nhóm điền theo cặp, xem Cách chia việc trong hướng dẫn]**
+- Phân công có tên (xem TEAMS.md):
+  - Lưu Thanh Mỹ (đội trưởng): giao diện, demo, slide, triển khai AWS
+  - Nguyễn Hoa Thanh Tùng: phỏng vấn, khảo sát, bằng chứng, data card, câu thử người dùng thật
+  - Vũ Trí Dũng: bản chạy thử (`codebase/`), đoạn bài thật, nối model
+  - Khổng Tiến Dương: bộ đánh giá (`eval/`), chi phí (`cost/`)
 - Dùng AI vào việc gì (2–3 dòng; chi tiết `docs/ai-usage.md`): Claude soạn khung code, script đếm bằng chứng, bản nháp spec và câu thử. Nhóm kiểm và sửa.
 - Nhật ký thay đổi (mọi thay đổi sau CP2 phải có dòng ở đây):
 
