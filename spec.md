@@ -113,9 +113,9 @@ flowchart TD
 - Kết quả: lượt 1 **18/23 (78%)** (`run-1@20261127-214416`: thuong 8/9, kho 8/11, tu_choi 2/3 — chưa đạt) · lượt 2 **22/23 (96%)** (`run-2@20261127-215239`: thuong 9/9, kho 10/11, tu_choi 3/3 — **đạt chuẩn §7**) với `gemini-3.1-flash-lite`. Chi tiết lỗi và cải tiến: `eval/report.md`.
 
 ## §8. Chi phí khi dùng thật
-- Persona + giá: `cost/personas.yaml` · **chưa điền** (chờ model thật)
-- Chi phí / task thành công: __ **[chạy `python run.py simulate` sau khi nối model]**
-- Đáng làm không: __ **[so với impact §2]**
+- Persona + giá: `cost/personas.yaml` (3 persona từ hành vi thật trong `chat.csv` bằng `evidence/count_personas.py`: `dung_it` 38%, `dung_vua` 43%, `dung_nhieu` 19%; 3 kịch bản quy mô 143 / 436 / 721 học viên; giá 2 mức model từ `further-reading/model-prices.md` ngày 25/11/2026).
+- Chi phí / task thành công (`simulate-1@20261128-012032`, 50 phiên, đo trên `gemini-3.1-flash-lite`, chia tỉ lệ đạt 22/23 = 96% từ `run-2`): **`$0.00055`** với `gemini-3.1-flash-lite` (**`$0.9775`/tháng** cơ sở 436 người, `$0.0022`/người/tháng) · **`$0.0031`** với `gemini-4-hydrogen` (**`$5.57`/tháng** cơ sở, `$0.0128`/người/tháng). Chi tiết: `cost/cost-estimate.md`.
+- Đáng làm không: **Rất đáng làm** — chi phí API dưới $1/tháng ở quy mô 436 học viên cơ sở (dưới $0.0022/người/tháng), rất nhỏ so với thời gian tự kiểm chứng bài giảng của học viên *(tự ước tính 9–15 phút/người/tháng; cần nhóm chốt thêm số impact chính thức ở §2)*.
 
 ## §9. Rủi ro & an toàn
 - Dữ liệu: dùng data pre-class đã ẩn danh chỉ để đếm; không đưa nội dung học viên vào model; không đưa thông tin cá nhân vào bộ câu thử.
@@ -144,3 +144,4 @@ flowchart TD
 | 27/11 | Cập nhật mục CP2 trong README và luồng web dùng AI giả ở §4 | Để đội trưởng lấy liên kết, chép chuẩn đạt và chạy lại hai tình huống mẫu |
 | 27/11 | Thay 5 đoạn giả trong `data/lessons/passages.csv` bằng 20 đoạn `tu_viet` (Day01–Day04 + quy tắc pre-class) và viết phần gọi model thật trong `codebase/ai.py` | Hoàn thiện #8 và phần code của #9 trước khi chạy eval CP3; giữ mã `GIA-01`–`GIA-05` để tương thích bộ câu thử & metric CP2 |
 | 27/11 | Chạy eval lượt 1 (`run-1`: 18/23 = 78%), cải tiến `codebase/tools.py` (IDF, giữ viết tắt `AI`, phân biệt dấu) và `codebase/agent.py` (`SYSTEM` prompt 4 đường đi §6), chạy lượt 2 (`run-2`: 22/23 = 96%) | Hoàn thiện #9 và #10; khắc phục 4/5 lỗi lượt 1 (B10, B16, B18, B23) và đạt chuẩn §7 với 0 câu tệ đi |
+| 28/11 | Dựng 3 persona thật (`evidence/count_personas.py`, `cost/personas.yaml`), chạy mô phỏng 50 phiên (`simulate-1`), điền `cost/cost-estimate.md`, `spec.md` §8 và chấm độc lập 5 câu (`eval/README.md` mục 3) | Hoàn thiện #12, #13 và #38 (Khổng Tiến Dương) |
