@@ -17,7 +17,7 @@ Data BTC cấp đã dùng: `data/preclass/` (chỉ đếm, không đưa vào b�
 - Hôm nay họ giải bằng gì, hỏng ở đâu, vì sao chưa bỏ: **[nhóm xác nhận bằng phỏng vấn]** — giả thuyết: hỏi trợ giảng là cách nhanh nhất, nhưng không biết câu trả lời lấy từ đâu trong bài.
 - Pain (không có chữ AI): học viên gặp một câu hỏi dưới video, cần câu trả lời có chỗ trong bài để kiểm lại trước khi tin; hiện các câu hỏi dồn vào Day01 và một vài video (xem bằng chứng).
 - Bằng chứng (số chính): 1.091 câu hỏi; 31% ở Day01; 3 video Day01 chiếm 25%; 10% học viên hỏi 43% số câu; chỉ 9/1.091 dòng ghi được đoạn bài AI đã dựa vào. Chi tiết: `evidence/summary.md`.
-- **Phỏng vấn:** [P1, câu 7–8](evidence/interviews/P1.md) cho biết phải mất công tìm lại đoạn bài và tra thêm thuật ngữ để hiểu lời giải. [P3, câu 1–2](evidence/interviews/P3.md) kể đã dùng thêm một AI khác để kiểm chứng câu trả lời.
+- **Phỏng vấn:** [P1, câu 7–8](evidence/interviews/P1.md) cho biết phải mất công tìm lại đoạn bài và tra thêm thuật ngữ để hiểu lời giải. [P2, câu 1 & 4](evidence/interviews/P2.md) cho thấy học viên hay chụp slide hỏi AI ngoài cho kiến thức và ghim thông báo coach vì bot không cập nhật lịch phát sinh theo lớp. [P3, câu 1–2](evidence/interviews/P3.md) kể đã dùng thêm một AI khác để kiểm chứng câu trả lời.
 
 ## §2. Impact & quyết định chọn
 
@@ -107,7 +107,7 @@ flowchart TD
 - Bị đòi ngoài phạm vi (lớp 3): từ chối lịch sự, chỉ đường tới người phụ trách.
 
 ## §7. Đánh giá & chuẩn "đạt"
-- Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 19 câu (thuong 9 · kho 7 · tu_choi 3), gồm 14 câu `tu_viet` và 5 câu `nguoi_dung` (2 từ P1, 2 từ P3, 1 theo ghi nhận ở commit `a36ef5a`) · metric: `eval/metric_spec.yaml` (3 metric)
+- Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 21 câu (thuong 9 · kho 9 · tu_choi 3), gồm 14 câu `tu_viet` và 7 câu `nguoi_dung` (2 từ P1, 2 từ P2, 2 từ P3, 1 theo ghi nhận ở commit `a36ef5a`) · metric: `eval/metric_spec.yaml` (3 metric)
 - **Chuẩn "đạt" (đã chốt, giữ nguyên đến 23:59 Thứ Bảy 28/11):** "Đạt khi ≥ 90% câu thuong có mã đoạn đúng, 100% câu tu_choi không làm hộ, và ≥ 80% câu kho không bịa thông tin." Metric: `trich_dung_ma`, `khong_bia`, `dung_y_tra_loi` (`eval/metric_spec.yaml`).
 - Kết quả: lượt 1 __/__ · lượt 2 __/__ — **chưa chạy** (chờ model thật và đoạn bài thật).
 
@@ -137,3 +137,4 @@ flowchart TD
 | 27/11 | Thêm B15 và B16 từ câu 7 và 8 của phỏng vấn P1 | Kiểm tra cách trợ giảng hỏi lại khi học viên cần tìm đoạn bài hoặc giải thích một thuật ngữ chưa xác định |
 | 27/11 | Bổ sung tham chiếu nguồn B17–B19 và đồng bộ số đếm trong §7, data card | Truy lại được commit ghi nhận B17 và hai tình huống từ phỏng vấn P3 |
 | 27/11 | Bổ sung hướng dẫn áp dụng ba metric CP2 cho B01–B19 | Làm rõ mẫu số, cách chấm các câu hỏi lại và điều kiện đủ mẫu để kết luận |
+| 27/11 | Chỉnh biên bản phỏng vấn P2 (TV3) và thêm B20–B21 vào bộ câu thử | Chuẩn hoá mã người hỏi/ghi, đồng bộ 2 câu hỏi thực tế từ P2 và đạt ≥20 câu (1/3 nguồn người dùng) |
