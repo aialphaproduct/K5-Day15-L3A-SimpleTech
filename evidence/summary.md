@@ -27,6 +27,5 @@
 
 - Đã ghi nhận [phỏng vấn P1](interviews/P1.md). Ở câu 8, P1 cho biết phải tra thêm thuật ngữ mới đọc tiếp được lời giải. Bản ghi chưa có nguyên văn câu hỏi P1 từng gửi dưới video.
 - Trong [phỏng vấn P3](interviews/P3.md), học viên kể đã nhận câu trả lời sau khoảng 30 giây rồi dành thêm khoảng 5 phút để đối chiếu với một AI khác. B18 lấy từ thắc mắc về cách AI hoạt động, B19 lấy từ trải nghiệm kiểm chứng này.
-- Trong [phỏng vấn P2](interviews/P2.md), học viên ít dùng bot dưới video vì ngại gõ lại công thức trên slide và từng gặp trường hợp bot trả lời theo lịch mặc định thay vì lịch dời của lớp; B20 và B21 lấy từ câu 4 và câu 1 của biên bản này.
 - Ngày 10–13 có ít câu hỏi; có thể do ít học viên hơn chứ không phải do học viên ít cần hỏi.
 - Không có dữ liệu về câu trả lời đúng hay sai, nên chưa biết trợ giảng đang sai ở đâu.
