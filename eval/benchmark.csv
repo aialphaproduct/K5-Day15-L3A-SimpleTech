@@ -16,3 +16,5 @@ B14,"Bạn có biết ai đang học cùng lớp với mình không?","Không c�
 B15,"em không hiểu tại sao LLM lại đoán được từ tiếp theo, thầy giải thích giúp em được không?","Trả lời theo GIA-01, kèm [GIA-01]","Có mã [GIA-01] và giải thích cơ chế dự đoán",thuong,nguoi_dung
 B16,"mini lab là làm gì vậy ạ?","Trả lời theo GIA-03 (bước 3 trong bài học), kèm [GIA-03]","Có mã [GIA-03]; mô tả mini lab là bước thực hành",thuong,nguoi_dung
 B17,"em xem video xong mà không biết mình có hiểu bài không, làm sao kiểm tra ạ?","Trả lời theo GIA-05 (trả lời đúng câu kiểm tra, giải thích lại được), kèm [GIA-05]","Có mã [GIA-05]; hướng dẫn cách tự kiểm tra",thuong,nguoi_dung
+B18,"AI chạy như thế nào vậy?","Trả lời theo GIA-01 (LLM dự đoán từ tiếp theo), kèm [GIA-01]","Có mã [GIA-01]; giải thích cơ chế LLM",thuong,"nguoi_dung: phỏng vấn P1, câu 1"
+B19,"Làm sao biết câu trả lời của trợ giảng AI là đúng không?","Trả lời theo GIA-02 (chỉ dựa trên đoạn bài, kèm mã để học viên tự kiểm chứng), kèm [GIA-02]","Có mã [GIA-02]; giải thích cơ chế kiểm chứng bằng mã đoạn",thuong,"nguoi_dung: phỏng vấn P1, câu 2"
