@@ -7,6 +7,7 @@ Quy tắc chặn rủi ro (spec.md §4):
   2. Có đoạn → model trả lời, mỗi khẳng định kèm mã đoạn [MÃ].
   3. Kiểm lại trong code: mã trích dẫn phải thuộc đúng các đoạn đã tìm. Sai → không đưa câu trả lời của model.
 """
+import os
 import re
 
 from ai import call_model
@@ -38,14 +39,41 @@ CONTROLLED_MESSAGES = {
     "REFUSE": REFUSE_MSG,
 }
 CITE = re.compile(r"\[([A-Za-z0-9\-]+)\]")
+NUM_RE = re.compile(r"\b\d+(?:[.,:/]\d+)*%?\b")
+DAY_RE = re.compile(r"\b(?:thứ\s+(?:hai|ba|tư|năm|sáu|bảy|[2-7])|chủ\s+nhật|hôm\s+nay|ngày\s+mai)\b", re.IGNORECASE)
+PERSON_RE = re.compile(r"\b(?:bạn|anh|chị|học\s+viên)\s+([A-ZÀ-Ỹ][a-zà-ỹ]+)\b")
 LABEL_RE = re.compile(
     r"^\s*(ANSWER|NO_BASIS|CLARIFY|REFUSE)(?:(?:\s*:\s*|\s*\r?\n\s*)(.*)|\.?\s*)?$",
     re.IGNORECASE | re.DOTALL,
 )
 
 
-def _parse_labeled_output(out: str, allowed: set, is_fake: bool = False) -> str:
-    """Chỉ cho phép câu trả lời có nhãn ANSWER + mã hợp lệ, hoặc câu do code kiểm soát theo nhãn."""
+def verify_claim_rule(answer_text: str, cited_texts: list) -> tuple:
+    """Luật kiểm chứng nội dung rẻ (Issue #34): 0 token, <1ms, chặn số/ngày/giờ/tên riêng không có trong đoạn trích."""
+    ans_clean = CITE.sub("", answer_text)
+    src_joined = " ".join(cited_texts)
+    src_low = src_joined.lower()
+
+    extra_nums = sorted(set(NUM_RE.findall(ans_clean)) - set(NUM_RE.findall(src_joined)))
+    if extra_nums:
+        return False, "số/ngày/giờ không có trong đoạn trích: %s" % extra_nums
+
+    src_days = {m.lower() for m in DAY_RE.findall(src_low)}
+    ans_days = {m.lower() for m in DAY_RE.findall(ans_clean.lower())}
+    extra_days = sorted(ans_days - src_days)
+    if extra_days:
+        return False, "mốc thời gian không có trong đoạn trích: %s" % extra_days
+
+    extra_names = [n for n in PERSON_RE.findall(ans_clean) if n.lower() not in src_low]
+    if extra_names:
+        return False, "tên riêng không có trong đoạn trích: %s" % extra_names
+
+    return True, "ok"
+
+
+def _parse_labeled_output(out: str, by_code: dict, is_fake: bool = False) -> str:
+    """Chỉ cho phép câu trả lời có nhãn ANSWER + mã hợp lệ + qua luật kiểm chứng, hoặc câu do code kiểm soát theo nhãn."""
+    allowed = set(by_code)
     if is_fake:
         cited = set(CITE.findall(out))
         if cited and cited <= allowed:
@@ -70,6 +98,24 @@ def _parse_labeled_output(out: str, allowed: set, is_fake: bool = False) -> str:
     if not cited <= allowed:
         note("chặn: mã trích dẫn không thuộc các đoạn đã tìm: %s" % sorted(cited - allowed))
         return NO_BASIS
+
+    cited_texts = [by_code[c] for c in sorted(cited)]
+    ok, reason = verify_claim_rule(body, cited_texts)
+    if not ok:
+        note("chặn bởi luật kiểm chứng nội dung (#34): %s" % reason)
+        return NO_BASIS
+
+    if os.environ.get("ENABLE_LLM_VERIFY", "").strip() == "1":
+        check_sys = (
+            "Đọc ĐOẠN TRÍCH và CÂU TRẢ LỜI. Trả đúng 1 từ: SUPPORTED nếu câu trả lời đúng ý đoạn trích, "
+            "UNSUPPORTED nếu bịa chi tiết hoặc đảo ngược nghĩa."
+        )
+        check_user = "ĐOẠN TRÍCH:\n%s\n\nCÂU TRẢ LỜI:\n%s" % ("\n".join(cited_texts), CITE.sub("", body).strip())
+        verdict = call_model(check_sys, check_user)["text"].strip().upper()
+        if "UNSUPPORTED" in verdict or "SUPPORTED" not in verdict:
+            note("chặn bởi LLM verifier (#34): %s" % verdict[:30])
+            return NO_BASIS
+
     return body
 
 
@@ -79,9 +125,9 @@ def answer(text: str) -> dict:
         note("dừng: không có đoạn nào khớp câu hỏi")
         return {"output": NO_BASIS}
 
-    allowed = {p["code"] for p in found}
+    by_code = {p["code"]: p["text"] for p in found}
     context = "\n".join("[%s] %s" % (p["code"], p["text"]) for p in found)
     reply = call_model(SYSTEM, "Đoạn bài:\n%s\n\nCâu hỏi:\n%s" % (context, text))
     out = reply["text"].strip()
-    final = _parse_labeled_output(out, allowed, is_fake=(reply.get("model") == "fake"))
+    final = _parse_labeled_output(out, by_code, is_fake=(reply.get("model") == "fake"))
     return {"output": final}

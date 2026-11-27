@@ -96,6 +96,34 @@ class TestAgentGuardrails(unittest.TestCase):
         out = self._run_with_model_output("AI giả · [GIA-04] Hạn nộp do thông báo chính thức.", model="fake")
         self.assertEqual(out, "AI giả · [GIA-04] Hạn nộp do thông báo chính thức.")
 
+    def test_claim_verifier_blocks_fabricated_date_number_name_with_valid_code(self):
+        """Issue #34: mã [GIA-04] hợp lệ nhưng nội dung bịa ngày/giờ/số/tên riêng không có trong đoạn → bị chặn."""
+        for fabricated in (
+            "ANSWER: Hạn nộp bài thực hành là 23:59 thứ Sáu ngày 28/11 [GIA-04].",
+            "ANSWER: Bạn An được 9.5 điểm bài lab 2 [GIA-04].",
+            "ANSWER: Hạn nộp tự động gia hạn thêm 48 giờ [GIA-04].",
+        ):
+            with self.subTest(fabricated=fabricated):
+                out = self._run_with_model_output(fabricated)
+                self.assertEqual(out, agent.NO_BASIS)
+
+    def test_retrieval_threshold_skips_out_of_scope_and_ranks_domain_queries(self):
+        """Issue #35: câu ngoài bài dưới ngưỡng điểm → không gọi model; câu trong bài/không dấu vẫn lấy đúng mã."""
+        import tools
+
+        for oos in (
+            "Sao Thổ có bao nhiêu vệ tinh?",
+            "Thời tiết Hà Nội cuối tuần này có mưa không?",
+            "Cho mình xin công thức nấu phở bò ngon",
+        ):
+            with self.subTest(oos=oos):
+                self.assertEqual(tools.search_passages(oos), [])
+
+        b18_codes = [p["code"] for p in tools.search_passages("AI chạy như thế nào vậy?")]
+        self.assertEqual(b18_codes[0], "GIA-01")
+        no_accent_codes = [p["code"] for p in tools.search_passages("nhiet do temperature anh huong gi den do on dinh")]
+        self.assertEqual(no_accent_codes[0], "D01-02")
+
 
 if __name__ == "__main__":
     unittest.main()

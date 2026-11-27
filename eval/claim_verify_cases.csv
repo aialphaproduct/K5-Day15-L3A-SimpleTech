@@ -1,0 +1,21 @@
+id,question,passage_code,answer,label,error_type
+V01,"LLM dự đoán từ tiếp theo dựa trên cái gì?",GIA-01,"LLM dự đoán từng token tiếp theo dựa trên toàn bộ ngữ cảnh các từ đã có trước đó [GIA-01].",supported,none
+V02,"Trợ giảng AI phải làm gì khi thiếu căn cứ?",GIA-02,"Nếu đoạn bài không có căn cứ, trợ giảng AI phải báo không có trong bài và không tự suy đoán [GIA-02].",supported,none
+V03,"Một bài học trên pre-class gồm những bước nào?",GIA-03,"Trình tự học chuẩn gồm ba bước: xem video bài giảng, trả lời câu hỏi kiểm tra và làm bài thực hành nhỏ [GIA-03].",supported,none
+V04,"Hạn nộp bài lấy từ đâu?",GIA-04,"Hạn nộp bài thực hành và lịch học bù do thông báo chính thức của khoá trên LMS/Discord quy định [GIA-04].",supported,none
+V05,"Làm sao biết mình đã hiểu bài?",GIA-05,"Bạn tự kiểm tra qua hai dấu hiệu: trả lời đúng câu hỏi kiểm tra sau đoạn video và tự giải thích lại ý chính bằng lời của mình [GIA-05].",supported,none
+V06,"Hạ temperature xuống thấp có tác dụng gì?",D01-02,"Hạ temperature xuống thấp giúp câu trả lời lặp lại ổn định hơn nhưng không đảm bảo đúng sự thật [D01-02].",supported,none
+V07,"Đưa nhiều thông tin thừa vào context window gây ảnh hưởng gì?",D01-04,"Đưa thông tin thừa vào cửa sổ ngữ cảnh làm tăng chi phí và dễ làm loãng nội dung quan trọng [D01-04].",supported,none
+V08,"Vì sao mô hình có thể hallucination?",D01-05,"Mô hình có mốc dữ liệu huấn luyện nên có thể tạo câu trả lời trôi chảy nhưng sai sự thật khi thiếu nguồn kiểm chứng [D01-05].",supported,none
+V09,"Khi nào cần đặt điểm người duyệt HITL?",D02-03,"Cần đặt điểm người duyệt trước các hành động có tác động ra ngoài như gửi tin, sửa dữ liệu hoặc chấm điểm [D02-03].",supported,none
+V10,"ReAct kết hợp những bước nào?",D03-01,"Mẫu ReAct kết hợp xen kẽ bước suy luận (Reason), gọi công cụ (Act) và đọc kết quả quan sát (Observe) [D03-01].",supported,none
+V11,"Hạn nộp bài lab tuần 3 là khi nào?",GIA-04,"Hạn nộp bài thực hành tuần 3 là 23:59 thứ Sáu ngày 28/11 trên LMS [GIA-04].",unsupported,bia_ngay_gio
+V12,"Điểm lab 2 của mình là bao nhiêu?",GIA-05,"Bạn An đạt 9.5 điểm trong bài kiểm tra lab 2 sau khi xem video [GIA-05].",unsupported,bia_ten_diem
+V13,"Nên đặt temperature bao nhiêu?",D01-02,"Nên đặt temperature bằng 0.1 để đảm bảo câu trả lời đúng sự thật 100% [D01-02].",unsupported,bia_so_dao_nghia
+V14,"Giới hạn max_tokens là bao nhiêu?",D01-03,"Một lượt sinh văn bản có giới hạn mặc định là 4096 token trước khi dừng [D01-03].",unsupported,bia_so
+V15,"Vòng lặp agent được chạy tối đa mấy bước?",D03-02,"Vòng lặp agent được cố định tối đa 5 bước và tự dừng sau 30 giây [D03-02].",unsupported,bia_so
+V16,"Hạ temperature xuống thấp có đảm bảo đúng sự thật không?",D01-02,"Hạ temperature xuống thấp giúp đảm bảo câu trả lời luôn đúng sự thật [D01-02].",unsupported,dao_nghia
+V17,"Mô hình ngôn ngữ có tự nhớ lịch sử chat không?",D01-06,"Bản thân mô hình ngôn ngữ tự ghi nhớ toàn bộ lịch sử hội thoại giữa các lần gọi API [D01-06].",unsupported,dao_nghia
+V18,"Token vào hay token ra đắt hơn?",D01-07,"Trong bảng giá API, token đầu vào thường đắt hơn token đầu ra [D01-07].",unsupported,dao_nghia
+V19,"Ai chạy hàm trong tool calling?",D04-02,"Trong luồng tool calling, chính mô hình LLM trực tiếp thực thi mã nguồn ứng dụng [D04-02].",unsupported,dao_nghia
+V20,"Trợ giảng có được đoán ngày nộp bài không?",GIA-04,"Trợ giảng AI được phép tự ước lượng hạn nộp bài thực hành nếu không thấy thông báo [GIA-04].",unsupported,dao_nghia
