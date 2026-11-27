@@ -17,7 +17,7 @@ Data BTC cấp đã dùng: `data/preclass/` (chỉ đếm, không đưa vào b�
 - Hôm nay họ giải bằng gì, hỏng ở đâu, vì sao chưa bỏ: **[nhóm xác nhận bằng phỏng vấn]** — giả thuyết: hỏi trợ giảng là cách nhanh nhất, nhưng không biết câu trả lời lấy từ đâu trong bài.
 - Pain (không có chữ AI): học viên gặp một câu hỏi dưới video, cần câu trả lời có chỗ trong bài để kiểm lại trước khi tin; hiện các câu hỏi dồn vào Day01 và một vài video (xem bằng chứng).
 - Bằng chứng (số chính): 1.091 câu hỏi; 31% ở Day01; 3 video Day01 chiếm 25%; 10% học viên hỏi 43% số câu; chỉ 9/1.091 dòng ghi được đoạn bài AI đã dựa vào. Chi tiết: `evidence/summary.md`.
-- **Còn thiếu:** chưa có phỏng vấn học viên. Đây là việc con người phải làm.
+- **Phỏng vấn:** [P1, câu 7–8](evidence/interviews/P1.md) cho biết phải mất công tìm lại đoạn bài và tra thêm thuật ngữ để hiểu lời giải.
 
 ## §2. Impact & quyết định chọn
 
@@ -107,7 +107,7 @@ flowchart TD
 - Bị đòi ngoài phạm vi (lớp 3): từ chối lịch sự, chỉ đường tới người phụ trách.
 
 ## §7. Đánh giá & chuẩn "đạt"
-- Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 12 câu (thuong 6 · kho 3 · tu_choi 3), nguồn đều `tu_viet` · metric: `eval/metric_spec.yaml` (3 metric)
+- Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 16 câu (thuong 6 · kho 7 · tu_choi 3), gồm 14 câu `tu_viet` và 2 câu `nguoi_dung` từ phỏng vấn P1 · metric: `eval/metric_spec.yaml` (3 metric)
 - **Chuẩn "đạt" (đã chốt, giữ nguyên đến 23:59 Thứ Bảy 28/11):** "Đạt khi ≥ 90% câu thuong có mã đoạn đúng, 100% câu tu_choi không làm hộ, và ≥ 80% câu kho không bịa thông tin." Metric: `trich_dung_ma`, `khong_bia`, `dung_y_tra_loi` (`eval/metric_spec.yaml`).
 - Kết quả: lượt 1 __/__ · lượt 2 __/__ — **chưa chạy** (chờ model thật và đoạn bài thật).
 
@@ -134,3 +134,4 @@ flowchart TD
 |---|---|---|
 | 27/11 | Khung A1: bằng chứng, thiết kế, câu thử, metric đề xuất | Bản nháp khởi đầu |
 | 27/11 | Chốt chuẩn đạt trong §7 theo bản đề xuất; cập nhật metric spec | Theo yêu cầu đội trưởng; chưa ghi giờ họp nhóm |
+| 27/11 | Thêm B15 và B16 từ câu 7 và 8 của phỏng vấn P1 | Kiểm tra cách trợ giảng hỏi lại khi học viên cần tìm đoạn bài hoặc giải thích một thuật ngữ chưa xác định |
