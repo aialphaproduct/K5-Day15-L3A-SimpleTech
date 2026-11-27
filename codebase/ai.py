@@ -11,7 +11,7 @@ Hợp đồng (giữ nguyên để khung đo được token):
     Lỗi gọi model (hết lượt, sai key, mất mạng): cứ để exception bay ra — khung ghi lỗi vào cột error.
 
 Chế độ giả (mặc định khi .env chưa có MODEL_PROVIDER, hoặc MODEL_PROVIDER=fake):
-    trả một câu giả cố định, model "fake", token 0 — để luồng chạy hết từ trước CP2 (guide bước 3.2).
+    trích đoạn đầu tiên từ ngữ cảnh tìm được, model "fake", token 0 (guide bước 3.2).
     Lượt `run.py eval` / `run.py simulate` chạy bằng model giả KHÔNG được tính.
 
 Nối model thật: điền .env (chép từ .env.example), rồi viết nhánh gọi API ở dưới theo docs/connect-model.md
@@ -46,8 +46,12 @@ API_KEY = (os.environ.get("API_KEY") or "").strip()
 @model_call
 def call_model(system: str, user: str) -> dict:
     if MODEL_PROVIDER == "fake":
-        last = (user.strip().splitlines() or [""])[-1]
-        return {"text": "[câu trả lời giả — chưa nối model] " + last[:60], "model": "fake", "tokens_in": 0, "tokens_out": 0}
+        context, separator, _ = user.partition("\n\nCâu hỏi:\n")
+        lines = context.splitlines()
+        text = "Không có trong bài."
+        if separator and len(lines) >= 2 and lines[0] == "Đoạn bài:":
+            text = "AI giả · " + lines[1]
+        return {"text": text, "model": "fake", "tokens_in": 0, "tokens_out": 0}
 
     # NHÓM VIẾT: gọi model thật ở đây (theo MODEL_PROVIDER, MODEL_NAME, API_KEY) rồi trả đúng 4 khoá.
     # Ví dụ chép được cho từng nhà cung cấp: docs/connect-model.md mục 2.

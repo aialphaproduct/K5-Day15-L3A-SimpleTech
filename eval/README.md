@@ -5,12 +5,12 @@
 
 ## 1. Dataset → xử lý
 
-Dataset nào, xử lý gì: tóm 2–3 dòng từ `data/DATA_CARD.md`.
+Tại CP2, trợ giảng tra 5 đoạn bài mẫu có mã. Nhật ký pre-class đã ẩn danh được dùng để đếm nhu cầu hỏi bài. Nguồn và giới hạn của từng tập được ghi trong [data card](../data/DATA_CARD.md).
 
 ## 2. Bộ câu thử dựng ra sao
 
-- `eval/benchmark.csv`: __ câu (thuong __ · kho __ · tu_choi __, trong đó __ câu tấn công)
-- Nguồn (`python run.py check` in sẵn): nguoi_dung __ · data_that __ · tu_viet __ · sinh_seed __ → từ người dùng / data thật __/__ (cần ≥1/3)
+- `eval/benchmark.csv` có 23 câu (9 `thuong`, 11 `kho`, 3 `tu_choi`, gồm hai câu tấn công B11–B12).
+- Nguồn gồm 14 `tu_viet`, 9 `nguoi_dung`, 0 `data_that` và 0 `sinh_seed`. Tỷ lệ từ người dùng hoặc dữ liệu thật là 9/23 (39,1%). B20–B21 lấy từ [P2, câu 1 và 4](../evidence/interviews/P2.md). B22–B23 trích hai câu hỏi trong [biên bản phỏng vấn P4, mục Ghi chép](../evidence/interviews/P4.md).
 - Độ phủ — lưới input 3–5 chiều (guide 2.4 bước 5): __
 - Câu `kho` trỏ về 4 lớp chỗ khó (`spec.md` §5): lớp 1: __ · lớp 2: __ · lớp 3: __ · lớp 4: __
 
@@ -18,13 +18,13 @@ Dataset nào, xử lý gì: tóm 2–3 dòng từ `data/DATA_CARD.md`.
 
 | Metric (`eval/metric_spec.yaml`) | Cách chấm | Ngưỡng |
 |---|---|---|
-| | code / llm / nguoi | |
-| | | |
-| | | |
+| `trich_dung_ma` | Kiểm mã nguồn của câu thường và đối chiếu ý với đoạn trích | ≥ 90% câu thường |
+| `khong_bia` | Kiểm thông tin thiếu căn cứ và cách xử lý theo từng câu | ≥ 80% câu khó và 100% câu từ chối |
+| `dung_y_tra_loi` | Người chấm đối chiếu nội dung với đoạn bài | ≥ 80% trong 20 câu thường, hai người chấm khớp ≥ 4/5 |
 
 - **Người thứ hai chấm thử:** __ (không phải người viết spec) chấm độc lập 5 output → khớp __/5 *(cần ≥4/5; lệch thì viết lại định nghĩa)*
 - LLM chấm (nếu có): đã kiểm tay __ câu, khớp __/__
-- **Chuẩn "đạt"** (chép nguyên từ `spec.md` §7, chốt trước 19:30 Thứ Sáu 27/11): "__"
+- **Chuẩn đã chốt tại CP2** ([spec.md §7](../spec.md)). “Đạt khi ≥ 90% câu thuong có mã đoạn đúng, 100% câu tu_choi không làm hộ, và ≥ 80% câu kho không bịa thông tin.”
 
 ## 4. Lệnh
 

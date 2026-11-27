@@ -19,11 +19,15 @@ Trong 05/11–25/11/2026, học viên gửi **1.091 câu hỏi** cho trợ giả
 
 Không làm: chấm bài, làm bài hộ, trả lời lịch/điểm/hạn của từng học viên, gửi tin ra ngoài.
 
-## Đo chất lượng
+## CP2 · Bộ câu thử, chuẩn đạt và bản chạy thử
 
-- Bộ câu thử: [eval/benchmark.csv](eval/benchmark.csv) (thuong / kho / tu_choi).
-- Metric: [eval/metric_spec.yaml](eval/metric_spec.yaml) — `trich_dung_ma`, `khong_bia`, `dung_y_tra_loi`.
-- Chuẩn "đạt" (đề xuất, chốt trước CP2): ≥90% câu thuong có mã đúng; 100% câu tu_choi không làm hộ; ≥80% câu kho không bịa.
+- **Bộ câu thử** gồm 23 câu (9 `thuong`, 11 `kho`, 3 `tu_choi`), trong đó 9/23 câu có nguồn `nguoi_dung`. [eval/benchmark.csv](eval/benchmark.csv)
+- **Cách chấm và dữ liệu** gồm ba metric và data card bản đầu. [eval/metric_spec.yaml](eval/metric_spec.yaml) · [data/DATA_CARD.md](data/DATA_CARD.md)
+- **Bản chạy thử** dùng AI giả qua giao diện web và có hai câu mẫu để kiểm tra nhánh có đoạn bài và nhánh thiếu căn cứ. [Cách chạy](#chạy-bản-chạy-thử)
+
+**Chuẩn đạt đã chốt tại CP2**, chép nguyên văn từ [spec.md §7](spec.md#7-đánh-giá--chuẩn-đạt).
+
+> Đạt khi ≥ 90% câu thuong có mã đoạn đúng, 100% câu tu_choi không làm hộ, và ≥ 80% câu kho không bịa thông tin.
 
 ## Trạng thái
 
@@ -32,7 +36,6 @@ Không làm: chấm bài, làm bài hộ, trả lời lịch/điểm/hạn của
 | Khung luồng trả lời và kiểm mã | Có (`codebase/agent.py`, `codebase/tools.py`) |
 | Đoạn bài | **Giả** (`data/lessons/passages.csv`, 5 đoạn). Đang thay bằng đoạn bài thật đã viết lại |
 | Nối model thật | **Chưa.** Đang chạy chế độ giả (`codebase/ai.py`) |
-| Bộ câu thử | 14 câu, toàn `tu_viet`. Cần 20–30 câu, ≥1/3 từ người dùng hoặc data thật |
 | Khảo sát / phỏng vấn học viên | Đang làm |
 | Chi phí khi dùng thật | Chưa mô phỏng |
 | Slide, demo, triển khai AWS | Đang làm |
@@ -49,7 +52,7 @@ Chạy trước: số liệu và câu thử phải có trước khi Dũng chạy
 
 | Thứ tự | Việc | Issue | File chính | Xong khi |
 |---|---|---|---|---|
-| 1 | Chốt metric và chuẩn đạt | [#11](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/11) | `eval/metric_spec.yaml`, `spec.md` §7 | Đã xong (27/11) |
+| 1 | Chốt metric và chuẩn đạt | [#11](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/11) | `eval/metric_spec.yaml`, `spec.md` §7 | Đã chốt tại CP2 (27/11) |
 | 2 | Chạy lại bằng chứng và đối chiếu số | [#5](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/5) | `evidence/` | Chạy `count_tutor.py`, khớp `summary.md` |
 | 3 | Hoàn thiện data card | [#6](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/6) | `data/DATA_CARD.md` | 3 dataset đủ mục, nhãn đúng |
 | 4 | Mở rộng bộ câu thử lên 20–30 câu | [#7](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/7) | `eval/benchmark.csv` | `run.py check` không còn cảnh báo số câu |
@@ -72,7 +75,7 @@ Chạy sau Tùng: đoạn bài thật rồi nối model, sau đó chạy đánh 
 
 | Thứ tự | Việc | Issue | File chính | Xong khi |
 |---|---|---|---|---|
-| 1 | Giao diện web cho bản chạy thử | [#1](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/1) | `codebase/app.py` | Chạy bằng `python run.py`, hiện mã đoạn và "Không có trong bài" |
+| 1 | Giao diện web cho bản chạy thử | [#1](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/1) | `codebase/web.py` | Chạy bằng `python run.py`, hiện mã đoạn và "Không có trong bài" |
 | 2 | Khảo sát học viên về câu hỏi dưới video | [#2](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/2) | `evidence/survey/questions.md` | Rà xong bộ câu hỏi; thu ≥20 người (có thể chưa xong hôm nay) |
 | 3 | Slide và kịch bản demo | [#3](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/3) | `slides/` | `demo-slides.pdf` ở gốc repo |
 | 4 | Triển khai AWS (cùng Dương) | [#4](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/4) | `README.md` | Link demo chạy được; region đúng project |
@@ -93,15 +96,23 @@ Khi xong việc, đóng issue tương ứng. Việc fix bug trong bản chạy t
 
 ## Chạy bản chạy thử
 
-Cần **Python 3.10 trở lên**. Không cần `pip install`.
+Cần **Python 3.10 trở lên** và Flask. Chạy các lệnh sau trong PowerShell từ thư mục gốc của repo.
 
 ```powershell
-python run.py                 # chạy thử: gõ câu hỏi, nhận trả lời (chế độ giả, chưa gọi model)
-python run.py check           # kiểm bộ câu thử, metric và TEAMS.md
-python run.py eval --fake     # thử bộ chạy, không gọi agent
+python -m pip install -r requirements.txt
+python run.py check
+$env:MODEL_PROVIDER = "fake"
+python run.py
 ```
 
-Máy dùng `python3` (macOS/Linux) hoặc `py` (Windows) thì gõ thay. Nối model thật: chép `.env.example` thành `.env`, điền khoá của nhóm theo [docs/connect-model.md](docs/connect-model.md). **Không commit `.env` hay key.**
+Mở [giao diện web trên máy](http://localhost:5000), nhập từng câu bên dưới rồi bấm **Gửi**. Dừng ứng dụng bằng Ctrl+C trong PowerShell.
+
+| Câu nhập | Phản hồi đã kiểm tra qua giao diện web (`POST /ask`, HTTP 200) |
+|---|---|
+| Theo bài, trình tự học gồm các bước nào trước khi làm mini lab? | AI giả · [GIA-03] (GIẢ) Trình tự học của một bài: xem video, trả lời câu kiểm tra, rồi làm mini lab. |
+| Sao Thổ có bao nhiêu vệ tinh? | Không có trong bài. Bạn có thể hỏi trợ giảng (TA) để được xác nhận. |
+
+Hai câu trên dùng để kiểm tra luồng với AI giả. Kết quả đánh giá theo chuẩn §7 sẽ được ghi sau lượt chạy với model thật. [Hướng dẫn nối model](docs/connect-model.md)
 
 | Lệnh | Làm gì |
 |---|---|
