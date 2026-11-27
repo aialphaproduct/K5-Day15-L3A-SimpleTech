@@ -27,6 +27,6 @@
 
 - Đã ghi nhận [phỏng vấn P1](interviews/P1.md). Ở câu 8, P1 cho biết phải tra thêm thuật ngữ mới đọc tiếp được lời giải. Bản ghi chưa có nguyên văn câu hỏi P1 từng gửi dưới video.
 - Trong [phỏng vấn P3](interviews/P3.md), học viên kể đã nhận câu trả lời sau khoảng 30 giây rồi dành thêm khoảng 5 phút để đối chiếu với một AI khác. B18 lấy từ thắc mắc về cách AI hoạt động, B19 lấy từ trải nghiệm kiểm chứng này.
-- [P4](interviews/P4.md) kể đã tua lại video 2–3 lần để tìm căn cứ cho lời giải, và hỏi TA qua Discord khi chưa rõ quy định nộp lab trễ. Hai câu hỏi trong mục Ghi chép được dùng cho B20–B21.
+- [P4](interviews/P4.md) kể đã tua lại video 2–3 lần để tìm căn cứ cho lời giải, và hỏi TA qua Discord khi chưa rõ quy định nộp lab trễ. Hai câu hỏi trong mục Ghi chép được dùng cho B22–B23.
 - Ngày 10–13 có ít câu hỏi; có thể do ít học viên hơn chứ không phải do học viên ít cần hỏi.
 - Không có dữ liệu về câu trả lời đúng hay sai, nên chưa biết trợ giảng đang sai ở đâu.
