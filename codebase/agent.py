@@ -26,13 +26,7 @@ CITE = re.compile(r"\[([A-Za-z0-9\-]+)\]")
 
 def _is_safe_fallback(text: str) -> bool:
     low = text.lower()
-    return (
-        "không có trong bài" in low
-        or "chưa có trong bài" in low
-        or "hỏi trợ giảng" in low
-        or "liên hệ ta" in low
-        or "người phụ trách" in low
-    )
+    return "không có trong bài" in low or "chưa có trong bài" in low
 
 
 def answer(text: str) -> dict:
