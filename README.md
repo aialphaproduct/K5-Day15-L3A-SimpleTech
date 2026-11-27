@@ -45,7 +45,7 @@ Thứ tự làm: Tùng → Dũng → Mỹ, Dương làm song song phần chuẩn
 
 | Thứ tự | Người | Việc | Issue | File chính | Hạn | Trạng thái |
 |---|---|---|---|---|---|---|
-| Song song | Khổng Tiến Dương | Chốt metric và chuẩn đạt | [#11](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/11) | `eval/metric_spec.yaml`, `spec.md` §7 | CP2 19:30 Thứ Sáu | Đang làm: bản đề xuất đã có, chờ nhóm chốt |
+| Song song | Khổng Tiến Dương | Chốt metric và chuẩn đạt | [#11](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/11) | `eval/metric_spec.yaml`, `spec.md` §7 | CP2 19:30 Thứ Sáu | Đã chốt (27/11), xem spec.md §7 |
 | 1 | Nguyễn Hoa Thanh Tùng | Chạy lại bằng chứng và đối chiếu số | [#5](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/5) | `evidence/` | CP3 | Chưa bắt đầu |
 | 2 | Nguyễn Hoa Thanh Tùng | Hoàn thiện data card | [#6](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/6) | `data/DATA_CARD.md` | CP3 | Chưa bắt đầu |
 | 3 | Nguyễn Hoa Thanh Tùng | Mở rộng bộ câu thử lên 20–30 câu | [#7](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues/7) | `eval/benchmark.csv` | CP3 | Chưa bắt đầu |
