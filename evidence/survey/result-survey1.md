@@ -11,3 +11,7 @@
 27/11/2026 17:36:39	L3A	Tuần này	1-2	Tua lại video, Hỏi TA ( trợ giảng )	5–15 phút	Hiểu	Có nhưng mất công tìm		Mình sẵn sàng
 27/11/2026 17:38:44	L3A	Chưa bao giờ	1-2	Tua lại video, Hỏi bạn học, Hỏi trợ giảng AI dưới video, CCông cụ AI khác	Trên 30 phút	Hiểu một phần	Có nhưng mất công tìm		Mình chưa sẵn sàng, hẹn nhóm dịp khác
 27/11/2026 17:40:02	L3A	Lâu hơn	Trên 5	Tua lại video, CCông cụ AI khác	Dưới 5 phút	Hiểu một phần	Có nhưng mất công tìm		Mình sẵn sàng
+27/11/2026 17:54:50	L3A	Hôm nay	1-2	Tua lại video, Hỏi trợ giảng AI dưới video, CCông cụ AI khác	5–15 phút	Hiểu một phần	Có nhưng mất công tìm	chưa chắc thông tin được học có đúng so với khóa chính thức của chương trình không	Mình chưa sẵn sàng, hẹn nhóm dịp khác
+27/11/2026 17:55:22	L3A	Hôm nay	1-2	Tua lại video, CCông cụ AI khác	Dưới 5 phút	Hiểu	Có nhưng mất công tìm		Mình chưa sẵn sàng, hẹn nhóm dịp khác
+27/11/2026 19:31:25	L3A	Chưa bao giờ	0	Có dùng đâu	Dưới 5 phút	Bỏ	Không nhận được câu trả lời	Khổ lắm không dùng ạ	Mình chưa sẵn sàng, hẹn nhóm dịp khác
+27/11/2026 19:36:57	L3B	Tuần này	1-2	Tua lại video, CCông cụ AI khác	5–15 phút	Hiểu	Có nhưng mất công tìm		Mình sẵn sàng

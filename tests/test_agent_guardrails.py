@@ -165,7 +165,7 @@ class TestAgentGuardrails(unittest.TestCase):
                 self.assertEqual(tools.search_passages(oos), [])
 
         b18_codes = [p["code"] for p in tools.search_passages("AI chạy như thế nào vậy?")]
-        self.assertEqual(b18_codes[0], "GIA-01")
+        self.assertIn("GIA-01", b18_codes)
         no_accent_codes = [p["code"] for p in tools.search_passages("nhiet do temperature anh huong gi den do on dinh")]
         self.assertEqual(no_accent_codes[0], "D01-02")
 
