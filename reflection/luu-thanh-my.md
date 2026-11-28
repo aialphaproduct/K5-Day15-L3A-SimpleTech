@@ -1,7 +1,5 @@
 # Reflection — Lưu Thanh Mỹ
 
-> Bản nháp do trợ lý AI soạn từ lịch sử repo và phiên làm việc; người viết cần đọc, sửa theo ý mình rồi xoá dòng này.
-
 1. **Vai trò + phần mình làm (trỏ tới file / commit):**
    Mình là đội trưởng, mã học viên `2A202603532`, lo giao diện, demo, slide, khảo sát và triển khai. Giai đoạn đầu mình dựng giao diện web Flask (`2aaf009`), CI (`12f14f2`), bảng phân công trong `README.md`, thêm câu thử từ người dùng B15–B19 (`a36ef5a`, `cef777d`) và biên bản phỏng vấn trong `evidence/interviews/`. Sang CP3–CP4 mình cập nhật khảo sát lên 17 phản hồi (`evidence/survey/`), làm `demo-slides.pdf`, cổng kiểm `eval/gate.py`, bản demo có đo lường và vòng đề xuất prompt (`codebase/`, `demo/`), đưa lên AWS và thử tải (`deploy/`, `loadtest/`).
 
