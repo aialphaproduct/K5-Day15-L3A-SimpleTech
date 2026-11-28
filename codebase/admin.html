@@ -70,7 +70,7 @@
   <table><thead><tr><th>Lượt chạy trên bộ câu thử</th><th>Code chấm đạt</th><th>Kết luận</th><th>Vì sao · câu trượt</th><th>Người cần đọc nghĩa</th></tr></thead><tbody id="gate"></tbody></table>
 </div>
 
-<div class="section-title">API key để test (tối đa 5, xoay vòng)</div>
+<div class="section-title">API key để test (không giới hạn, xoay vòng)</div>
 <div class="card">
   <p class="note" id="keyInfo"></p>
   <table><thead><tr><th>Tên</th><th>Key</th><th>Lượt gọi · lỗi</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="keys"></tbody></table>
@@ -358,7 +358,6 @@ async function loadKeys() {
     tr.append(el("td", "", k.label || "-"), el("td", "", "…" + k.tail), el("td", "", k.uses + " · " + k.fails), state, actions);
     return tr;
   }));
-  $("keyForm").hidden = d.keys.length >= d.max;
 }
 async function keyAction(body) {
   const res = await fetch("/admin/keys", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });

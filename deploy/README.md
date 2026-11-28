@@ -11,7 +11,7 @@ Người dùng ─HTTPS─> Cloudflare ─HTTPS 443─> EC2 (Red Hat)
                                                    ─> /jaeger/         127.0.0.1:16686 (podman)
                                                    ─> /prometheus/     127.0.0.1:9092  (podman)
                                                    ─> /locust/         127.0.0.1:8089  (st-locust)
-                                             Locust ─> bản chạy model giả 127.0.0.1:8790 (st-tutor-load)
+                                             Locust ─> nginx 443 (cùng đường với người dùng, gọi model thật)
 ```
 
 Chỉ nginx nhận kết nối từ ngoài. `/grafana/`, `/jaeger/`, `/prometheus/`, `/locust/` chỉ mở cho phiên đăng nhập `admin`.
@@ -51,7 +51,7 @@ ssh -i <pem> ec2-user@<IP> "sudo cat /opt/st-tutor/logs/credentials.txt"
 | `admin` | `ADMIN_PASSWORD` | Trang đo lường, API key, tự cải thiện, công cụ đo |
 | `hocvien` | `DEMO_PASSWORD` | Trang bài học và khung hỏi đáp |
 
-Mật khẩu sinh ngẫu nhiên ở lần chạy đầu. Vào `/admin`, mục **API key**: thêm tối đa 5 key, bấm **Thử**. Key bị 429, 401/403 hoặc 5xx thì tự chuyển sang key kế. Key lưu ở `logs/api-keys.json` (quyền 600).
+Mật khẩu sinh ngẫu nhiên ở lần chạy đầu. Vào `/admin`, mục **API key**: thêm key (không giới hạn số lượng), bấm **Thử**. Hạn mức của Google tính theo project, nên nhiều key cùng một project dùng chung hạn mức. Key bị 429, 401/403 hoặc 5xx thì tự chuyển sang key kế. Key lưu ở `logs/api-keys.json` (quyền 600).
 
 ## Bước 4. Công cụ đo (tuỳ chọn)
 
@@ -63,9 +63,9 @@ sudo bash deploy/locust-rhel.sh
 ```
 
 - Grafana `https://<tên-miền>/grafana/d/st-tutor`, Jaeger `/jaeger/`, Prometheus `/prometheus/`.
-- Locust `/locust/`: nhập số người dùng, giữ nguyên Host `http://127.0.0.1:8790`. Tải bắn vào bản chạy **model giả**: không tốn token, không lên số liệu demo. Đổi Host sang 8780 sẽ gọi model thật.
+- Locust `/locust/`: giữ nguyên Host `https://127.0.0.1`. Tải bắn vào **hệ thống thật**: tốn token, tính vào hạn mức key và hiện trên trang đo lường. Bắt đầu với 3–5 người dùng.
 
-Kết quả đã đo ngày 28/11 (model giả, 30 người dùng, khoảng 45 giây): 323 yêu cầu, 0 lỗi, p95 37 ms.
+Đo ngày 28/11 trên hệ thống thật (5 người dùng, khoảng 60 giây): 23 yêu cầu, 0 lỗi; 13 câu hỏi, trung vị 14 s, p95 35 s, 0,23 câu/giây. Đo riêng máy chủ bằng model giả (30 người dùng, khoảng 45 giây): 323 yêu cầu, 0 lỗi, p95 37 ms.
 
 ## Giao diện bài học
 
@@ -85,7 +85,7 @@ Trên máy của nhóm, `demo/preclass_demo.py --dir <thư mục>` có thể đ�
 ## Gỡ sau khi demo
 
 ```bash
-sudo systemctl disable --now st-tutor st-tutor-load st-locust
+sudo systemctl disable --now st-tutor st-locust
 sudo podman rm -f st-prometheus st-grafana st-jaeger
 sudo rm -rf /opt/st-tutor /opt/st-tutor-preclass /opt/st-observability /opt/st-locust
 ```
