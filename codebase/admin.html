@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đo lường trợ giảng — Simple Tech (demo)</title>
+<style>
+  :root { --bg:#111217; --panel:#181b1f; --panel-head:#1f2228; --text:#d8d9da; --strong:#f4f5f5; --muted:#8e9297; --border:#2c3235;
+          --accent:#5794f2; --accent-bg:#5794f21f; --ok:#73bf69; --ok-bg:#73bf6920; --warn:#e0b400; --warn-bg:#e0b40020; --bad:#f2495c; --bad-bg:#f2495c20; }
+  * { box-sizing: border-box; }
+  body { font-family: "Helvetica Neue", Arial, sans-serif; color: var(--text); background: var(--bg); margin: 0 auto; padding: 16px; max-width: 1200px; }
+  .header { padding: 4px 2px 14px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
+  .header h1 { font-size: 1.15rem; font-weight: 600; color: var(--strong); margin: 0; letter-spacing: .01em; }
+  .header p { font-size: .75rem; color: var(--muted); margin: 4px 0 0; }
+  .section-title { font-size: .7rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin: 20px 0 8px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .card { background: var(--panel); padding: 12px 14px; overflow-x: auto; }
+  .grid .card { border: none; }
+  .card-title { font-size: .68rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: .82rem; }
+  .row:last-child { border-bottom: none; }
+  .num { font-size: 1.5rem; font-weight: 600; color: var(--strong); font-variant-numeric: tabular-nums; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: .7rem; font-weight: 600; background: var(--accent-bg); color: var(--accent); white-space: nowrap; }
+  .ok { background: var(--ok-bg); color: var(--ok); } .warn { background: var(--warn-bg); color: var(--warn); } .bad { background: var(--bad-bg); color: var(--bad); }
+  table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+  th, td { text-align: left; vertical-align: top; padding: 7px 8px; border-bottom: 1px solid var(--border); }
+  th { font-size: .65rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  .advice { color: var(--warn); margin-top: 4px; }
+  button { padding: 6px 14px; border-radius: 3px; font-size: .8rem; font-weight: 600; background: var(--panel-head); color: var(--text); border: 1px solid var(--border); cursor: pointer; }
+  button:hover { border-color: var(--accent); }
+  button:disabled { opacity: .5; cursor: default; }
+  button[aria-pressed="true"] { background: var(--accent); color: #0b0c0e; border-color: var(--accent); }
+  .link { display: inline-block; margin: 0 6px 0 0; padding: 6px 14px; border-radius: 3px; font-size: .78rem; font-weight: 600; background: var(--panel); color: var(--text); text-decoration: none; border: 1px solid var(--border); }
+  .link:hover { border-color: var(--accent); color: var(--accent); }
+  .note { font-size: .72rem; color: var(--muted); margin: 6px 0; }
+  .card { border: 1px solid var(--border); border-radius: 3px; }
+  .card + .card { margin-top: 8px; } .grid .card + .card { margin-top: 0; }
+  pre { white-space: pre-wrap; overflow-wrap: anywhere; background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 10px; font-size: .75rem; line-height: 1.5; margin: 6px 0; }
+  details summary { cursor: pointer; color: var(--accent); font-size: .78rem; }
+  form#keyForm { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; } form#keyForm[hidden] { display: none; }
+  input { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 3px; padding: 7px 10px; font-size: .8rem; }
+  #keyValue { flex: 1; min-width: 220px; }
+  .add { color: var(--ok); } .del { color: var(--bad); }
+  .round { border-top: 1px solid var(--border); padding: 10px 0; font-size: .82rem; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Đo lường trợ giảng — Simple Tech (demo)</h1>
+  <p>Bản demo trên máy · số liệu từ các lượt hỏi thật trong bản demo, không phải dữ liệu của preclass-online.com</p>
+</div>
+
+<p style="margin:8px 0" id="tools">
+  <a class="link" href="/">Trang bài học</a>
+  <a class="link" href="/logout">Đăng xuất</a>
+  <a class="link local" href="http://localhost:3002/d/st-tutor" target="_blank" rel="noopener">Grafana</a>
+  <a class="link local" href="http://localhost:16688/search?service=simple-tech-tutor&amp;lookback=1h&amp;limit=20" target="_blank" rel="noopener">Jaeger</a>
+  <a class="link local" href="http://localhost:9092" target="_blank" rel="noopener">Prometheus</a>
+  <a class="link local" href="http://localhost:8089/" target="_blank" rel="noopener">Locust</a>
+</p>
+<div class="section-title">Tổng quan</div>
+<div class="grid" id="cards"></div>
+
+<div class="section-title">Trợ giảng xử lý ra sao · Ai hỏi</div>
+<div class="grid"><div class="card" id="outcomes"></div><div class="card" id="learners"></div></div>
+
+<div class="section-title">Làm sao biết đúng: cổng kiểm sau mỗi lần đổi</div>
+<div class="card">
+  <p class="note">Code chấm đúng mã, đúng loại phản hồi, không bịa số/ngày, rồi so với lượt trước. Không chấm được ý câu trả lời: người vẫn phải đọc. Không tự sửa prompt hay đoạn bài.</p>
+  <table><thead><tr><th>Lượt chạy trên bộ câu thử</th><th>Code chấm đạt</th><th>Kết luận</th><th>Vì sao · câu trượt</th><th>Người cần đọc nghĩa</th></tr></thead><tbody id="gate"></tbody></table>
+</div>
+
+<div class="section-title">API key để test (tối đa 5, xoay vòng)</div>
+<div class="card">
+  <p class="note" id="keyInfo"></p>
+  <table><thead><tr><th>Tên</th><th>Key</th><th>Lượt gọi · lỗi</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="keys"></tbody></table>
+  <form id="keyForm" autocomplete="off">
+    <input id="keyLabel" maxlength="40" placeholder="Tên gợi nhớ (vd Gemini 1)" aria-label="Tên key">
+    <input id="keyValue" type="password" placeholder="Dán API key" aria-label="API key" autocomplete="new-password" required>
+    <button type="submit">Thêm key</button>
+  </form>
+  <div id="keyMessage" class="advice"></div>
+</div>
+
+<div class="section-title">System prompt và các phiên bản</div>
+<div class="card">
+  <div class="card-title" id="activeTitle">Prompt đang chạy</div>
+  <pre id="activePrompt"></pre>
+  <button id="revert" type="button" hidden>Quay về prompt gốc</button>
+</div>
+<div class="card">
+  <p class="note">Bốn mốc đã có trong lịch sử repo. Điểm "code" do cổng kiểm chấm lại trên câu trả lời đã lưu; điểm "tay" lấy từ cột pass của lượt chạy.</p>
+  <table><thead><tr><th>Phiên bản</th><th>Đổi gì</th><th>Kết quả từng lượt</th><th>Prompt</th></tr></thead><tbody id="versions"></tbody></table>
+</div>
+
+<div class="section-title">Tự cải thiện bằng LLM</div>
+<div class="card">
+  <button id="improve" type="button">Chạy một vòng tự cải thiện</button>
+  <p class="note">Chấm prompt đang chạy, LLM đọc câu trượt và viết prompt mới, chạy lại bộ câu thử và bộ kín, cổng kiểm quyết định đề xuất hay loại. Khoảng 77 lượt gọi model theo key trong .env, mất vài phút. Prompt chỉ đổi khi người bấm Áp dụng, và chỉ ở bản demo này.</p>
+  <div id="progress" class="advice"></div>
+  <div id="rounds"></div>
+</div>
+
+<div class="section-title">Phân tích bằng AI và gợi ý cải thiện</div>
+<div class="card">
+  <button id="analyze" type="button">Phân tích các câu gần đây</button>
+  <p class="note">Gọi model một lượt (tốn token). Model tự chấm câu trả lời của chính nó nên người phải đọc lại; không có gì tự sửa prompt.</p>
+  <div id="analysis"></div>
+</div>
+
+<div class="section-title">Từng lượt hỏi đáp</div>
+<div class="card">
+  <button id="only" type="button" aria-pressed="false">Chỉ hiện câu cần xem lại</button>
+  <table><thead><tr><th>Lúc · ai · phút video</th><th>Hỏi</th><th>Trả lời</th><th>Kết cục · gợi ý</th><th>Token · chi phí</th></tr></thead><tbody id="chats"></tbody></table>
+</div>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const REVIEW = ["khong_co_doan", "khong_can_cu", "hoi_lai", "bi_chan", "loi"];
+const COLOR = { tra_loi: "ok", loi: "bad", bi_chan: "bad", khong_co_doan: "warn", khong_can_cu: "warn", hoi_lai: "warn" };
+let data = null;
+
+function el(tag, cls, text) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text !== undefined) n.textContent = text;
+  return n;
+}
+const usd = v => v === null || v === undefined ? "chưa có giá" : "$" + v.toFixed(6);
+const sec = v => v === null ? "-" : v + " s";
+const pct = (a, b) => b ? Math.round(a * 100 / b) + "%" : "-";
+
+function card(title, rows) {
+  const c = el("div", "card");
+  c.appendChild(el("div", "card-title", title));
+  rows.forEach(([k, v, cls]) => {
+    const r = el("div", "row");
+    r.append(el("span", "", k), el("span", cls || "num", v));
+    c.appendChild(r);
+  });
+  return c;
+}
+
+function render() {
+  const t = data.totals;
+  $("cards").replaceChildren(
+    card("Lượt hỏi", [["Câu hỏi (không tính chào)", String(t.questions)], ["Học viên (mã ẩn danh)", String(t.learners)],
+      ["Trả lời có mã đoạn", t.answered + "/" + t.questions + " (" + pct(t.answered, t.questions) + ")", "badge ok"],
+      ["Cần xem lại", String(t.review), "badge warn"], ["Lỗi kỹ thuật", String(t.errors), t.errors ? "badge bad" : "badge ok"]]),
+    card("Chi phí (giá trong cost/personas.yaml)", [["Tổng", usd(t.cost_usd)], ["Mỗi câu hỏi", usd(t.cost_per_question)],
+      ["Mỗi câu trả lời được", usd(t.cost_per_answer)], ["Phân tích bằng AI", usd(t.analysis_cost_usd), "badge"],
+      ["Lượt chưa có giá model", String(t.unpriced), "badge"]]),
+    card("Độ trễ (lượt có gọi model)", [["p50", sec(t.latency_p50)], ["p95", sec(t.latency_p95)]]),
+    card("Token", [["Vào", String(t.tokens_in)], ["Ra", String(t.tokens_out)]])
+  );
+
+  $("outcomes").replaceChildren(el("div", "card-title", "Kết cục"));
+  data.outcomes.forEach(o => {
+    const r = el("div", "row");
+    r.append(el("span", "", o.label), el("span", "badge " + (COLOR[o.key] || ""), String(o.count)));
+    $("outcomes").appendChild(r);
+  });
+
+  $("learners").replaceChildren(el("div", "card-title", "Học viên"));
+  data.learners.forEach(l => {
+    const r = el("div", "row");
+    r.append(el("span", "", l.learner), el("span", "badge", l.questions + " lượt · " + l.review + " cần xem"));
+    $("learners").appendChild(r);
+  });
+  if (!data.learners.length) $("learners").appendChild(el("p", "note", "Chưa có ai hỏi."));
+
+  const only = $("only").getAttribute("aria-pressed") === "true";
+  $("chats").replaceChildren(...data.chats.filter(c => !only || REVIEW.includes(c.outcome)).map(c => {
+    const tr = el("tr");
+    const who = el("td", "", c.time.slice(11) + " · " + c.learner + " · " + (c.video_at || "chưa rõ phút"));
+    const q = el("td", "", c.question);
+    if (c.sent) q.appendChild(el("div", "note", "Gửi kèm ngữ cảnh: " + c.sent));
+    const a = el("td", "", c.answer);
+    const o = el("td");
+    const label = (data.outcomes.find(x => x.key === c.outcome) || {}).label || c.outcome;
+    o.appendChild(el("span", "badge " + (COLOR[c.outcome] || ""), label));
+    if (c.advice) o.appendChild(el("div", "advice", c.advice));
+    const cost = el("td", "", c.tokens_in + " / " + c.tokens_out + " · " + usd(c.cost_usd) + " · " + c.latency_s + " s");
+    tr.append(who, q, a, o, cost);
+    return tr;
+  }));
+  showAnalysis(data.analysis);
+  showGate(data.gate || []);
+}
+
+function showGate(runs) {
+  $("gate").replaceChildren(...runs.map(g => {
+    const tr = el("tr");
+    const verdict = el("td");
+    verdict.appendChild(el("span", "badge " + (g.verdict === "QUA" ? "ok" : "bad"), g.verdict));
+    const why = el("td");
+    g.reasons.forEach(x => why.appendChild(el("div", "advice", x)));
+    if (g.fixed.length) why.appendChild(el("div", "note", "Sửa được so với lượt trước: " + g.fixed.join(", ")));
+    g.failed.forEach(f => why.appendChild(el("div", "note", f.id + " “" + f.input.slice(0, 60) + "”: " + f.why)));
+    tr.append(el("td", "", g.run), el("td", "", g.passed + "/" + g.total), verdict, why,
+      el("td", "", g.review.join(", ") || "-"));
+    return tr;
+  }));
+}
+
+function showAnalysis(a) {
+  const box = $("analysis");
+  box.replaceChildren();
+  if (!a) return;
+  if (a.error) { box.appendChild(el("div", "advice", a.error)); return; }
+  box.appendChild(el("p", "note", "Lúc " + a.time + " · " + a.sample + " lượt · " + usd(a.cost_usd)));
+  [["Đề xuất sửa prompt (người duyệt rồi mới sửa)", a.prompt_changes],
+   ["Đoạn bài nên bổ sung (model tự viết, phải đối chiếu bài giảng trước khi thêm)", a.passage_gaps]].forEach(([title, list]) => {
+    box.appendChild(el("div", "card-title", title));
+    const ul = el("ul");
+    (list || []).filter(Boolean).forEach(x => ul.appendChild(el("li", "", x)));
+    box.appendChild(ul);
+  });
+  box.appendChild(el("div", "card-title", "Nhận xét từng lượt (model chấm, chưa qua người)"));
+  a.items.forEach(i => {
+    const r = el("div", "row");
+    r.append(el("span", "", i.question + " — " + i.reason), el("span", "badge", i.verdict));
+    box.appendChild(r);
+  });
+}
+
+async function load() {
+  const res = await fetch("/admin/data");
+  if (res.ok) { data = await res.json(); render(); }
+}
+$("only").addEventListener("click", e => {
+  e.target.setAttribute("aria-pressed", String(e.target.getAttribute("aria-pressed") !== "true"));
+  render();
+});
+$("analyze").addEventListener("click", async e => {
+  e.target.disabled = true;
+  e.target.textContent = "Đang phân tích…";
+  try {
+    const res = await fetch("/admin/analyze", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+    const out = await res.json();
+    await load();
+    if (out.error) showAnalysis(out);
+  } finally {
+    e.target.disabled = false;
+    e.target.textContent = "Phân tích các câu gần đây";
+  }
+});
+function details(title, node) {
+  const d = el("details");
+  d.dataset.key = title;
+  d.append(el("summary", "", title), node);
+  return d;
+}
+function diffBlock(text) {
+  const pre = el("pre");
+  text.split("\n").forEach(line => pre.appendChild(el("div", line[0] === "+" ? "add" : line[0] === "-" ? "del" : "", line)));
+  return pre;
+}
+const verdictBadge = v => el("span", "badge " + (v === "QUA" || v === "ĐỀ XUẤT" ? "ok" : "bad"), v);
+
+function renderVersions(d) {
+  $("activeTitle").textContent = "Prompt đang chạy: " + (d.active.id || "gốc trong codebase/agent.py (V2, V3)");
+  $("activePrompt").textContent = d.active.prompt;
+  $("revert").hidden = !d.active.id;
+  $("versions").replaceChildren(...d.versions.map(v => {
+    const tr = el("tr");
+    const name = el("td", "", v.id);
+    name.appendChild(el("div", "note", "commit " + v.commit));
+    const what = el("td", "", v.title);
+    what.appendChild(el("div", "note", v.change));
+    const results = el("td");
+    v.results.forEach(r => {
+      const line = el("div");
+      line.append(r.run + ": code " + r.passed + "/" + r.total + " · tay " + r.manual + " ", verdictBadge(r.verdict));
+      results.appendChild(line);
+      if (r.fixed.length) results.appendChild(el("div", "note", "sửa được: " + r.fixed.join(", ")));
+      if (r.regressed.length) results.appendChild(el("div", "advice", "tụt: " + r.regressed.join(", ")));
+    });
+    const prompt = el("td");
+    prompt.appendChild(details("Xem prompt " + v.id, el("pre", "", v.prompt)));
+    if (v.diff) prompt.appendChild(details("Khác bản trước (" + v.id + ")", diffBlock(v.diff)));
+    tr.append(name, what, results, prompt);
+    return tr;
+  }));
+
+  const s = d.state;
+  $("improve").disabled = s.running;
+  $("improve").textContent = s.running ? "Đang chạy…" : "Chạy một vòng tự cải thiện";
+  $("progress").textContent = s.running ? s.done + "/" + s.total + " lượt · " + s.step : s.error;
+  $("rounds").replaceChildren(...d.rounds.map(r => {
+    const box = el("div", "round");
+    const head = el("div");
+    head.append(r.id + " · " + r.time + " · sửa từ " + r.base_id + " · $" + (r.cost_usd || 0).toFixed(4) + " ", verdictBadge(r.verdict));
+    box.appendChild(head);
+    if (r.why) box.appendChild(el("div", "note", "LLM giải thích: " + r.why));
+    (r.reasons || []).forEach(x => box.appendChild(el("div", "advice", x)));
+    Object.values(r.sets || {}).forEach(x => box.appendChild(el("div", "", x.title + ": " + x.before + "/" + x.total + " → " + x.after + "/" + x.total +
+      (x.fixed.length ? " · sửa được " + x.fixed.join(", ") : "") + (x.regressed.length ? " · tụt " + x.regressed.join(", ") : ""))));
+    if (r.sets && !r.meets_standard) box.appendChild(el("div", "note", "Vẫn còn nhóm câu dưới chuẩn."));
+    if ((r.unfixable || []).length) box.appendChild(el("div", "note", "LLM cho là sửa prompt không đủ: " + r.unfixable.join(" · ")));
+    if (r.diff) box.appendChild(details("Khác prompt cũ (" + r.id + ")", diffBlock(r.diff)));
+    if (r.prompt) box.appendChild(details("Toàn bộ prompt đề xuất (" + r.id + ")", el("pre", "", r.prompt)));
+    if (r.verdict === "ĐỀ XUẤT" && d.active.id !== r.id) {
+      const b = el("button", "", "Áp dụng " + r.id + " cho bản demo");
+      b.type = "button";
+      b.addEventListener("click", () => post("/admin/apply", { id: r.id }));
+      box.appendChild(b);
+    }
+    return box;
+  }));
+  if (!d.rounds.length) $("rounds").appendChild(el("p", "note", "Chưa chạy vòng nào."));
+}
+
+let lastVersions = "";
+async function loadVersions() {
+  const res = await fetch("/admin/versions");
+  if (!res.ok) return;
+  const text = await res.text();
+  if (text === lastVersions) return;
+  lastVersions = text;
+  // Giữ nguyên các khối đang mở khi vẽ lại.
+  const open = new Set([...document.querySelectorAll("details[open]")].map(d => d.dataset.key));
+  renderVersions(JSON.parse(text));
+  document.querySelectorAll("details").forEach(d => { d.open = open.has(d.dataset.key); });
+}
+async function post(url, body) {
+  const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const out = await res.json();
+  await loadVersions();
+  if (out.error) $("progress").textContent = out.error;
+}
+$("improve").addEventListener("click", () => {
+  if (window.confirm("Một vòng gọi model khoảng 77 lượt. Tiếp tục?")) post("/admin/improve", {});
+});
+$("revert").addEventListener("click", () => post("/admin/apply", { id: "" }));
+async function loadKeys() {
+  const res = await fetch("/admin/keys");
+  if (!res.ok) return;
+  const d = await res.json();
+  $("keyInfo").textContent = "Provider " + d.provider + " · model " + d.model + " (đổi trong .env). " +
+    (d.keys.some(k => k.enabled) ? "Đang xoay vòng các key đang bật; key bị 429, 401 hoặc 5xx thì chuyển sang key kế." :
+      d.env_key ? "Chưa có key nào bật: đang dùng API_KEY trong .env." : "Chưa có key nào.");
+  $("keys").replaceChildren(...d.keys.map(k => {
+    const tr = el("tr");
+    const state = el("td");
+    state.appendChild(el("span", "badge " + (!k.enabled ? "warn" : k.error ? "bad" : "ok"),
+      !k.enabled ? "Tắt" : k.error ? k.error + (k.cooling ? " · nghỉ " + k.cooling + " s" : "") : "Sẵn sàng"));
+    const actions = el("td");
+    [["Thử", "test"], [k.enabled ? "Tắt" : "Bật", k.enabled ? "disable" : "enable"], ["Xoá", "delete"]].forEach(([text, action]) => {
+      const b = el("button", "", text);
+      b.type = "button";
+      b.addEventListener("click", () => {
+        if (action !== "delete" || window.confirm("Xoá key …" + k.tail + "?")) keyAction({ action, id: k.id });
+      });
+      actions.append(b, " ");
+    });
+    tr.append(el("td", "", k.label || "-"), el("td", "", "…" + k.tail), el("td", "", k.uses + " · " + k.fails), state, actions);
+    return tr;
+  }));
+  $("keyForm").hidden = d.keys.length >= d.max;
+}
+async function keyAction(body) {
+  const res = await fetch("/admin/keys", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const out = await res.json();
+  $("keyMessage").textContent = out.error || out.message || "";
+  loadKeys();
+  return !out.error;
+}
+$("keyForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  if (await keyAction({ action: "add", key: $("keyValue").value, label: $("keyLabel").value })) e.target.reset();
+});
+// Trên máy chủ, ba công cụ đo nằm sau cùng tên miền thay vì các cổng của máy.
+if (!["localhost", "127.0.0.1"].includes(location.hostname)) {
+  const paths = { "3002": "/grafana", "16688": "/jaeger", "9092": "/prometheus", "8089": "/locust" };
+  $("tools").querySelectorAll(".local").forEach(a => {
+    const u = new URL(a.href);
+    a.href = paths[u.port] + (u.pathname === "/" ? "/" : u.pathname) + u.search;
+  });
+}
+loadKeys();
+setInterval(loadKeys, 5000);
+loadVersions();
+setInterval(loadVersions, 3000);
+load();
+setInterval(() => { if (!$("analyze").disabled) load(); }, 5000);
+</script>
+</body>
+</html>

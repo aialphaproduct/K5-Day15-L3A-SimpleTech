@@ -8,7 +8,7 @@ Thành viên, mã học viên, vai trò: [TEAMS.md](TEAMS.md). Thiết kế đ�
 
 ## Vấn đề
 
-Trong 05/11–25/11/2026, học viên gửi **1.091 câu hỏi** cho trợ giảng AI dưới video từ 143 người. 31% câu hỏi nằm ở Day01; ba video đầu của Day01 chiếm 25%. Trong khảo sát nhỏ, 12/13 người không kiểm lại được câu trả lời trong bài hoặc phải mất công tìm. Chi tiết và cách đếm: [evidence/summary.md](evidence/summary.md), chạy lại được bằng [evidence/count_tutor.py](evidence/count_tutor.py).
+Trong 05/11–25/11/2026, học viên gửi **1.091 câu hỏi** cho trợ giảng AI dưới video từ 143 người. 31% câu hỏi nằm ở Day01; ba video đầu của Day01 chiếm 25%. Trong khảo sát nhỏ, 15/17 người không kiểm lại được câu trả lời trong bài hoặc phải mất công tìm. Chi tiết và cách đếm: [evidence/summary.md](evidence/summary.md), chạy lại được bằng [evidence/count_tutor.py](evidence/count_tutor.py).
 
 ## Giải pháp
 
@@ -33,17 +33,20 @@ Không làm: chấm bài, làm bài hộ, trả lời lịch/điểm/hạn của
 
 - **Bằng chứng pain** (data, khảo sát, trích dẫn nguyên văn): [evidence/summary.md](evidence/summary.md)
 - **Bộ câu thử:** 23 câu (9 `thuong`, 11 `kho`, 3 `tu_choi`): [eval/benchmark.csv](eval/benchmark.csv)
+- **Video demo dự phòng (CP4):** https://youtu.be/j7OZ_Kp7OTE
 - **Video bản chạy thử gọi AI thật:** https://youtu.be/FQgcYPckG4Y — quay trên bản demo offline tham khảo giao diện pre-class, không phải trang thật.
+- **Bản demo và triển khai AWS:** [deploy/README.md](deploy/README.md). Chạy tại máy: `python -m pip install -r requirements.txt` rồi `python demo/preclass_demo.py`, mở http://localhost:8780/ (mật khẩu trong `logs/credentials.txt`). Test: `python -m unittest discover -s tests`.
+- **Lượt mới nhất (5, 28 đoạn):** 21/23, `thuong` 8/9 chưa đạt chuẩn (chấm tạm): [eval/report.md](eval/report.md)
 - **Lượt 1:** 18/23 (78%), run ID `run-1@20261127-214416`: [eval/report.md](eval/report.md)
 - **Thiết kế §0–§7:** [spec.md](spec.md)
-- **Chưa xong:** bộ kín 15 câu đạt 13/15, nhóm `thuong` 5/7 chưa đạt chuẩn; khảo sát 13 phản hồi, dưới ngưỡng 20; phỏng vấn chưa đủ 3 người ngoài nhóm; chưa có `demo-slides.pdf`; reflection chưa đủ người.
+- **Chưa xong:** bộ kín 15 câu đạt 13/15, nhóm `thuong` 5/7 chưa đạt chuẩn; khảo sát 17 phản hồi, dưới ngưỡng 20; phỏng vấn chưa đủ 3 người ngoài nhóm; chưa có `demo-slides.pdf`; reflection chưa đủ người.
 
 ## Trạng thái
 
 | Phần | Trạng thái |
 |---|---|
 | Khung luồng trả lời và kiểm mã | Đã cải tiến (`codebase/agent.py`, `codebase/tools.py`: IDF, phân biệt dấu, prompt 4 đường đi) |
-| Đoạn bài | **Đã xong** (`data/lessons/passages.csv`, 20 đoạn `tu_viet` cho Day01–Day04 và quy tắc pre-class) |
+| Đoạn bài | **Đã xong** (`data/lessons/passages.csv`, 28 đoạn `tu_viet` cho Day01–Day04 và quy tắc pre-class) |
 | Nối model thật | **Đã xong** (`codebase/ai.py` hỗ trợ Gemini/OpenAI/Anthropic/Ollama qua `.env`, đã đo với `gemini-3.1-flash-lite`) |
 | Đánh giá | **Đã chạy 2 lượt** ([eval/report.md](eval/report.md)): lượt 1 `18/23 (78%)` → lượt 2 `22/23 (96%)` (**đạt chuẩn §7**) |
 | Khảo sát / phỏng vấn học viên | Đang làm |

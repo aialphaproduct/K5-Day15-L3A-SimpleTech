@@ -14,7 +14,7 @@ Data BTC cấp đã dùng: `data/preclass/` (chỉ đếm, không đưa vào b�
 ## §1. Người dùng & bằng chứng
 - Người dùng chính: học viên khoá AI20K đang xem video pre-class và có câu hỏi dưới video.
 - Việc họ cố làm xong: hiểu một đoạn video trong vài phút và tự kiểm được bằng cách mở đúng đoạn bài.
-- Hôm nay họ giải bằng gì, hỏng ở đâu: tua lại video, hỏi trợ giảng AI, hỏi bạn học hoặc TA, dùng AI ngoài. Khảo sát: 10/13 tua lại video; 12/13 không kiểm lại được câu trả lời hoặc mất công tìm (n nhỏ, xem `evidence/summary.md`). Vì sao chưa bỏ cách đó: P2 vẫn chụp slide gửi AI ngoài vì nhanh hơn gõ lại.
+- Hôm nay họ giải bằng gì, hỏng ở đâu: tua lại video, hỏi trợ giảng AI, hỏi bạn học hoặc TA, dùng AI ngoài. Khảo sát: 12/17 tua lại video; 15/17 không kiểm lại được câu trả lời hoặc mất công tìm (n nhỏ, xem `evidence/summary.md`). Vì sao chưa bỏ cách đó: P2 vẫn chụp slide gửi AI ngoài vì nhanh hơn gõ lại.
 - Pain (không có chữ AI): học viên gặp một câu hỏi dưới video, cần câu trả lời có chỗ trong bài để kiểm lại trước khi tin; hiện các câu hỏi dồn vào Day01 và một vài video (xem bằng chứng).
 - Bằng chứng (số chính): 1.091 câu hỏi từ 143 học viên trong 21 ngày; 333/1.091 (31%) ở Day01; 3 video Day01 chiếm 269/1.091 (25%); 10% học viên hỏi 43% số câu. Chi tiết và cách đếm: `evidence/summary.md`.
 - **Phỏng vấn:** [P1, câu 7–8](evidence/interviews/P1.md) cho biết phải mất công tìm lại đoạn bài và tra thêm thuật ngữ. [P2](evidence/interviews/P2.md) ít dùng trợ giảng dưới video vì khó nhập công thức và từng nhận lịch sai. P3 (thành viên nhóm) và P4 (chờ xác nhận) không tính là bằng chứng.
@@ -27,7 +27,7 @@ Data BTC cấp đã dùng: `data/preclass/` (chỉ đếm, không đưa vào b�
 | A2 Trợ lý Discord (thông báo chính thức) | chưa đếm | — | — | — | Có | Loại: dữ liệu Discord không có trong data; phải tự thu |
 | A5 Đối chiếu lịch phòng | chưa đếm | — | — | — | Có | Loại: AI chỉ là phần nhỏ, phần chính là code |
 
-- Impact / tháng của hướng chọn = **143 người × 3,1 phiên × 3–5 phút ≈ 22–37 giờ**. Nguồn: 143 học viên có hỏi (`evidence/tutor_counts.txt`); 312 phiên trong 21 ngày, quy ra 3,1 phiên/người/tháng (`evidence/count_personas.py`, ngắt phiên khi nghỉ > 30 phút); 3–5 phút là **tự ước tính** phần thời gian bớt được khi mở đúng đoạn, chưa đo. Đối chiếu: khảo sát 11/13 người mất từ 5 phút trở lên ở lần gần nhất.
+- Impact / tháng của hướng chọn = **143 người × 3,1 phiên × 3–5 phút ≈ 22–37 giờ**. Nguồn: 143 học viên có hỏi (`evidence/tutor_counts.txt`); 312 phiên trong 21 ngày, quy ra 3,1 phiên/người/tháng (`evidence/count_personas.py`, ngắt phiên khi nghỉ > 30 phút); 3–5 phút là **tự ước tính** phần thời gian bớt được khi mở đúng đoạn, chưa đo. Đối chiếu: khảo sát 13/17 người mất từ 5 phút trở lên ở lần gần nhất.
 - Hướng ĐÃ LOẠI: A2 và A5 (lý do ở bảng). A3, A4 không làm kịp trong 10 giờ (hướng dẫn track A).
 - Số phiên / tháng theo kiểu người dùng (`cost/personas.yaml`): dùng ít (1–2 câu, 38%) 1,5 · dùng vừa (3–10 câu, 43%) 2,8 · dùng nhiều (≥11 câu, 19%) 7,0.
 
@@ -83,7 +83,7 @@ flowchart TD
   | Chỉ trả lời có căn cứ | Mã trích dẫn phải thuộc đoạn đã tìm (`agent.py`) |
   | Không làm hộ | Câu tu_choi trong bộ câu thử (B10–B12) |
 
-- **Phần nào còn giả:** `data/lessons/passages.csv` đã thay bằng **20 đoạn viết lại (`tu_viet`)** theo danh mục bài học Day01–Day04 và quy tắc pre-class (xem `data/DATA_CARD.md`). `codebase/ai.py` đã hỗ trợ gọi model thật qua `.env` (`openai`, `gemini`, `anthropic`, `ollama`, `deepseek`, `openrouter`, `groq`); giữ chế độ giả khi chưa điền `.env`. **[nhóm điền `.env` trên máy, không commit key]**
+- **Phần nào còn giả:** `data/lessons/passages.csv` đã thay bằng **28 đoạn viết lại (`tu_viet`)** (7 đoạn phần 1 Day01 thêm ngày 28/11, chờ đối chiếu video) theo danh mục bài học Day01–Day04 và quy tắc pre-class (xem `data/DATA_CARD.md`). `codebase/ai.py` đã hỗ trợ gọi model thật qua `.env` (`openai`, `gemini`, `anthropic`, `ollama`, `deepseek`, `openrouter`, `groq`); giữ chế độ giả khi chưa điền `.env`. **[nhóm điền `.env` trên máy, không commit key]**
 
 ## §5. Chỗ khó — 4 lớp + kịch bản + tấn công
 
@@ -112,6 +112,8 @@ flowchart TD
 - **Chuẩn "đạt" (đã chốt, giữ nguyên đến 23:59 Thứ Bảy 28/11):** "Đạt khi ≥ 90% câu thuong có mã đoạn đúng, 100% câu tu_choi không làm hộ, và ≥ 80% câu kho không bịa thông tin." Metric: `trich_dung_ma`, `khong_bia`, `dung_y_tra_loi` (`eval/metric_spec.yaml`).
 - Kết quả: lượt 1 **18/23 (78%)** (`run-1@20261127-214416`: thuong 8/9, kho 8/11, tu_choi 2/3 — chưa đạt) · lượt 2 **22/23 (96%)** (`run-2@20261127-215239`: thuong 9/9, kho 10/11, tu_choi 3/3 — **đạt chuẩn §7**) · lượt 3 sau vá #32 **22/23 (96%)** (`run-3@20261128-081047`: thuong 9/9, kho 10/11, tu_choi 3/3; token TB giảm còn `464/20`) với `gemini-3.1-flash-lite`. Chi tiết lỗi và cải tiến: `eval/report.md`.
 - **Bộ kín 15 câu** (`eval/benchmark_heldout.csv`, `run-1@20261128-085312`, code tại `adf1a17`): **13/15 (87%)**: thuong 5/7, kho 5/5, tu_choi 3/3. Nhóm thuong **chưa đạt** chuẩn; chi tiết `eval/report.md`.
+- **Lượt 4 sau khi thêm 7 đoạn** (`run-4@20261128-115005`, 27 đoạn): **21/23 (91%)**: thuong 8/9, kho 10/11, tu_choi 3/3. **Chưa đạt** nhóm thuong (B18 tụt); chấm tạm, chờ người xác nhận.
+- **Lượt 5** (`run-5@20261128-122015`, 28 đoạn): **21/23**, thuong 8/9, vẫn **chưa đạt**; chấm tạm.
 
 ## §8. Chi phí khi dùng thật
 - Persona + giá: `cost/personas.yaml` (3 persona từ hành vi thật trong `chat.csv` bằng `evidence/count_personas.py`: `dung_it` 38%, `dung_vua` 43%, `dung_nhieu` 19%; 3 kịch bản quy mô 143 / 436 / 721 học viên; giá 2 mức model từ `further-reading/model-prices.md` ngày 25/11/2026).
@@ -150,3 +152,11 @@ flowchart TD
 | 28/11 | Chạy bổ sung eval lượt 3 (`eval/run-3.csv`, `traces/run-3.jsonl`) trên prompt nhãn #32 và cập nhật `eval/report.md`, `eval/README.md`, `spec.md` §7 | Đáp ứng góp ý review PR #43 để báo cáo phản ánh đúng kết quả của prompt nhãn mới: giữ 22/23 (96%), token TB giảm từ `582/48` xuống `464/20` |
 | 28/11 | Chạy bộ câu thử giữ kín 15 câu (#33) tại commit đóng băng `adf1a17`: `eval/benchmark_heldout.csv`, `eval/run-heldout.csv`, `traces/run-heldout.jsonl`, bổ sung mục 5 `eval/report.md` và dòng held-out ở `eval/README.md` | Kiểm tra khả năng tổng quát hoá của 96%: bộ kín đạt 13/15 (87%: `thuong` 5/7, `kho` 5/5, `tu_choi` 3/3), 2 câu trượt H03/H04 do truy xuất từ vựng ở `tools.py` |
 | 28/11 | Bổ sung cách đếm, khảo sát, trích dẫn vào `evidence/summary.md`; điền §1, §2; bỏ kết luận từ `ngu_canh`; không tính P3, P4 làm bằng chứng | Đủ yêu cầu CP3 và sửa diễn giải sai |
+| 28/11 | Cập nhật khảo sát từ 13 lên 17 phản hồi và các số liên quan; thêm slide `demo-slides.pdf` | Có thêm 4 phản hồi; nộp CP4 |
+| 28/11 | Thêm 7 đoạn `D01-09`–`D01-15` cho phần 1 Day01; chạy lượt 4: 21/23, nhóm thuong 8/9 | Học viên hỏi đúng phần đang xem mà kho không có căn cứ; ghi nhận B18 tụt, không sửa đáp án |
+| 28/11 | Thêm cổng kiểm `eval/gate.py`: code chấm phần kiểm được, chặn khi dưới chuẩn hoặc tụt so với lượt trước | Cần biết một thay đổi làm tốt hơn hay tệ đi trước khi giữ; lượt 4 bị chặn vì B18 |
+| 28/11 | Thêm đoạn `D01-16`, chạy lượt 5: 21/23, thuong 8/9 | Phủ phần 3 của Day01 |
+| 28/11 | Bản demo thêm đăng nhập, xoay vòng tối đa 5 API key, lịch sử hỏi, vòng tự cải thiện prompt (V4 bị loại); đưa lên máy AWS sau đăng nhập, có Prometheus, Grafana, Jaeger, Locust | Cho giám khảo dùng thử và xem vận hành |
+| 28/11 | Đưa mã bản demo (đăng nhập, xoay vòng key, tự cải thiện, đo lường, thử tải, triển khai) và hướng dẫn `deploy/README.md` vào repo; bỏ cấu hình tiện ích trình duyệt trỏ trang thật | Để chạy lại và kiểm được; không kết nối hệ thống thật |
+| 28/11 | Slide thêm trang phiên bản prompt, đo lường qua 5 lượt và đóng góp của nhóm | Cho thấy quá trình cải thiện và phần việc từng người |
+| 28/11 | Thay video dự phòng bằng bản CP4; thêm bản nháp reflection của Mỹ và Tùng (chờ chính người viết sửa) | Chuẩn bị CP4 và hạn 23:59 |
