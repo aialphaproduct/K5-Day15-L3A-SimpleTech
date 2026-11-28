@@ -3,9 +3,9 @@
     python eval/gate.py eval/run-4.csv --base eval/run-3.csv
     python eval/gate.py --calibrate        # so điểm code chấm với điểm đã chấm tay
 
-Không gọi model, không sửa file. Code chỉ kiểm hình thức (đúng mã, đúng loại phản hồi, không bịa số/ngày).
-Ý của câu trả lời có đúng với đoạn trích hay không vẫn do người đọc.
-Thoát mã 1 khi CHẶN, 0 khi QUA.
+Không gọi model, không sửa file. Code chỉ kiểm các điều kiện cơ học, không chứng minh không bịa.
+Tách tiêu chí từng câu khỏi điều kiện mã CP2; ý nghĩa và metric 20 câu vẫn cần người chấm.
+Thoát mã 1 khi CHẶN, 0 khi QUA PHẦN CƠ HỌC (không phải chứng nhận đạt toàn bộ CP2).
 """
 import argparse
 import csv
@@ -21,9 +21,16 @@ CODE = re.compile(r"\[([A-Za-z0-9\-]+)\]")
 SPECIFIC = re.compile(r"\d{1,2}/\d{1,2}|\d+(?:[.,]\d+)?\s*(?:điểm|giờ|tiếng|ngày)|thứ (?:hai|ba|tư|năm|sáu|bảy)|chủ nhật", re.IGNORECASE)
 
 
-def read_csv(path):
+def read_csv(path, required=()):
     with open(path, encoding="utf-8-sig", newline="") as f:
-        return list(csv.DictReader(io.StringIO(f.read())))
+        reader = csv.DictReader(io.StringIO(f.read()), strict=True)
+        fields = reader.fieldnames or []
+        if len(set(fields)) != len(fields) or not set(required) <= set(fields):
+            raise ValueError("%s: thiếu hoặc trùng cột bắt buộc" % path)
+        rows = list(reader)
+    if any(None in row or any(value is None for value in row.values()) for row in rows):
+        raise ValueError("%s: dòng CSV sai số cột" % path)
+    return rows
 
 
 def questions(*names):
@@ -31,7 +38,10 @@ def questions(*names):
     for name in names or ("benchmark.csv", "benchmark_heldout.csv"):
         path = os.path.join(ROOT, "eval", name)
         if os.path.exists(path):
-            rows.update({r["id"]: r for r in read_csv(path)})
+            for r in read_csv(path, ("id", "type", "input", "expected", "pass_criterion")):
+                if not r["id"] or r["id"] in rows:
+                    raise ValueError("benchmark thiếu hoặc trùng id: %s" % r["id"])
+                rows[r["id"]] = r
     return rows
 
 
@@ -85,17 +95,46 @@ def check(question, output, known):
     return why
 
 
+def citation_condition(question, output, known):
+    """Điều kiện cần của trich_dung_ma, kể cả câu thường expected yêu cầu từ chối."""
+    cited = set(CODE.findall(output))
+    required = set(CODE.findall(question["expected"] + " " + question["pass_criterion"]))
+    return bool(cited) and cited <= known and required <= cited
+
+
 def grade(run_path, rows=None, known=None):
-    rows = rows or questions()
-    known = known or passage_codes()
+    saved = read_csv(run_path, ("run_id", "id", "type", "output", "pass", "error"))
+    if not saved:
+        raise ValueError("lượt chạy rỗng")
+    ids = [r["id"] for r in saved]
+    if not all(ids) or len(set(ids)) != len(ids):
+        raise ValueError("lượt chạy thiếu hoặc trùng id")
+    run_ids = {r["run_id"].strip() for r in saved}
+    if len(run_ids) != 1 or "" in run_ids:
+        raise ValueError("run_id rỗng hoặc không nhất quán")
+    if rows is None:
+        # Chọn một bộ đầy đủ; không xem tập con, tập trộn hai bộ hay ID lạ là một lượt hợp lệ.
+        choices = [questions(name) for name in ("benchmark.csv", "benchmark_heldout.csv")]
+        matching = [q for q in choices if q and set(ids) <= set(q)]
+        if len(matching) != 1:
+            raise ValueError("ID lượt chạy không thuộc duy nhất một benchmark")
+        rows = matching[0]
+    if set(ids) != set(rows):
+        raise ValueError("ID khác benchmark: thiếu=%s thừa=%s" % (sorted(set(rows) - set(ids)), sorted(set(ids) - set(rows))))
+    known = passage_codes() if known is None else known
     result = {}
-    for r in read_csv(run_path):
-        q = rows.get(r["id"])
-        if not q:
-            continue
-        why = ["lỗi kỹ thuật: %s" % r["error"]] if r.get("error") else check(q, r.get("output", ""), known)
+    for r in saved:
+        q = rows[r["id"]]
+        if q["type"] not in THRESHOLDS or r["type"] != q["type"]:
+            raise ValueError("%s: type không khớp benchmark" % r["id"])
+        manual = r["pass"].strip()
+        if manual not in ("", "0", "1"):
+            raise ValueError("%s: pass phải rỗng, 0 hoặc 1" % r["id"])
+        error = bool(r["error"].strip())
+        why = ["lỗi kỹ thuật: %s" % r["error"]] if error else check(q, r["output"], known)
         result[r["id"]] = {"type": q["type"], "ok": not why, "why": why, "output": r.get("output", ""),
-                           "input": q["input"], "manual": (r.get("pass") or "").strip()}
+                           "input": q["input"], "manual": manual, "error": error,
+                           "citation_ok": not error and citation_condition(q, r["output"], known)}
     return result
 
 
@@ -107,15 +146,37 @@ def compare(candidate, base=None):
         if items:
             ok = sum(v["ok"] for v in items)
             groups.append({"type": name, "ok": ok, "total": len(items), "need": need, "met": ok / len(items) >= need})
+    problems = []
+    if not candidate:
+        problems.append("lượt chạy rỗng")
+    errored = [key for key, value in candidate.items() if value.get("error")]
+    if errored:
+        problems.append("có lỗi kỹ thuật: " + ", ".join(errored))
+    if base is not None and set(candidate) != set(base):
+        problems.append("lượt mới và lượt gốc khác tập ID; không được bỏ câu")
+    if base is not None and any(candidate[i]["type"] != base[i]["type"] for i in set(candidate) & set(base)):
+        problems.append("type thay đổi giữa lượt mới và lượt gốc")
+    regular = [v for v in candidate.values() if v["type"] == "thuong"]
+    # Live evaluations from improve.py have already passed check(); still require a citation
+    # for every regular question, including expected no-basis answers such as B06.
+    citation_ok = sum(v.get("citation_ok", bool(CODE.search(v["output"])) and v["ok"] and not v.get("error")) for v in regular)
+    citation = {"ok": citation_ok, "total": len(regular), "met": bool(regular) and citation_ok / len(regular) >= THRESHOLDS["thuong"]}
+    if regular and not citation["met"]:
+        problems.append("điều kiện mã CP2 %d/%d dưới chuẩn 90%%" % (citation_ok, len(regular)))
+        for group in groups:
+            if group["type"] == "thuong":
+                group["met"] = False
     base = base or {}
     regressed = [i for i, v in candidate.items() if i in base and base[i]["ok"] and not v["ok"]]
     fixed = [i for i, v in candidate.items() if i in base and not base[i]["ok"] and v["ok"]]
     review = [i for i, v in candidate.items()
               if v["ok"] and CODE.search(v["output"]) and (i not in base or base[i]["output"] != v["output"])]
-    reasons = ["nhóm %s %d/%d dưới chuẩn %d%%" % (g["type"], g["ok"], g["total"], g["need"] * 100) for g in groups if not g["met"]]
+    reasons = problems + ["kiểm cơ học từng câu nhóm %s %d/%d dưới chuẩn %d%%" % (g["type"], g["ok"], g["total"], g["need"] * 100) for g in groups if g["ok"] / g["total"] < g["need"]]
     reasons += ["%s tụt: %s" % (i, "; ".join(candidate[i]["why"])) for i in regressed]
     return {"verdict": "CHẶN" if reasons else "QUA", "reasons": reasons, "groups": groups, "regressed": regressed,
             "fixed": fixed, "review": review,
+            "citation": citation, "cp2_verified": False,
+            "ungraded": [i for i, v in candidate.items() if "manual" in v and v["manual"] == ""],
             "failed": [{"id": i, "input": v["input"], "why": "; ".join(v["why"])} for i, v in candidate.items() if not v["ok"]],
             "passed": sum(v["ok"] for v in candidate.values()), "total": len(candidate)}
 
@@ -151,8 +212,17 @@ def main(argv=None):
         return 0
     if not args.run:
         parser.error("cần file lượt chạy hoặc --calibrate")
-    report = compare(grade(args.run), grade(args.base) if args.base else None)
-    print("%s · %s · đạt phần code kiểm %d/%d" % (report["verdict"], args.run, report["passed"], report["total"]))
+    try:
+        report = compare(grade(args.run), grade(args.base) if args.base else None)
+    except (OSError, ValueError, csv.Error) as error:
+        print("CHẶN · lượt chạy không hợp lệ: %s" % error, file=sys.stderr)
+        return 1
+    print("%s PHẦN CƠ HỌC · %s · từng câu %d/%d" % (report["verdict"], args.run, report["passed"], report["total"]))
+    print("Không xác nhận đạt toàn bộ CP2: ý nghĩa cần người chấm; dung_y_tra_loi cần 20 câu thường.")
+    if report["citation"]["total"]:
+        print("  Điều kiện mã CP2: %d/%d (chưa chấm nghĩa)" % (report["citation"]["ok"], report["citation"]["total"]))
+    if report["ungraded"]:
+        print("  Chưa có điểm người chấm: " + ", ".join(report["ungraded"]))
     for g in report["groups"]:
         print("  %-8s %d/%d %s" % (g["type"], g["ok"], g["total"], "đạt" if g["met"] else "CHƯA ĐẠT"))
     for reason in report["reasons"]:

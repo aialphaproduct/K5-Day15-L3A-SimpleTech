@@ -6,9 +6,11 @@
 
 | Nguồn | Trạng thái | Vai trò |
 |---|---|---|
-| Đào data (`chat.csv`) | Có x/N, cách đếm và script chạy lại được | **Nguồn chính** |
+| Đào data (`chat.csv`) | Có x/N, cách đếm và script chạy lại được; chưa chứng minh phương pháp được ghi trước lần chạy đầu | **Nguồn hành vi chính**, còn giới hạn quy trình |
 | Khảo sát | 17 phản hồi (15 học viên), dưới ngưỡng 20 | Nguồn thứ hai để đối chiếu |
 | Phỏng vấn | Chỉ tính P1, P2; chưa đủ ngưỡng 3 người ngoài nhóm | Ví dụ minh hoạ |
+
+Không khẳng định đã hoàn tất mọi điều kiện R1 chỉ từ bảng này: phần chọn mẫu ghi trước chưa có bằng chứng; nhật ký đo nhu cầu hỏi bài chứ không đo câu trả lời thiếu căn cứ. Hồ sơ cách đếm, năm mã dòng ví dụ và mẫu số: [data-mining.md](data-mining.md). Giả thuyết được hoàn thiện hồi cứu, không đăng ký trước: [hypothesis.md](hypothesis.md). Kiểm toán P3/P4/B17 và ngưỡng nguồn câu thử: [source-audit.md](source-audit.md).
 
 ## Cách chọn mẫu và cách đếm
 
@@ -18,7 +20,7 @@
 - **Lọc:** `agent_id == "teaching_assistant"` và `kind == "question"` → **1.091 câu**.
 - **Mẫu số:** số câu hỏi đã lọc (N = 1.091) hoặc số học viên có ≥1 câu đã lọc (N = 143).
 - **Ngày học:** lấy từ cột `transcript` (1.090/1.091 dòng có giá trị).
-- **Chạy lại:** `python evidence/count_tutor.py <thư mục data/preclass>`.
+- **Chạy lại:** `python evidence/count_tutor.py <thư mục data/preclass>`; bản script hoàn thiện cuối chỉ dùng thư viện chuẩn Python. Data BTC giữ ở repo đề, không copy nguyên file vào repo nhóm. Trong đợt hoàn thiện cuối đã đối chiếu độc lập bằng `csv`/`collections`/`statistics`, khớp các số tổng hợp dưới đây.
 
 ## Số đo từ data
 
@@ -29,8 +31,8 @@
 | Học viên chỉ hỏi đúng 1 câu | 38 (26,6%) |
 | Median câu hỏi / học viên | 4 (max 72) |
 | Top 10% học viên hỏi nhiều nhất | 43,3% câu hỏi |
-| Câu hỏi ở Day01 | 333/1.091 (31%) |
-| 3 video Day01 có nhiều câu hỏi nhất | 269/1.091 (25%) |
+| Câu hỏi ở Day01 | 333/1.091 (30,5%; làm tròn 31%) |
+| 3 video Day01 có nhiều câu hỏi nhất | 269/1.091 (24,7%; làm tròn 25%) |
 | Câu có ghi `ngu_canh` (BTC chỉ ghi trường này từ 25/11) | 9/1.091 |
 | Câu có dùng gợi ý đã duyệt | 45,1% |
 
@@ -71,4 +73,6 @@ Log từng câu trả lời: [survey/result-survey1.md](survey/result-survey1.md
 - Một nhóm nhỏ hỏi rất nhiều: 10% học viên hỏi 43,3% số câu. Chưa biết vì sao.
 - Câu hỏi tập trung ở Day01; có thể do đông học viên hơn, không hẳn do bài khó.
 - [P3](interviews/P3.md) là tự thuật của thành viên nhóm nên **không tính** là bằng chứng.
-- [P4](interviews/P4.md) **chưa tính**: lịch sử file có bản nháp ghi dữ liệu giả lập, nhóm cần xác nhận lại.
+- [P4](interviews/P4.md): nhóm xác nhận lại ngày 28/11 sau CP4 là phỏng vấn thật. Commit `fe63ef6` từng ghi dữ liệu giả lập, `5275583` đổi sang xác nhận của nhóm; repo chưa có ghi chép gốc. Số đã công bố trong tài liệu này **chưa cộng P4** để không đổi số bằng chứng sau CP4; nếu người chấm chấp nhận thì bản ghi phỏng vấn là P1, P2, P4 (P1 trùng khảo sát dòng 3). Xem [source-audit.md](source-audit.md).
+- P1 trùng người trả lời khảo sát dòng 3, không đếm hai lần; hai giá trị thời điểm/tần suất của P1 đang mâu thuẫn nên không dùng cho công thức impact.
+- Việc chọn mẫu được ghi lại sau lần chạy đầu; chưa có hồ sơ đăng ký trước. Không sửa lịch sử để che giới hạn này.

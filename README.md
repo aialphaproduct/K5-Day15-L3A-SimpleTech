@@ -21,7 +21,7 @@ Không làm: chấm bài, làm bài hộ, trả lời lịch/điểm/hạn của
 
 ## CP2 · Bộ câu thử, chuẩn đạt và bản chạy thử
 
-- **Bộ câu thử** gồm 23 câu (9 `thuong`, 11 `kho`, 3 `tu_choi`), trong đó 9/23 câu có nguồn `nguoi_dung`. [eval/benchmark.csv](eval/benchmark.csv)
+- **Bộ câu thử** gồm 23 câu (9 `thuong`, 11 `kho`, 3 `tu_choi`). Nhãn lịch sử ghi 9/23 câu `nguoi_dung`; kiểm toán chỉ xác minh 4/23 từ P1/P2, còn thiếu so với ngưỡng ≥8/23. [Benchmark](eval/benchmark.csv) · [Kiểm toán nguồn](eval/source-audit.csv)
 - **Cách chấm và dữ liệu** gồm ba metric và data card bản đầu. [eval/metric_spec.yaml](eval/metric_spec.yaml) · [data/DATA_CARD.md](data/DATA_CARD.md)
 - **Bản chạy thử** dùng AI giả qua giao diện web và có hai câu mẫu để kiểm tra nhánh có đoạn bài và nhánh thiếu căn cứ. [Cách chạy](#chạy-bản-chạy-thử)
 
@@ -39,21 +39,38 @@ Không làm: chấm bài, làm bài hộ, trả lời lịch/điểm/hạn của
 - **Lượt mới nhất (5, 28 đoạn):** 21/23, `thuong` 8/9 chưa đạt chuẩn (chấm tạm): [eval/report.md](eval/report.md)
 - **Lượt 1:** 18/23 (78%), run ID `run-1@20261127-214416`: [eval/report.md](eval/report.md)
 - **Thiết kế §0–§7:** [spec.md](spec.md)
-- **Chưa xong:** bộ kín 15 câu đạt 13/15, nhóm `thuong` 5/7 chưa đạt chuẩn; khảo sát 17 phản hồi, dưới ngưỡng 20; phỏng vấn chưa đủ 3 người ngoài nhóm; chưa có `demo-slides.pdf`; reflection chưa đủ người.
+- **Slide PDF đã có:** [demo-slides.pdf](demo-slides.pdf). Bản sửa sau CP4 không thay thế chứng cứ thời điểm nộp.
+- **Chưa đủ căn cứ hoàn tất:** nguồn ngoài nhóm của benchmark; khảo sát ≥20 hoặc phỏng vấn ≥3 người hợp lệ; đối chiếu video cho các đoạn mới; người chấm xác nhận lượt 4–5. Reflection Mỹ giữ nguyên theo yêu cầu, Tùng được xử lý cuối. [Checklist cuối](docs/finalization.md).
 
 ## Trạng thái
 
 | Phần | Trạng thái |
 |---|---|
 | Khung luồng trả lời và kiểm mã | Đã cải tiến (`codebase/agent.py`, `codebase/tools.py`: IDF, phân biệt dấu, prompt 4 đường đi) |
-| Đoạn bài | **Đã xong** (`data/lessons/passages.csv`, 28 đoạn `tu_viet` cho Day01–Day04 và quy tắc pre-class) |
+| Đoạn bài | Có 28 đoạn `tu_viet`; D01-09–D01-16 còn chờ người đối chiếu video |
 | Nối model thật | **Đã xong** (`codebase/ai.py` hỗ trợ Gemini/OpenAI/Anthropic/Ollama qua `.env`, đã đo với `gemini-3.1-flash-lite`) |
-| Đánh giá | **Đã chạy 2 lượt** ([eval/report.md](eval/report.md)): lượt 1 `18/23 (78%)` → lượt 2 `22/23 (96%)` (**đạt chuẩn §7**) |
+| Đánh giá | 5 lượt và 1 bộ kín. Lượt 2 `22/23`, lượt 5 `21/23`; lượt 3 thiếu mã B06. Metric đúng ý chưa đủ mẫu. [Kiểm toán](eval/final-audit.md) |
 | Khảo sát / phỏng vấn học viên | Đang làm |
-| Chi phí khi dùng thật | Chưa mô phỏng |
-| Slide, demo, triển khai AWS | Đang làm |
+| Chi phí khi dùng thật | Đã thử 50 phiên, 48 hợp lệ và 2 lỗi; seed 42, token thật theo cấu hình lượt 2. [Chi phí](cost/cost-estimate.md) |
+| Slide, demo, triển khai AWS | Có PDF, mã demo, hướng dẫn AWS và link video. Cần kiểm phát video ẩn danh và demo ở máy trình bày |
 
 Việc đang mở: [Issues](https://github.com/aialphaproduct/K5-Day15-L3A-SimpleTech/issues).
+
+## Kiểm chứng bản cuối
+
+Sau khi cài `requirements.txt`, chạy:
+
+```powershell
+python run.py check
+python -m unittest discover -s tests
+python eval/audit.py
+python cost/audit.py
+python evidence/count_tutor.py ../K5-L3-Day15-AI-Product-Hackathon/data/preclass
+```
+
+`check` kiểm cấu trúc, không xác minh lời người dùng. `eval/audit.py` chỉ đọc các lượt đã lưu, tách `pass` khỏi điều kiện metric. `cost/audit.py` tính lại với **1 task = 1 câu hỏi**, tỷ lệ cùng nhóm đầu vào **19/20**, cho **~$0.000218/câu đạt ước tính** trên cấu hình lượt 2; [báo cáo và giới hạn](cost/task-cost-audit.md). Script đếm dùng thư viện chuẩn; data BTC giữ ở repo đề. [Hồ sơ bằng chứng](evidence/data-mining.md) · [Hồ sơ đánh giá](eval/README.md).
+
+Chạy AI thật: đặt provider/model/key trong `.env` theo [hướng dẫn](docs/connect-model.md), rồi chạy `python run.py eval`. Không commit key. Lượt mới tạo file mới. Môi trường hoàn thiện chưa có cấu hình API nên không tạo thêm kết quả AI thật. Phần `Phân công` bên dưới giữ danh sách công việc và issue ban đầu; trạng thái hiện tại lấy ở bảng trên và checklist cuối.
 
 ## Phân công
 
@@ -109,7 +126,7 @@ Khi xong việc, đóng issue tương ứng. Việc fix bug trong bản chạy t
 
 ## Chạy bản chạy thử
 
-Cần **Python 3.10 trở lên** và Flask. Chạy các lệnh sau trong PowerShell từ thư mục gốc của repo.
+Cần **Python 3.10 trở lên** và Flask cho giao diện web. Chạy các lệnh sau trong PowerShell từ thư mục gốc của repo; dùng cùng một Python để cài thư viện và chạy ứng dụng/test.
 
 ```powershell
 python -m pip install -r requirements.txt
@@ -120,12 +137,14 @@ python run.py
 
 Mở [giao diện web trên máy](http://localhost:5000), nhập từng câu bên dưới rồi bấm **Gửi**. Dừng ứng dụng bằng Ctrl+C trong PowerShell.
 
-| Câu nhập | Phản hồi đã kiểm tra qua giao diện web (`POST /ask`, HTTP 200) |
+| Câu nhập | Dấu hiệu cần kiểm khi thử đường đi với AI giả |
 |---|---|
-| Theo bài, trình tự học gồm các bước nào trước khi làm mini lab? | AI giả · [GIA-03] (GIẢ) Trình tự học của một bài: xem video, trả lời câu kiểm tra, rồi làm mini lab. |
-| Sao Thổ có bao nhiêu vệ tinh? | Không có trong bài. Bạn có thể hỏi trợ giảng (TA) để được xác nhận. |
+| Theo bài, trình tự học gồm các bước nào trước khi làm mini lab? | Có nhãn `AI giả` và mã đoạn. Đây là kiểm tra đường đi, không chấm đúng ý. |
+| Sao Thổ có bao nhiêu vệ tinh? | Báo thiếu căn cứ, không đoán số vệ tinh. |
 
-Hai câu trên dùng để kiểm tra luồng với AI giả. Kết quả đánh giá theo chuẩn §7 sẽ được ghi sau lượt chạy với model thật. [Hướng dẫn nối model](docs/connect-model.md)
+Hai câu trên dùng để kiểm tra luồng với AI giả. Kết quả model thật đã lưu ở `eval/run-1.csv` đến `run-5.csv`; AI giả không được tính vào chất lượng hoặc chi phí. [Hướng dẫn nối model](docs/connect-model.md)
+
+Nếu thiếu Flask hoặc nguồn gói bị chặn, vẫn chạy được CLI bằng `python codebase/app.py`, cũng như `check`, eval/simulate và các script audit. CLI dùng cùng `agent.answer()`, không thay thế kiểm thử giao diện. Hướng dẫn môi trường và lượt AI thật: [docs/reproduce.md](docs/reproduce.md). Trước khi chạy AI thật sau bước thử fake, xoá biến override bằng `Remove-Item Env:MODEL_PROVIDER -ErrorAction SilentlyContinue` để cấu hình `.env` có hiệu lực.
 
 | Lệnh | Làm gì |
 |---|---|
@@ -134,6 +153,8 @@ Hai câu trên dùng để kiểm tra luồng với AI giả. Kết quả đánh
 | `python run.py score eval/run-1.csv` | Tính % đạt sau khi điền cột `pass` |
 | `python run.py simulate --try` | Thử mô phỏng chi phí 10 phiên |
 | `python run.py simulate` | Mô phỏng chi phí khi dùng thật (≥50 phiên) |
+| `python eval/gate.py eval/run-5.csv --base eval/run-2.csv` | Kiểm bộ đầy đủ và điều kiện mã; hiện trả exit 1 đúng vì chưa đạt |
+| `python cost/audit.py` | Tính lại USD/câu và 3 quy mô từ artifacts cũ, không gọi AI |
 
 Không sửa `eval/run-*.csv` sau khi chạy. Lượt lỗi thì chạy lại thành lượt mới.
 

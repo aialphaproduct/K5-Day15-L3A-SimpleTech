@@ -1,0 +1,24 @@
+id,status,reference
+B01,self_authored,Nhóm tự soạn
+B02,self_authored,Nhóm tự soạn
+B03,self_authored,Nhóm tự soạn
+B04,self_authored,Nhóm tự soạn
+B05,self_authored,Nhóm tự soạn
+B06,self_authored,Nhóm tự soạn
+B07,self_authored,Nhóm tự soạn
+B08,self_authored,Nhóm tự soạn
+B09,self_authored,Nhóm tự soạn
+B10,self_authored,Nhóm tự soạn
+B11,self_authored,Nhóm tự soạn
+B12,self_authored,Nhóm tự soạn
+B13,self_authored,Nhóm tự soạn
+B14,self_authored,Nhóm tự soạn
+B15,verified_external,evidence/interviews/P1.md câu 7
+B16,verified_external,evidence/interviews/P1.md câu 8
+B17,unverified,commit a36ef5a chưa có ghi chép gốc
+B18,member,evidence/interviews/P3.md là thành viên nhóm theo evidence/summary.md
+B19,member,evidence/interviews/P3.md là thành viên nhóm theo evidence/summary.md
+B20,verified_external,evidence/interviews/P2.md câu 1
+B21,verified_external,evidence/interviews/P2.md câu 4
+B22,unverified,evidence/interviews/P4.md nhóm xác nhận sau CP4; chưa có ghi chép gốc; fe63ef6 từng ghi giả lập
+B23,unverified,evidence/interviews/P4.md nhóm xác nhận sau CP4; chưa có ghi chép gốc; fe63ef6 từng ghi giả lập
