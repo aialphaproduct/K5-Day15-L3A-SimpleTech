@@ -9,15 +9,16 @@
 |---|---|---|---|---|---|---|---|
 | 1 | `run-1@20261127-214416` | 18/23 | 78% | 8/9 (89%) | 8/11 (73%) | 2/3 (67%) | chưa đạt |
 | 2 | `run-2@20261127-215239` | 22/23 | 96% | 9/9 (100%) | 10/11 (91%) | 3/3 (100%) | đạt |
+| 3 *(sau #32)* | `run-3@20261128-081047` | 22/23 | 96% | 9/9 (100%) | 10/11 (91%) | 3/3 (100%) | đạt *(xem lưu ý B06)* |
 
-- Model đo cả 2 lượt: `gemini-3.1-flash-lite`, 0 lỗi kỹ thuật ở cả hai lượt.
+- Model đo cả 3 lượt: `gemini-3.1-flash-lite`, 0 lỗi kỹ thuật ở cả ba lượt.
 - Chi tiết theo 3 metric CP2 (`eval/metric_spec.yaml`):
-  - `trich_dung_ma` (ngưỡng ≥ 90% câu `thuong`): lượt 1 **8/9 (89%)** → lượt 2 **9/9 (100%)**.
-  - `khong_bia` (ngưỡng ≥ 80% `kho`, 100% `tu_choi`): lượt 1 theo tiêu chí từng câu đạt `kho` **8/11 (73%)**, `tu_choi` **2/3 (67%)** → lượt 2 đạt `kho` **10/11 (91%)**, `tu_choi` **3/3 (100%)** (không có câu nào bịa ngày/điểm/lịch hay làm hộ ở cả hai lượt).
-  - `dung_y_tra_loi`: rà trên 9 câu `thuong` đạt **8/9** ở lượt 1 → **9/9** ở lượt 2 *(chưa đủ mẫu 20 câu `thuong` và chờ người thứ hai — Khổng Tiến Dương — chấm độc lập 5 câu ở `#12`)*.
-- Chi phí token trung bình / câu: lượt 1 `283` vào / `29` ra → lượt 2 `582` vào / `48` ra (tăng do system prompt chi tiết hơn).
+  - `trich_dung_ma` (ngưỡng ≥ 90% câu `thuong`): lượt 1 **8/9 (89%)** → lượt 2 **9/9 (100%)** → lượt 3 **8/9 (88,9%)** theo cách tính chặt `metric_spec.yaml` dòng 18 vì ở lượt 3 model trả nhãn `NO_BASIS` cho `B06` (đạt 100% `pass_criterion` riêng của `B06` nhưng không kèm `[GIA-04]`; cả 8/8 câu `thuong` có mã kỳ vọng `B01–B05, B17–B19` đều trích đúng mã).
+  - `khong_bia` (ngưỡng ≥ 80% `kho`, 100% `tu_choi`): lượt 1 theo tiêu chí từng câu đạt `kho` **8/11 (73%)**, `tu_choi` **2/3 (67%)** → lượt 2 & lượt 3 đều đạt `kho` **10/11 (91%)**, `tu_choi` **3/3 (100%)** (ở lượt 3 mọi output không có mã đều đi qua nhãn `NO_BASIS | CLARIFY | REFUSE` do code kiểm soát).
+  - `dung_y_tra_loi`: rà trên 9 câu `thuong` đạt **8/9** ở lượt 1 → **9/9** ở lượt 2 & lượt 3 *(chưa đủ mẫu 20 câu `thuong` và chờ người thứ hai — Khổng Tiến Dương — chấm độc lập 5 câu ở `#12`)*.
+- Chi phí token trung bình / câu: lượt 1 `283` vào / `29` ra → lượt 2 `582` vào / `48` ra → lượt 3 (`#32`) **`464` vào (-20%) / `20` ra (-58%)** vì các nhánh `NO_BASIS | CLARIFY | REFUSE` chỉ sinh 2–4 token nhãn, phần lời do code tự điền.
 
-Kết quả từng câu: [eval/run-1.csv](run-1.csv), [eval/run-2.csv](run-2.csv). Trace: [traces/run-1.jsonl](../traces/run-1.jsonl), [traces/run-2.jsonl](../traces/run-2.jsonl).
+Kết quả từng câu: [eval/run-1.csv](run-1.csv), [eval/run-2.csv](run-2.csv), [eval/run-3.csv](run-3.csv). Trace: [traces/run-1.jsonl](../traces/run-1.jsonl), [traces/run-2.jsonl](../traces/run-2.jsonl), [traces/run-3.jsonl](../traces/run-3.jsonl).
 
 ## 2. Lỗi lượt 1 — gom thành nhóm có tên
 

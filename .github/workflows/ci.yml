@@ -26,5 +26,8 @@ jobs:
       - name: Kiểm TEAMS.md + eval/benchmark.csv
         run: python run.py check
 
+      - name: Chạy unit test kiểm soát đầu ra (agent guardrails)
+        run: python -m unittest discover -s tests -v
+
       - name: Chạy eval fake (không gọi model)
         run: python run.py eval --fake
