@@ -18,39 +18,12 @@ import time
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "codebase"))
 
+import agent  # noqa: E402
 import tools  # noqa: E402
 
 CASES_PATH = os.path.join(ROOT, "eval", "claim_verify_cases.csv")
-CITE_RE = re.compile(r"\[[A-Za-z0-9\-]+\]")
-NUM_RE = re.compile(r"\b\d+(?:[.,:/]\d+)*%?\b")
-DAY_RE = re.compile(r"\b(?:thứ\s+(?:hai|ba|tư|năm|sáu|bảy|[2-7])|chủ\s+nhật|hôm\s+nay|ngày\s+mai)\b", re.IGNORECASE)
-PERSON_RE = re.compile(r"\b(?:bạn|anh|chị|học\s+viên)\s+([A-ZÀ-Ỹ][a-zà-ỹ]+)\b")
-
-
-def verify_claim_rule(answer_text: str, passage_texts: list) -> tuple:
-    """Luật rẻ bằng code: trả về (is_ok: bool, reason: str).
-    Chặn khi câu trả lời thêm số/giờ/ngày/thứ hoặc tên riêng học viên không có trong đoạn trích."""
-    ans_clean = CITE_RE.sub("", answer_text)
-    src_joined = " ".join(passage_texts)
-    src_low = src_joined.lower()
-
-    src_nums = set(NUM_RE.findall(src_joined))
-    ans_nums = set(NUM_RE.findall(ans_clean))
-    extra_nums = sorted(ans_nums - src_nums)
-    if extra_nums:
-        return False, "số/ngày/giờ không có trong đoạn: %s" % extra_nums
-
-    src_days = {m.lower() for m in DAY_RE.findall(src_low)}
-    ans_days = {m.lower() for m in DAY_RE.findall(ans_clean.lower())}
-    extra_days = sorted(ans_days - src_days)
-    if extra_days:
-        return False, "mốc thời gian không có trong đoạn: %s" % extra_days
-
-    extra_names = [n for n in PERSON_RE.findall(ans_clean) if n.lower() not in src_low]
-    if extra_names:
-        return False, "tên riêng không có trong đoạn: %s" % extra_names
-
-    return True, "ok"
+CITE_RE = agent.CITE
+verify_claim_rule = agent.verify_claim_rule
 
 
 def verify_claim_llm(question: str, answer_text: str, passage_texts: list):
