@@ -159,3 +159,4 @@ flowchart TD
 | 28/11 | Bản demo thêm đăng nhập, xoay vòng tối đa 5 API key, lịch sử hỏi, vòng tự cải thiện prompt (V4 bị loại); đưa lên máy AWS sau đăng nhập, có Prometheus, Grafana, Jaeger, Locust | Cho giám khảo dùng thử và xem vận hành |
 | 28/11 | Đưa mã bản demo (đăng nhập, xoay vòng key, tự cải thiện, đo lường, thử tải, triển khai) và hướng dẫn `deploy/README.md` vào repo; bỏ cấu hình tiện ích trình duyệt trỏ trang thật | Để chạy lại và kiểm được; không kết nối hệ thống thật |
 | 28/11 | Slide thêm trang phiên bản prompt, đo lường qua 5 lượt và đóng góp của nhóm | Cho thấy quá trình cải thiện và phần việc từng người |
+| 28/11 | Thay video dự phòng bằng bản CP4; thêm bản nháp reflection của Mỹ và Tùng (chờ chính người viết sửa) | Chuẩn bị CP4 và hạn 23:59 |
