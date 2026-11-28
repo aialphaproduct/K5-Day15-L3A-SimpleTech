@@ -63,9 +63,26 @@
   .track { margin-bottom: 0; line-height: 1.25; } table.small td { padding-top: 3px; padding-bottom: 3px; }
   .road.gate .stage { font-size: 13px; }
   table.small td { padding-top: 2px; padding-bottom: 2px; }
+  table.ver td { font-size: 13.5px; vertical-align: top; padding-top: 6px; padding-bottom: 6px; }
+  table.ver td.q { font-style: italic; width: 36%; }
+  .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .grid4 .card { padding: 12px 14px; } .grid4 h3 { font-size: 15px; margin: 0 0 8px; }
+  .m { display: grid; grid-template-columns: 48px 1fr auto; gap: 6px; align-items: center; font-size: 12.5px; margin: 5px 0; }
+  .m div { background: #eef2f7; height: 13px; border-radius: 4px; } .m i { display: block; height: 13px; border-radius: 4px; }
+  .team ul { margin: 0; padding-left: 16px; } .team li { font-size: 13px; line-height: 1.4; margin-bottom: 5px; }
+  .team .role { font-size: 12px; color: #6d28d9; font-weight: 700; margin: 0 0 8px; }
+  .stat .big { font-size: 30px; } .stat { padding-top: 8px; padding-bottom: 8px; }
 </style>
 </head>
 <body>
+
+<section>
+  <div class="kicker">AI20K · Day 15 hackathon · L3A · Track A EdTech</div>
+  <h1 style="font-size:52px;margin-top:70px">Simple Tech</h1>
+  <p style="font-size:25px;margin:6px 0 60px">Trợ giảng dưới video: trả lời kèm mã đoạn để học viên tự kiểm</p>
+  <div class="grid4 team"><div class="card"><h3>Lưu Thanh Mỹ</h3><p class="role">Đội trưởng · giao diện, demo, vận hành</p></div><div class="card"><h3>Nguyễn Hoa Thanh Tùng</h3><p class="role">Bằng chứng và chuẩn đo</p></div><div class="card"><h3>Vũ Trí Dũng</h3><p class="role">Lõi trợ giảng và đánh giá</p></div><div class="card"><h3>Khổng Tiến Dương</h3><p class="role">Chi phí và dữ liệu hành vi</p></div></div>
+  <div class="src">github.com/aialphaproduct/K5-Day15-L3A-SimpleTech · 28/11</div>
+</section>
 
 <section>
   <div class="kicker">Simple Tech · L3A · Track A — 1. Người dùng và pain</div>
@@ -186,6 +203,21 @@
 </section>
 
 <section>
+  <div class="kicker">4b. Prompt qua các phiên bản</div>
+  <h1>V0 → V4: mỗi lần đổi đều đo lại, tệ đi thì ghi chưa đạt</h1>
+  <table class="small ver">
+    <tr><th>Bản</th><th>Câu then chốt trong prompt</th><th>Đổi gì</th><th class="num">Đạt</th><th>Còn trượt</th></tr>
+    <tr><td><b>V0</b><br>lượt 1</td><td class="q">“Nếu các đoạn không trả lời được câu hỏi, viết đúng: Không có trong bài.”</td><td>Prompt gốc 4 dòng; tìm đoạn đếm từ trùng</td><td class="num no">18/23</td><td>B10, B15, B16, B18, B23</td></tr>
+    <tr><td><b>V1</b><br>lượt 2</td><td class="q">“…KHÔNG tự đoán và KHÔNG gán mã đoạn; … đề nghị học viên gửi lại…”</td><td>Tách 4 tình huống; tìm đoạn tính IDF, giữ chữ “AI”</td><td class="num ok">22/23</td><td>B15</td></tr>
+    <tr><td><b>V2</b><br>lượt 3</td><td class="q">“BẮT BUỘC bắt đầu bằng ĐÚNG MỘT trong 4 nhãn: ANSWER · CLARIFY · NO_BASIS · REFUSE”</td><td>Model chỉ chọn nhãn; câu từ chối do code viết (#32)</td><td class="num ok">22/23</td><td>B15</td></tr>
+    <tr><td><b>V3</b><br>lượt 4–5</td><td class="q">(prompt như V2)</td><td>Kho đoạn bài 20 → 27 → 28</td><td class="num no">21/23*</td><td>B15, B18 (tụt)</td></tr>
+    <tr><td><b>V4</b><br>LLM đề xuất</td><td class="q">“…tuyệt đối chỉ viết tên nhãn, không thêm bất kỳ văn bản nào khác.”</td><td>LLM viết lại từ câu trượt</td><td class="num">21 → 21</td><td class="no">Loại</td></tr>
+  </table>
+  <p class="sub" style="margin-top:12px">Xem toàn văn và phần khác nhau giữa các bản ở trang quản trị của bản demo. * Chấm tạm, chờ người xác nhận.</p>
+  <div class="src">Nguồn: codebase/prompt_versions.json (lấy từ lịch sử git) · eval/run-1…5.csv · eval/report.md §8 (V4)</div><div class="page">4b</div>
+</section>
+
+<section>
   <div class="kicker">5. Đánh giá thế nào</div>
   <h1>Lượt 3 đạt; thêm đoạn bài (lượt 4–5) và bộ kín thì chưa đạt</h1>
   <p style="margin:-14px 0 8px;font-size:16px">28 đoạn tự viết (lượt 1–3 và bộ kín: 20; lượt 4: 27) · 23 câu thử + 15 câu giữ kín · vạch đen là chuẩn chốt trước · đỏ là chưa đạt</p>
@@ -201,6 +233,20 @@
   </table>
   <div class="cols" style="margin-top:10px"><div class="card"><h3>Lỗi chính: tìm đoạn bằng từ khoá</h3><p style="font-size:13.5px">Lượt 4–5: B18 “AI chạy như thế nào vậy?” lấy đoạn mới D01-09, D01-11 thay vì GIA-01. Bộ kín: H03, H04 bỏ sót đoạn đúng. Các câu này không bịa ngoài đoạn.</p></div><div class="card"><h3>Giới hạn phép đo</h3><p style="font-size:14px">Bộ kín do AI soạn nháp sau khi đã đọc code, chỉ 7 câu thường. *** Lượt 4–5 chấm tạm, chờ người xác nhận. ** Lượt 3: tính chặt theo metric mã đoạn thì thường 8/9 vì B06 không kèm mã. Người thứ hai chấm 5 câu: khớp 5/5 (lượt 2).</p></div></div>
   <div class="src">Nguồn: eval/report.md · eval/README.md · eval/metric_spec.yaml · traces/</div><div class="page">5</div>
+</section>
+
+<section>
+  <div class="kicker">5a. Đo lường qua 5 lượt</div>
+  <h1>Đo cả chất lượng, token, chi phí và độ trễ</h1>
+  <div class="grid4">
+    <div class="card"><h3>Câu đạt / 23</h3><div class="m"><span>Lượt 1</span><div><i style="width:78%;background:#b91c1c"></i></div><b>18</b></div><div class="m"><span>Lượt 2</span><div><i style="width:96%;background:#087a55"></i></div><b>22</b></div><div class="m"><span>Lượt 3</span><div><i style="width:96%;background:#087a55"></i></div><b>22</b></div><div class="m"><span>Lượt 4</span><div><i style="width:91%;background:#b91c1c"></i></div><b>21</b></div><div class="m"><span>Lượt 5</span><div><i style="width:91%;background:#b91c1c"></i></div><b>21</b></div><p class="sub" style="margin:8px 0 0;font-size:13px">Chuẩn còn xét theo từng nhóm (trang 5)</p></div>
+    <div class="card"><h3>Token vào / ra mỗi câu</h3><div class="m"><span>Lượt 1</span><div><i style="width:49%;background:#6d28d9"></i></div><b>283 / 29</b></div><div class="m"><span>Lượt 2</span><div><i style="width:100%;background:#6d28d9"></i></div><b>582 / 48</b></div><div class="m"><span>Lượt 3</span><div><i style="width:80%;background:#6d28d9"></i></div><b>464 / 20</b></div><div class="m"><span>Lượt 4</span><div><i style="width:82%;background:#6d28d9"></i></div><b>479 / 25</b></div><div class="m"><span>Lượt 5</span><div><i style="width:83%;background:#6d28d9"></i></div><b>484 / 25</b></div><p class="sub" style="margin:8px 0 0;font-size:13px">Prompt dài hơn thì token vào tăng</p></div>
+    <div class="card"><h3>Chi phí mỗi câu (USD)</h3><div class="m"><span>Lượt 1</span><div><i style="width:53%;background:#6d28d9"></i></div><b>0,000115</b></div><div class="m"><span>Lượt 2</span><div><i style="width:100%;background:#6d28d9"></i></div><b>0,000217</b></div><div class="m"><span>Lượt 3</span><div><i style="width:67%;background:#6d28d9"></i></div><b>0,000146</b></div><div class="m"><span>Lượt 4</span><div><i style="width:72%;background:#6d28d9"></i></div><b>0,000157</b></div><div class="m"><span>Lượt 5</span><div><i style="width:73%;background:#6d28d9"></i></div><b>0,000159</b></div><p class="sub" style="margin:8px 0 0;font-size:13px">Tính từ token đo thật</p></div>
+    <div class="card"><h3>Độ trễ giữa (p50, giây)</h3><div class="m"><span>Lượt 1</span><div><i style="width:75%;background:#6d28d9"></i></div><b>1,96</b></div><div class="m"><span>Lượt 2</span><div><i style="width:44%;background:#6d28d9"></i></div><b>1,16</b></div><div class="m"><span>Lượt 3</span><div><i style="width:88%;background:#6d28d9"></i></div><b>2,31</b></div><div class="m"><span>Lượt 4</span><div><i style="width:52%;background:#6d28d9"></i></div><b>1,38</b></div><div class="m"><span>Lượt 5</span><div><i style="width:100%;background:#6d28d9"></i></div><b>2,63</b></div><p class="sub" style="margin:8px 0 0;font-size:13px">Mỗi câu gọi model 1 lần</p></div>
+  </div>
+  <p style="margin-top:16px;font-size:17px"><b>V1 → V2:</b> điểm giữ 22/23, chi phí mỗi câu giảm khoảng 33% ($0,000217 → $0,000146). <b>V0 → V1:</b> thêm 4 câu đạt, đổi lại token vào tăng gấp đôi.</p>
+  <p class="sub">23 câu mỗi lượt, model gemini-3.1-flash-lite, giá $0,25 / $1,50 mỗi triệu token. Độ trễ đo một lần nên dao động theo mạng.</p>
+  <div class="src">Nguồn: eval/run-1…5.csv · traces/ · cost/personas.yaml</div><div class="page">5a</div>
 </section>
 
 <section>
@@ -327,6 +373,38 @@
   </table>
   <p style="margin-top:16px;font-size:16px">Đã có trên bản demo: đo lường và vòng tự đề xuất prompt (trang 5c, 6b). Prompt chỉ đổi khi người duyệt.</p>
   <div class="src">Nguồn: eval/report.md §4–§5 · validation/log.md · data/DATA_CARD.md</div><div class="page">8</div>
+</section>
+
+<section>
+  <div class="kicker">9. Đội Simple Tech</div>
+  <h1>4 người, làm qua issue và PR, review chéo</h1>
+  <div class="grid4 team">
+    <div class="card"><h3>Lưu Thanh Mỹ</h3><p class="role">Đội trưởng · giao diện, demo, vận hành</p><ul>
+      <li>Giao diện web, widget, CI</li><li>Khảo sát 17 phản hồi, phỏng vấn P1, câu thử B15–B19</li><li>Cổng kiểm, đo lường, vòng đề xuất prompt</li><li>Triển khai AWS, thử tải, slide</li></ul></div>
+    <div class="card"><h3>Nguyễn Hoa Thanh Tùng</h3><p class="role">Bằng chứng và chuẩn đo</p><ul>
+      <li>Hồ sơ CP1, sơ đồ luồng</li><li>Đặc tả metric (metric_spec)</li><li>Hoàn thiện biên bản phỏng vấn</li><li>Gộp nhánh, review PR</li></ul></div>
+    <div class="card"><h3>Vũ Trí Dũng</h3><p class="role">Lõi trợ giảng và đánh giá</p><ul>
+      <li>20 đoạn bài, nối model thật, lượt 1–3</li><li>Vá lỗ hổng câu không mã (#32) + test</li><li>Bộ giữ kín 15 câu: 13/15 (#33)</li><li>Phỏng vấn P2; tìm kiếm BM25 đang review (PR 44, 49)</li></ul></div>
+    <div class="card"><h3>Khổng Tiến Dương</h3><p class="role">Chi phí và dữ liệu hành vi</p><ul>
+      <li>Chấm độc lập 5 câu: khớp 5/5</li><li>3 persona từ hành vi thật, mô phỏng 50 phiên</li><li>Phân tích dữ liệu BTC (#39–#42)</li><li>10 ý ưu tiên giao phần lõi</li></ul></div>
+  </div>
+  <div class="cols" style="margin-top:16px">
+    <div class="card stat"><div class="big">5 + 1</div><div class="sub">lượt đánh giá + bộ giữ kín, có trace</div></div>
+    <div class="card stat"><div class="big">41</div><div class="sub">unit test chạy tự động trong CI</div></div>
+    <div class="card stat"><div class="big">16</div><div class="sub">PR đã gộp trước CP4</div></div>
+  </div>
+  <p class="sub" style="margin-top:8px">Nhóm có dùng trợ lý AI khi viết mã và tài liệu: docs/ai-usage.md.</p>
+  <div class="src">Nguồn: TEAMS.md · lịch sử commit, issue và PR trên GitHub</div><div class="page">9</div>
+</section>
+
+<section>
+  <div class="kicker">Simple Tech · L3A · Track A</div>
+  <div style="text-align:center;margin-top:150px">
+    <h1 style="font-size:56px;margin:0 0 18px">Cảm ơn mọi người</h1>
+    <p style="font-size:30px;margin:0 0 40px">Mời mọi người đặt câu hỏi</p>
+    <p style="font-size:19px;color:#6d28d9;font-weight:700">Lưu Thanh Mỹ · Nguyễn Hoa Thanh Tùng · Vũ Trí Dũng · Khổng Tiến Dương</p>
+  </div>
+  <div class="src">github.com/aialphaproduct/K5-Day15-L3A-SimpleTech</div>
 </section>
 
 </body>
