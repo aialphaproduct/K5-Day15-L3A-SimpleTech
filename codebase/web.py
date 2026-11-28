@@ -15,7 +15,7 @@ from flask import Flask, request, jsonify, send_from_directory
 
 import insights
 from agent import answer
-from tools import get_passage
+from tools import get_passage, list_videos
 
 MAX_CHARS = 2000
 CITE = re.compile(r"\[([A-Za-z0-9\-]+)\]")
@@ -69,10 +69,17 @@ def widget():
     return send_from_directory(os.path.join(HERE, "extension"), "widget.js")
 
 
+@app.route("/videos")
+def videos():
+    """Danh sách mã video bài giảng có trong kho để giao diện chọn ngữ cảnh (#37)."""
+    return jsonify({"videos": list_videos()})
+
+
 def reply(data, context=None, annotate=None):
     """Xử lý một yêu cầu hỏi: trả (dict, mã HTTP). Dùng chung cho Flask và demo/preclass_demo.py.
 
     context(câu hỏi, phút video) -> câu gửi cho trợ giảng; annotate(body, câu hỏi) bổ sung trường vào kết quả.
+    Hỗ trợ thêm trường tuỳ chọn `video` và `scope` (`hep`|`ca_ngay`|`toan_kho`, Issue #37).
     """
     data = data if isinstance(data, dict) else {}
     text = data.get("text")
@@ -85,6 +92,8 @@ def reply(data, context=None, annotate=None):
     learner = learner if LEARNER.match(learner) else "HV-an-danh"
     video_at = str(data.get("at") or "")
     video_at = video_at if VIDEO_AT.match(video_at) else ""
+    video = str(data.get("video") or "").strip()
+    scope = str(data.get("scope") or "hep").strip() or "hep"
     greeting = bool(GREETING.match(unicodedata.normalize("NFC", text)))
     sent = context(text, video_at) if context and not greeting else text
 
@@ -92,15 +101,19 @@ def reply(data, context=None, annotate=None):
         if greeting:
             return {"output": GREETING_REPLY, "passages": []}, 200
         try:
-            output = answer(sent)["output"]
+            res = answer(sent, video=video, scope=scope) if video else answer(sent)
+            output = res["output"]
             passages = [get_passage(code) for code in dict.fromkeys(CITE.findall(output))]
         except Exception:
             app.logger.exception("answer() lỗi")
             return {"output": "Trợ giảng đang lỗi, bạn thử lại sau.", "passages": []}, 502
-        return {
+        payload = {
             "output": output,
             "passages": [{"code": p["code"], "text": p["text"]} for p in passages if p],
-        }, 200
+        }
+        if video:
+            payload["video_id"] = video
+        return payload, 200
 
     (body, status), metrics = insights.measure(run)
     if annotate and status == 200 and not greeting:

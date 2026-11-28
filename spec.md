@@ -69,7 +69,7 @@ flowchart TD
 
   | Công cụ | Input | Output | Tác động ra ngoài? |
   |---|---|---|---|
-  | `search_passages` | câu hỏi (str) | tối đa 3 đoạn `{code, text}` | Không |
+  | `search_passages` | câu hỏi (str), `video` (str, tuỳ chọn), `scope` (`hep`\|`ca_ngay`\|`toan_kho`) | tối đa 3 đoạn `{code, text}` | Không |
   | `get_passage` | mã đoạn (str) | `{code, text}` | Không |
 
 - **Mức tự động:** [x] AI tự trả lời khi có đoạn khớp và mã trích dẫn kiểm được · chuyển "Không có trong bài" khi không. Lý do: sai thì học viên lỡ hạn hoặc hiểu nhầm; nên ưu tiên nói không biết.
@@ -83,7 +83,7 @@ flowchart TD
   | Chỉ trả lời có căn cứ | Mã trích dẫn phải thuộc đoạn đã tìm (`agent.py`) |
   | Không làm hộ | Câu tu_choi trong bộ câu thử (B10–B12) |
 
-- **Phần nào còn giả:** `data/lessons/passages.csv` đã thay bằng **28 đoạn viết lại (`tu_viet`)** (7 đoạn phần 1 Day01 thêm ngày 28/11, chờ đối chiếu video) theo danh mục bài học Day01–Day04 và quy tắc pre-class (xem `data/DATA_CARD.md`). `codebase/ai.py` đã hỗ trợ gọi model thật qua `.env` (`openai`, `gemini`, `anthropic`, `ollama`, `deepseek`, `openrouter`, `groq`); giữ chế độ giả khi chưa điền `.env`. **[nhóm điền `.env` trên máy, không commit key]**
+- **Phần nào còn giả:** `data/lessons/passages.csv` đã gộp lên **37 đoạn viết lại (`tu_viet`)** phủ Day01–Day06 (gồm 8 đoạn Day01 phần 1 & 3 từ PR #56 + 9 đoạn Day03–Day06 từ PR #49) và quy tắc pre-class, kèm cột `video`, `video_timestamp`, `verify_status` (4/37 `quy_tac_he_thong`, 33/37 `chua_doi_chieu_video` chờ đối chiếu trực tiếp trên video pre-class; xem `data/DATA_CARD.md`). `codebase/ai.py` đã hỗ trợ gọi model thật qua `.env` (`openai`, `gemini`, `anthropic`, `ollama`, `deepseek`, `openrouter`, `groq`); giữ chế độ giả khi chưa điền `.env`. **[nhóm điền `.env` trên máy, không commit key]**
 
 ## §5. Chỗ khó — 4 lớp + kịch bản + tấn công
 
@@ -160,3 +160,6 @@ flowchart TD
 | 28/11 | Đưa mã bản demo (đăng nhập, xoay vòng key, tự cải thiện, đo lường, thử tải, triển khai) và hướng dẫn `deploy/README.md` vào repo; bỏ cấu hình tiện ích trình duyệt trỏ trang thật | Để chạy lại và kiểm được; không kết nối hệ thống thật |
 | 28/11 | Slide thêm trang phiên bản prompt, đo lường qua 5 lượt và đóng góp của nhóm | Cho thấy quá trình cải thiện và phần việc từng người |
 | 28/11 | Thay video dự phòng bằng bản CP4; thêm bản nháp reflection của Mỹ và Tùng (chờ chính người viết sửa) | Chuẩn bị CP4 và hạn 23:59 |
+| 28/11 | Nâng cấp truy xuất `codebase/tools.py` sang `bm25_hybrid` + ngưỡng điểm/độ phủ (#35) và thêm luật kiểm chứng nội dung `verify_claim_rule` (tuỳ chọn `ENABLE_LLM_VERIFY=1`) trong `codebase/agent.py` (#34), kèm script đo `eval/bench_retrieval.py`, `eval/bench_claim_verify.py`, báo cáo `eval/experiments-34-35.md`; sửa regex tên (Unicode `isupper`/`islower`) và bỏ qua số thứ tự/số đếm cấu trúc theo review PR #44 | Lọc 6/6 câu ngoài bài không cần gọi model, giữ 100% Recall@1/3 trên 30 câu (0 token thêm), chặn 100% lỗi bịa số/ngày/tên trong câu có mã đúng và không chặn nhầm câu đúng ("bạn đã…", "bạn được…", "3 bước", danh sách đánh số, B10 ở `run-2`) |
+| 28/11 | Mở rộng `data/lessons/passages.csv` từ 20 lên 29 đoạn `tu_viet` (thêm Day05, Day06 và 2 KC sai cao nhất `#39`, gắn cột `video`, `video_timestamp`, `verify_status`) + cập nhật `data/DATA_CARD.md` (#36); thêm ngữ cảnh video đang xem (`hep` vs `ca_ngay`) vào `tools.py`, `agent.py`, `web.py`, `eval/bench_video_context.py`, `eval/experiments-36-37.md`, unit test và lượt kiểm không hồi quy `eval/run-36-37.csv` (#37) | Phủ thêm bài có tỷ lệ sai bài ôn cao (Day06 44%, Day05 31%), ghi nhận trung thực trạng thái chưa đối chiếu video; chế độ `hep` phân biệt 8/8 cặp cùng câu hỏi ở 2 video (so với 1/8 ở `ca_ngay`, 0/8 ở `toan_kho`) và giữ nguyên 22/23 (96%) trên bộ eval CP2 |
+| 28/11 | Chạy lượt đánh giá trên nhánh PR #49 (`eval/run-36-37-v2.csv`, `traces/run-36-37-v2.jsonl`, `run-4@20261128-100150`) sau khi gộp fix `verify_claim_rule` (PR #44) + 29 đoạn + ngữ cảnh video, đồng bộ `develop` (PR #56: giữ nguyên `run-4`/`run-5` và gộp đủ 37 đoạn) | Đáp ứng góp ý review PR #49 & xử lý conflict sạch với PR #56: xác nhận giữ 22/23 (96%: `thuong` 9/9, `kho` 10/11, `tu_choi` 3/3), 0 lỗi, trung bình `0,8` lần gọi model/câu và `374/22` token |

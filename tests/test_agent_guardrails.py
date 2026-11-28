@@ -96,6 +96,172 @@ class TestAgentGuardrails(unittest.TestCase):
         out = self._run_with_model_output("AI giả · [GIA-04] Hạn nộp do thông báo chính thức.", model="fake")
         self.assertEqual(out, "AI giả · [GIA-04] Hạn nộp do thông báo chính thức.")
 
+    def test_claim_verifier_blocks_fabricated_date_number_name_with_valid_code(self):
+        """Issue #34: mã [GIA-04] hợp lệ nhưng nội dung bịa ngày/giờ/số/tên riêng không có trong đoạn → bị chặn."""
+        for fabricated in (
+            "ANSWER: Hạn nộp bài thực hành là 23:59 thứ Sáu ngày 28/11 [GIA-04].",
+            "ANSWER: Bạn An được 9.5 điểm bài lab 2 [GIA-04].",
+            "ANSWER: Học viên Đạt đã nộp bài lúc 18:00 [GIA-04].",
+            "ANSWER: Hạn nộp tự động gia hạn thêm 48 giờ [GIA-04].",
+            "ANSWER: Vòng lặp chạy tối đa 5 bước rồi dừng [GIA-04].",
+        ):
+            with self.subTest(fabricated=fabricated):
+                out = self._run_with_model_output(fabricated)
+                self.assertEqual(out, agent.NO_BASIS)
+
+    def test_claim_verifier_allows_vietnamese_pronouns_ordinals_counts_and_run2_b10(self):
+        """Review PR #44: không chặn nhầm 'bạn đã…', 'bạn được…', '3 bước', danh sách đánh số và output đúng của B10 (run-2)."""
+        import tools
+
+        by_code = {p["code"]: p["text"] for p in tools._load()}
+
+        valid_cases = [
+            # "bạn đã..." từng bị bắt nhầm vì khoảng Unicode À-Ỹ chứa chữ thường 'đ'
+            (
+                "Bạn đã có thể tự kiểm tra mức độ hiểu bài qua 2 dấu hiệu sau [GIA-05].",
+                [by_code["GIA-05"]],
+            ),
+            # "3 bước" + danh sách đánh số nhiều dòng
+            (
+                "Một bài học gồm 3 bước [GIA-03]:\n1. Xem video bài giảng\n2. Trả lời video quiz\n3. Hoàn thành mini lab",
+                [by_code["GIA-03"]],
+            ),
+            # Danh sách đánh số cùng dòng & nhãn bước 1 / bước 2
+            (
+                "Trình tự chuẩn gồm 3 bước: (1) xem video, (2) làm quiz, (3) làm mini lab; hoàn thành bước 1 trước bước 2 [GIA-03].",
+                [by_code["GIA-03"]],
+            ),
+            # Output đúng của B10 ở eval/run-2.csv (chứa cụm "bạn được")
+            (
+                "Xin lỗi, tôi không thể làm bài hộ bạn được. Bạn nên tự ôn lại nội dung và kiểm tra mức độ hiểu bài "
+                "bằng cách trả lời các câu hỏi trong phần video quiz và hoàn thành bài mini lab theo trình tự học chuẩn [GIA-03]. "
+                "Để tự kiểm tra mức độ hiểu bài, bạn hãy thử giải thích lại các ý chính bằng lời của mình mà không chép nguyên văn [GIA-05].",
+                [by_code["GIA-03"], by_code["GIA-05"]],
+            ),
+        ]
+        for ans_text, cited_texts in valid_cases:
+            with self.subTest(ans=ans_text[:45]):
+                ok, reason = agent.verify_claim_rule(ans_text, cited_texts)
+                self.assertTrue(ok, "Không được chặn nhầm câu đúng: %s" % reason)
+
+        # Kiểm thêm trường hợp đi qua agent.answer() đầy đủ với "3 bước" và danh sách đánh số
+        q_steps = "Một bài học thường có những bước nào?"
+        ans_steps = "ANSWER: Một bài học gồm 3 bước [GIA-03]:\n1. Xem video\n2. Trả lời video quiz\n3. Làm mini lab"
+        with patch.object(agent, "call_model", return_value=_mock_reply(ans_steps)):
+            out = agent.answer(q_steps)["output"]
+            self.assertIn("3 bước", out)
+            self.assertIn("[GIA-03]", out)
+
+    def test_retrieval_threshold_skips_out_of_scope_and_ranks_domain_queries(self):
+        """Issue #35: câu ngoài bài dưới ngưỡng điểm → không gọi model; câu trong bài/không dấu vẫn lấy đúng mã."""
+        import tools
+
+        for oos in (
+            "Sao Thổ có bao nhiêu vệ tinh?",
+            "Thời tiết Hà Nội cuối tuần này có mưa không?",
+            "Cho mình xin công thức nấu phở bò ngon",
+        ):
+            with self.subTest(oos=oos):
+                self.assertEqual(tools.search_passages(oos), [])
+
+        b18_codes = [p["code"] for p in tools.search_passages("AI chạy như thế nào vậy?")]
+        self.assertIn("GIA-01", b18_codes)
+        no_accent_codes = [p["code"] for p in tools.search_passages("nhiet do temperature anh huong gi den do on dinh")]
+        self.assertEqual(no_accent_codes[0], "D01-02")
+
+    def test_passages_metadata_for_issue_36(self):
+        """Issue #36: mọi đoạn bài có cột video, video_timestamp, verify_status rõ ràng và đã mở rộng tới Day05-Day06."""
+        import tools
+
+        docs = tools._load()
+        self.assertGreaterEqual(len(docs), 29)
+        valid_status = {"quy_tac_he_thong", "chua_doi_chieu_video", "da_doi_chieu_video"}
+        codes = {d["code"] for d in docs}
+        self.assertTrue({"D05-01", "D05-02", "D05-03", "D06-01", "D06-02", "D06-03", "D06-04"} <= codes)
+        for d in docs:
+            self.assertTrue(d["video"], "Thiếu mã video ở đoạn %s" % d["code"])
+            self.assertTrue(d["video_timestamp"], "Thiếu video_timestamp ở đoạn %s" % d["code"])
+            self.assertIn(d["verify_status"], valid_status)
+
+    def test_video_context_distinguishes_same_question_across_two_videos(self):
+        """Issue #37: cùng một câu hỏi ở hai video khác nhau lấy đúng đoạn của từng video; tương thích ngược answer(text)."""
+        import tools
+
+        q_same_day = "Tại sao câu trả lời của LLM có thể sai sự thật?"
+        self.assertEqual(tools.search_passages(q_same_day, video="d01-r1-v02", scope="hep")[0]["code"], "D01-02")
+        self.assertEqual(tools.search_passages(q_same_day, video="d01-r1-v03", scope="hep")[0]["code"], "D01-05")
+
+        q_cross_day = "Khi nào cần bước người duyệt để kiểm soát rủi ro khi AI sai?"
+        self.assertEqual(tools.search_passages(q_cross_day, video="Day02/d02-r2-v02.txt", scope="hep")[0]["code"], "D02-03")
+        self.assertEqual(tools.search_passages(q_cross_day, video="d05-r2-v01", scope="hep")[0]["code"], "D05-01")
+
+        # answer(text, video=...) truyền đúng ngữ cảnh video và chấp nhận mã đoạn thuộc video đó
+        with patch.object(agent, "call_model", return_value=_mock_reply("ANSWER: Hạ temperature chỉ tăng ổn định [D01-02].")) as mc:
+            out_v2 = agent.answer(q_same_day, video="d01-r1-v02")["output"]
+            self.assertIn("[D01-02]", out_v2)
+            self.assertIn("Video đang xem: d01-r1-v02", mc.call_args[0][1])
+
+        with patch.object(agent, "call_model", return_value=_mock_reply("ANSWER: Do mốc huấn luyện và thiếu nguồn [D01-05].")) as mc:
+            out_v3 = agent.answer(q_same_day, video="d01-r1-v03")["output"]
+            self.assertIn("[D01-05]", out_v3)
+            self.assertIn("Video đang xem: d01-r1-v03", mc.call_args[0][1])
+
+    def test_video_context_hep_falls_back_to_ca_ngay_and_general(self):
+        """Issue #37: chế độ hep mở rộng sang cả ngày / quy tắc chung khi video hiện tại chưa đủ; ngoài bài vẫn trả rỗng."""
+        import tools
+
+        self.assertEqual(
+            tools.search_passages("Tham số temperature có đảm bảo câu trả lời đúng sự thật không?", video="d01-r1-v01", scope="hep")[0]["code"],
+            "D01-02",
+        )
+        self.assertEqual(
+            tools.search_passages("Trợ giảng có được tự đoán hạn nộp bài không?", video="d01-r1-v02", scope="hep")[0]["code"],
+            "GIA-04",
+        )
+        self.assertEqual(
+            tools.search_passages("Thời tiết Hà Nội cuối tuần này có mưa không?", video="d01-r1-v02", scope="hep"),
+            [],
+        )
+
+    def test_web_ask_accepts_optional_video_context(self):
+        """Issue #37: giao diện web có endpoint /videos và /ask hỗ trợ cả {text} cũ lẫn {text, video} mới."""
+        import tempfile
+
+        try:
+            import web
+        except ImportError:
+            self.skipTest("Chưa cài flask trong môi trường test")
+
+        with tempfile.TemporaryDirectory() as tmpdir, patch.object(
+            web.insights, "LOG", os.path.join(tmpdir, "log.jsonl")
+        ):
+            client = web.app.test_client()
+            vids = client.get("/videos")
+            self.assertEqual(vids.status_code, 200)
+            video_ids = [v["video"] for v in vids.get_json()["videos"]]
+            self.assertIn("d01-r1-v02", video_ids)
+
+            with patch.object(
+                agent, "call_model", return_value=_mock_reply("ANSWER: Trợ giảng không tự đoán hạn nộp [GIA-04].")
+            ):
+                r_compat = client.post("/ask", json={"text": self.QUERY})
+                self.assertEqual(r_compat.status_code, 200)
+                self.assertIn("[GIA-04]", r_compat.get_json()["output"])
+
+            with patch.object(
+                agent,
+                "call_model",
+                return_value=_mock_reply("ANSWER: Temperature thấp không đảm bảo đúng sự thật [D01-02]."),
+            ):
+                r_video = client.post(
+                    "/ask",
+                    json={"text": "Tại sao câu trả lời của LLM có thể sai sự thật?", "video": "d01-r1-v02"},
+                )
+                self.assertEqual(r_video.status_code, 200)
+                body = r_video.get_json()
+                self.assertEqual(body["video_id"], "d01-r1-v02")
+                self.assertIn("[D01-02]", body["output"])
+
 
 if __name__ == "__main__":
     unittest.main()

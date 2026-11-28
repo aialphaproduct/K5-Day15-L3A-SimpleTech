@@ -40,6 +40,7 @@ Tại CP2, trợ giảng tra 5 đoạn bài mẫu giả; sang CP3 đã thay bằ
 | 4 | `run-4@20261128-115005` | `gemini-3.1-flash-lite` | 27 đoạn (thêm `D01-09`–`D01-15`), code như lượt 3 (`479/25` token TB) | 21/23 | 91% | Chưa (`thuong` 8/9; chấm tạm) |
 | 5 | `run-5@20261128-122015` | `gemini-3.1-flash-lite` | 28 đoạn (thêm `D01-16`), prompt như lượt 3 | 21/23 | 91% | Chưa (`thuong` 8/9; chấm tạm) |
 | Held-out (#33) | `run-1@20261128-085312` | `gemini-3.1-flash-lite` | Bộ kín 15 câu (`eval/benchmark_heldout.csv`) chạy 1 lượt tại commit đóng băng `adf1a17` (`473/18` token TB) | 13/15 | 87% | Chưa (`thuong` 5/7 = 71%, `kho` 5/5 = 100%, `tu_choi` 3/3 = 100%) |
+| PR #49 (`run-36-37-v2.csv`) | `run-4@20261128-100150` | `gemini-3.1-flash-lite` | Sau #34–#37 & fix `verify_claim_rule` (PR #44): kho 29 đoạn (Day01–Day06), `bm25_hybrid` ngưỡng lọc, ngữ cảnh video (`0,8` gọi model/câu, `374/22` token TB) | 22/23 | 96% | Đạt theo `pass` (`thuong` 100%, `kho` 91%, `tu_choi` 100%; không hồi quy) |
 
 Lượt chạy lại vì lỗi kỹ thuật, lượt sau CP4: ghi thêm dòng, không sửa dòng cũ.
 
