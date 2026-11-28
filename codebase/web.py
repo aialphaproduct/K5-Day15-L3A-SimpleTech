@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from flask import Flask, request, jsonify, render_template_string
 
 from agent import answer
+from tools import list_videos
 
 app = Flask(__name__)
 
@@ -33,10 +34,13 @@ HTML = """<!DOCTYPE html>
 
   /* Chat box */
   .chat-box { background: #1a1d26; border-radius: 12px; overflow: hidden; border: 1px solid #2d3148; }
-  .chat-header { padding: 14px 18px; border-bottom: 1px solid #2d3148; display: flex; align-items: center; gap: 10px; }
+  .chat-header { padding: 14px 18px; border-bottom: 1px solid #2d3148; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .chat-header .dot { width: 9px; height: 9px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
   .chat-header h2 { font-size: 14px; font-weight: 600; color: #f1f5f9; }
-  .chat-header span { font-size: 12px; color: #64748b; margin-left: auto; }
+  .chat-header .video-picker { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .chat-header label { font-size: 12px; color: #94a3b8; }
+  .chat-header select { background: #252840; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0; font-size: 12px; padding: 5px 8px; outline: none; }
+  .chat-header select:focus { border-color: #3b82f6; }
 
   .messages { padding: 16px 18px; min-height: 260px; max-height: 420px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
 
@@ -75,14 +79,22 @@ HTML = """<!DOCTYPE html>
 
   <div class="video-wrap">
     <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=1" allowfullscreen></iframe>
-    <div class="video-label">📺 Video bài học · Day 01</div>
+    <div class="video-label" id="videoLabel">📺 Video bài học · {{ selected_video or "Tất cả bài học" }}</div>
   </div>
 
   <div class="chat-box">
     <div class="chat-header">
       <div class="dot"></div>
       <h2>Trợ giảng AI</h2>
-      <span>Hỏi về nội dung video vừa xem</span>
+      <div class="video-picker">
+        <label for="videoSelect">Video đang xem:</label>
+        <select id="videoSelect">
+          <option value="" {% if not selected_video %}selected{% endif %}>Tất cả bài học</option>
+          {% for v in videos %}
+          <option value="{{ v.video }}" {% if selected_video == v.video %}selected{% endif %}>{{ v.day }} · {{ v.video }} ({{ v.count }} đoạn)</option>
+          {% endfor %}
+        </select>
+      </div>
     </div>
     <div class="messages" id="msgs">
       <div class="msg">
@@ -102,6 +114,13 @@ HTML = """<!DOCTYPE html>
 const msgs = document.getElementById("msgs");
 const inp  = document.getElementById("inp");
 const btn  = document.getElementById("btn");
+const videoSelect = document.getElementById("videoSelect");
+const videoLabel  = document.getElementById("videoLabel");
+
+videoSelect.addEventListener("change", () => {
+  const v = videoSelect.value;
+  videoLabel.textContent = "📺 Video bài học · " + (v || "Tất cả bài học");
+});
 
 inp.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } });
 
@@ -135,10 +154,14 @@ async function send() {
     '<div class="thinking">Đang tra bài <span class="dots"><span>.</span><span>.</span><span>.</span></span></div>');
 
   try {
+    const payload = { text };
+    if (videoSelect && videoSelect.value) {
+      payload.video = videoSelect.value;
+    }
     const res = await fetch("/ask", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text })
+      body: JSON.stringify(payload)
     });
     const data = await res.json();
     thinking.querySelector(".bubble").innerHTML = formatText(data.output || "Không có phản hồi.");
@@ -156,18 +179,21 @@ async function send() {
 
 @app.route("/")
 def index():
-    return render_template_string(HTML)
+    selected_video = (request.args.get("video") or "").strip().lower()
+    return render_template_string(HTML, videos=list_videos(), selected_video=selected_video)
 
 
 @app.route("/ask", methods=["POST"])
 def ask():
     data = request.get_json(force=True)
     text = (data.get("text") or "").strip()
+    video = (data.get("video") or "").strip()
+    scope = (data.get("scope") or "hep").strip()
     if not text:
         return jsonify({"output": "Bạn chưa nhập câu hỏi."}), 400
-    result = answer(text)
+    result = answer(text, video=video, scope=scope) if video else answer(text)
     output = result.get("output", "") if isinstance(result, dict) else str(result)
-    return jsonify({"output": output})
+    return jsonify({"output": output, "video": video})
 
 
 if __name__ == "__main__":

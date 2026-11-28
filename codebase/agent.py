@@ -1,6 +1,6 @@
 """Luồng chính A1 — trợ giảng bài học — NHÓM VIẾT (khung đã điền sẵn để chạy được; nhóm sửa theo thiết kế).
 
-Hợp đồng: answer(text: str) -> {"output": str}.
+Hợp đồng: answer(text: str, video: str = "", scope: str = "hep") -> {"output": str} (tương thích ngược với answer(text)).
 
 Quy tắc chặn rủi ro (spec.md §4):
   1. Không có đoạn nào khớp → trả lời "không có trong bài", KHÔNG gọi model.
@@ -119,15 +119,23 @@ def _parse_labeled_output(out: str, by_code: dict, is_fake: bool = False) -> str
     return body
 
 
-def answer(text: str) -> dict:
-    found = search_passages(text)
+def answer(text: str, video: str = "", scope: str = "hep") -> dict:
+    norm_video = (video or "").strip()
+    if norm_video:
+        note("ngữ cảnh video=%s scope=%s" % (norm_video, scope))
+        found = search_passages(text, video=norm_video, scope=scope)
+    else:
+        found = search_passages(text)
     if not found:
         note("dừng: không có đoạn nào khớp câu hỏi")
         return {"output": NO_BASIS}
 
     by_code = {p["code"]: p["text"] for p in found}
     context = "\n".join("[%s] %s" % (p["code"], p["text"]) for p in found)
-    reply = call_model(SYSTEM, "Đoạn bài:\n%s\n\nCâu hỏi:\n%s" % (context, text))
+    user_prompt = "Đoạn bài:\n%s\n\nCâu hỏi:\n%s" % (context, text)
+    if norm_video:
+        user_prompt = "Video đang xem: %s\n\n%s" % (norm_video, user_prompt)
+    reply = call_model(SYSTEM, user_prompt)
     out = reply["text"].strip()
     final = _parse_labeled_output(out, by_code, is_fake=(reply.get("model") == "fake"))
     return {"output": final}

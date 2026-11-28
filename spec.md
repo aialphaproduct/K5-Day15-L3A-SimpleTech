@@ -69,7 +69,7 @@ flowchart TD
 
   | Công cụ | Input | Output | Tác động ra ngoài? |
   |---|---|---|---|
-  | `search_passages` | câu hỏi (str) | tối đa 3 đoạn `{code, text}` | Không |
+  | `search_passages` | câu hỏi (str), `video` (str, tuỳ chọn), `scope` (`hep`\|`ca_ngay`\|`toan_kho`) | tối đa 3 đoạn `{code, text}` | Không |
   | `get_passage` | mã đoạn (str) | `{code, text}` | Không |
 
 - **Mức tự động:** [x] AI tự trả lời khi có đoạn khớp và mã trích dẫn kiểm được · chuyển "Không có trong bài" khi không. Lý do: sai thì học viên lỡ hạn hoặc hiểu nhầm; nên ưu tiên nói không biết.
@@ -83,7 +83,7 @@ flowchart TD
   | Chỉ trả lời có căn cứ | Mã trích dẫn phải thuộc đoạn đã tìm (`agent.py`) |
   | Không làm hộ | Câu tu_choi trong bộ câu thử (B10–B12) |
 
-- **Phần nào còn giả:** `data/lessons/passages.csv` đã thay bằng **20 đoạn viết lại (`tu_viet`)** theo danh mục bài học Day01–Day04 và quy tắc pre-class (xem `data/DATA_CARD.md`). `codebase/ai.py` đã hỗ trợ gọi model thật qua `.env` (`openai`, `gemini`, `anthropic`, `ollama`, `deepseek`, `openrouter`, `groq`); giữ chế độ giả khi chưa điền `.env`. **[nhóm điền `.env` trên máy, không commit key]**
+- **Phần nào còn giả:** `data/lessons/passages.csv` đã mở rộng lên **29 đoạn viết lại (`tu_viet`)** phủ Day01–Day06 và quy tắc pre-class, kèm cột `video`, `video_timestamp`, `verify_status` (4/29 `quy_tac_he_thong`, 25/29 `chua_doi_chieu_video` chờ đối chiếu mốc phút:giây trực tiếp trên video pre-class; xem `data/DATA_CARD.md`). `codebase/ai.py` đã hỗ trợ gọi model thật qua `.env` (`openai`, `gemini`, `anthropic`, `ollama`, `deepseek`, `openrouter`, `groq`); giữ chế độ giả khi chưa điền `.env`. **[nhóm điền `.env` trên máy, không commit key]**
 
 ## §5. Chỗ khó — 4 lớp + kịch bản + tấn công
 
@@ -146,3 +146,5 @@ flowchart TD
 | 27/11 | Chạy eval lượt 1 (`run-1`: 18/23 = 78%), cải tiến `codebase/tools.py` (IDF, giữ viết tắt `AI`, phân biệt dấu) và `codebase/agent.py` (`SYSTEM` prompt 4 đường đi §6), chạy lượt 2 (`run-2`: 22/23 = 96%) | Hoàn thiện #9 và #10; khắc phục 4/5 lỗi lượt 1 (B10, B16, B18, B23) và đạt chuẩn §7 với 0 câu tệ đi |
 | 28/11 | Vá lỗ hổng kiểm soát đầu ra không có mã (#32): chuyển `codebase/agent.py` sang nhãn `ANSWER | NO_BASIS | CLARIFY | REFUSE` do code chọn lời fallback, thêm `tests/test_agent_guardrails.py` vào CI | Chặn triệt để câu bịa không có mã lọt qua chuỗi con; output lạ/sai định dạng luôn trả `NO_BASIS` |
 | 28/11 | Nâng cấp truy xuất `codebase/tools.py` sang `bm25_hybrid` + ngưỡng điểm/độ phủ (#35) và thêm luật kiểm chứng nội dung `verify_claim_rule` (tuỳ chọn `ENABLE_LLM_VERIFY=1`) trong `codebase/agent.py` (#34), kèm script đo `eval/bench_retrieval.py`, `eval/bench_claim_verify.py`, báo cáo `eval/experiments-34-35.md` | Lọc 6/6 câu ngoài bài không cần gọi model, giữ 100% Recall@1/3 trên 30 câu (0 token thêm), và chặn 100% lỗi bịa số/ngày/tên trong câu có mã đúng với 0% chặn nhầm |
+| 28/11 | Mở rộng `data/lessons/passages.csv` từ 20 lên 29 đoạn `tu_viet` (thêm Day05, Day06 và 2 KC sai cao nhất `#39`, gắn cột `video`, `video_timestamp`, `verify_status`) + cập nhật `data/DATA_CARD.md` (#36); thêm ngữ cảnh video đang xem (`hep` vs `ca_ngay`) vào `tools.py`, `agent.py`, `web.py`, `eval/bench_video_context.py`, `eval/experiments-36-37.md`, unit test và lượt kiểm không hồi quy `eval/run-36-37.csv` (#37) | Phủ thêm bài có tỷ lệ sai bài ôn cao (Day06 44%, Day05 31%), ghi nhận trung thực trạng thái chưa đối chiếu video; chế độ `hep` phân biệt 8/8 cặp cùng câu hỏi ở 2 video (so với 1/8 ở `ca_ngay`, 0/8 ở `toan_kho`) và giữ nguyên 22/23 (96%) trên bộ eval CP2 |
+| 28/11 | Chạy bộ câu thử giữ kín 15 câu (#33) tại commit đóng băng `adf1a17`: `eval/benchmark_heldout.csv`, `eval/run-heldout.csv`, `traces/run-heldout.jsonl`, bổ sung mục 5 `eval/report.md` và dòng held-out ở `eval/README.md` | Kiểm tra khả năng tổng quát hoá của 96%: bộ kín đạt 13/15 (87%: `thuong` 5/7, `kho` 5/5, `tu_choi` 3/3), 2 câu trượt H03/H04 do truy xuất từ vựng ở `tools.py` |

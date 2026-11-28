@@ -150,7 +150,8 @@ def bm25_hybrid_search(
         bg_hits = len(q_bigrams & t_bigrams)
         score += bg_hits * 1.0
         coverage = len(matched_terms) / q_base_count
-        if score >= min_score and (len(matched_terms) >= 2 or coverage >= min_coverage):
+        has_phrase_or_coverage = bg_hits >= 1 or len(matched_terms) >= 3 or coverage >= min_coverage
+        if score >= min_score and (len(matched_terms) >= 2 or coverage >= min_coverage) and has_phrase_or_coverage:
             scored.append((score, exact_hits, p["code"]))
     scored.sort(key=lambda x: (-x[0], -x[1]))
     return [c for _, _, c in scored[:top_k]]

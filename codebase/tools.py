@@ -1,7 +1,7 @@
 """Công cụ của bài toán A1 (trợ giảng bài học) — NHÓM VIẾT. Đọc dữ liệu đoạn bài, không tác động ra ngoài.
 
 Mỗi công cụ có @tool; docstring ghi: tên · input · output · có tác động ra ngoài không.
-Dữ liệu đoạn bài: data/lessons/passages.csv (cột code, lesson, text, source — 20 đoạn tu_viet theo Day01–Day04 và quy tắc pre-class; xem data/DATA_CARD.md).
+Dữ liệu đoạn bài: data/lessons/passages.csv (cột code, lesson, video, video_timestamp, verify_status, text, source — 29 đoạn tu_viet phủ Day01–Day06 và quy tắc pre-class; xem data/DATA_CARD.md).
 """
 import csv
 import math
@@ -30,6 +30,27 @@ SYNONYMS = {
 # Ngưỡng tối thiểu để tránh gọi model khi câu hỏi chỉ trùng 1 từ lạc chủ đề (Issue #35)
 MIN_SCORE = 2.5
 MIN_COVERAGE = 0.45
+# Hệ số mở rộng ngữ cảnh video (#37): nếu phạm vi rộng hơn khớp mạnh gấp >= 2.0 lần video hiện tại thì mở phạm vi
+FALLBACK_RATIO = 2.0
+
+
+def _normalize_video(video: str) -> str:
+    """Chuẩn hoá mã video (vd 'Day01/d01-r1-v02.txt' hoặc 'D01-R1-V02' -> 'd01-r1-v02')."""
+    v = (video or "").strip().replace("\\", "/")
+    if not v:
+        return ""
+    v = v.rsplit("/", 1)[-1]
+    for ext in (".txt", ".mp4", ".md"):
+        if v.lower().endswith(ext):
+            v = v[:-len(ext)]
+            break
+    return v.strip().lower()
+
+
+def _video_day(video: str) -> str:
+    """Tách mã ngày học từ mã video (vd 'd01-r1-v02' -> 'd01', 'preclass-chung' -> '')."""
+    m = re.match(r"^(d\d{2})[-_]", _normalize_video(video))
+    return m.group(1) if m else ""
 
 
 def _plain(s: str) -> str:
@@ -80,6 +101,9 @@ def _load() -> list:
             {
                 "code": r["code"].strip(),
                 "lesson": (r.get("lesson") or "").strip(),
+                "video": _normalize_video(r.get("video") or ""),
+                "video_timestamp": (r.get("video_timestamp") or "").strip(),
+                "verify_status": (r.get("verify_status") or "").strip(),
                 "text": r["text"].strip(),
             }
             for r in csv.DictReader(f)
@@ -87,10 +111,69 @@ def _load() -> list:
         ]
 
 
+def list_videos() -> list:
+    """Trả danh sách mã video bài giảng hiện có (không gồm preclass-chung) để giao diện web chọn ngữ cảnh."""
+    counts = {}
+    day_label = {}
+    for p in _load():
+        v = p.get("video", "")
+        if not v or v == "preclass-chung":
+            continue
+        counts[v] = counts.get(v, 0) + 1
+        if v not in day_label:
+            day_label[v] = p["lesson"].split("·")[0].strip() if "·" in p["lesson"] else _video_day(v).upper()
+    return [{"video": v, "day": day_label[v], "count": counts[v]} for v in sorted(counts)]
+
+
+def _select_by_video(scored: list, norm_video: str, scope: str) -> list:
+    """Lọc/ưu tiên kết quả theo video đang xem (#37): hep (ưu tiên video → cả ngày → quy tắc chung → toàn kho) hoặc ca_ngay."""
+    if not norm_video or scope == "toan_kho":
+        return scored[:3]
+
+    target_day = _video_day(norm_video)
+    same_video = [x for x in scored if x[2].get("video") == norm_video]
+    same_day = [x for x in scored if target_day and _video_day(x[2].get("video", "")) == target_day]
+    general = [x for x in scored if x[2].get("video") == "preclass-chung"]
+
+    if scope == "hep":
+        if same_video:
+            best_v = same_video[0][0]
+            if same_day and same_day[0][0] >= FALLBACK_RATIO * best_v:
+                return same_day[:3]
+            if general and general[0][0] >= FALLBACK_RATIO * best_v:
+                return general[:3]
+            return same_video[:3]
+        if same_day:
+            best_d = same_day[0][0]
+            if general and general[0][0] >= FALLBACK_RATIO * best_d:
+                return general[:3]
+            if scored and scored[0][0] >= (FALLBACK_RATIO + 0.5) * best_d:
+                return scored[:3]
+            return same_day[:3]
+        if general:
+            return general[:3]
+        return scored[:3]
+
+    if scope == "ca_ngay":
+        if same_day:
+            best_d = same_day[0][0]
+            if general and general[0][0] >= FALLBACK_RATIO * best_d:
+                return general[:3]
+            if scored and scored[0][0] >= (FALLBACK_RATIO + 0.5) * best_d:
+                return scored[:3]
+            return same_day[:3]
+        if general:
+            return general[:3]
+        return scored[:3]
+
+    return scored[:3]
+
+
 @tool
-def search_passages(query: str) -> list:
-    """Tìm tối đa 3 đoạn bài khớp nhất bằng BM25 lai (IDF riêng cho text/lesson, khớp đúng dấu, bigram và ngưỡng điểm lọc câu ngoài bài).
-    Input: câu hỏi (str). Output: danh sách {"code", "text"}, rỗng nếu dưới ngưỡng điểm. Không tác động ra ngoài."""
+def search_passages(query: str, video: str = "", scope: str = "hep") -> list:
+    """Tìm tối đa 3 đoạn bài khớp nhất bằng BM25 lai, có thể ưu tiên theo video đang xem (#37).
+    Input: query (str), video (str, tuỳ chọn — vd 'd01-r1-v02'), scope (str: 'hep'|'ca_ngay'|'toan_kho').
+    Output: danh sách {"code", "text"}, rỗng nếu dưới ngưỡng điểm. Không tác động ra ngoài."""
     q_base_plain, _ = _seq_tokens(query, expand=False)
     q_plain_seq, q_exact_seq = _seq_tokens(query, expand=True)
     if not q_plain_seq:
@@ -154,12 +237,18 @@ def search_passages(query: str) -> list:
                 idf_l = math.log((n - n_l + 0.5) / (n_l + 0.5) + 1.0)
                 score += 0.6 * idf_l
                 matched_terms.add(w)
-        score += len(q_bigrams & t_bigrams) * 1.0
+        bg_hits = len(q_bigrams & t_bigrams)
+        score += bg_hits * 1.0
         coverage = len(matched_terms) / q_base_count
-        if score >= MIN_SCORE and (len(matched_terms) >= 2 or coverage >= MIN_COVERAGE):
-            scored.append((score, exact_hits, {"code": p["code"], "text": p["text"]}))
-    scored.sort(key=lambda x: (-x[0], -x[1]))
-    return [item for _, _, item in scored[:3]]
+        has_phrase_or_coverage = bg_hits >= 1 or len(matched_terms) >= 3 or coverage >= MIN_COVERAGE
+        if score >= MIN_SCORE and (len(matched_terms) >= 2 or coverage >= MIN_COVERAGE) and has_phrase_or_coverage:
+            scored.append((score, exact_hits, p))
+    scored.sort(key=lambda x: (-x[0], -x[1], x[2]["code"]))
+
+    norm_video = _normalize_video(video)
+    norm_scope = (scope or "hep").strip().lower()
+    chosen = _select_by_video(scored, norm_video, norm_scope)
+    return [{"code": p["code"], "text": p["text"]} for _, _, p in chosen]
 
 
 @tool
