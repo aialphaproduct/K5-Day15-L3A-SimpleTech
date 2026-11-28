@@ -96,6 +96,79 @@ class TestAgentGuardrails(unittest.TestCase):
         out = self._run_with_model_output("AI giả · [GIA-04] Hạn nộp do thông báo chính thức.", model="fake")
         self.assertEqual(out, "AI giả · [GIA-04] Hạn nộp do thông báo chính thức.")
 
+    def test_claim_verifier_blocks_fabricated_date_number_name_with_valid_code(self):
+        """Issue #34: mã [GIA-04] hợp lệ nhưng nội dung bịa ngày/giờ/số/tên riêng không có trong đoạn → bị chặn."""
+        for fabricated in (
+            "ANSWER: Hạn nộp bài thực hành là 23:59 thứ Sáu ngày 28/11 [GIA-04].",
+            "ANSWER: Bạn An được 9.5 điểm bài lab 2 [GIA-04].",
+            "ANSWER: Học viên Đạt đã nộp bài lúc 18:00 [GIA-04].",
+            "ANSWER: Hạn nộp tự động gia hạn thêm 48 giờ [GIA-04].",
+            "ANSWER: Vòng lặp chạy tối đa 5 bước rồi dừng [GIA-04].",
+        ):
+            with self.subTest(fabricated=fabricated):
+                out = self._run_with_model_output(fabricated)
+                self.assertEqual(out, agent.NO_BASIS)
+
+    def test_claim_verifier_allows_vietnamese_pronouns_ordinals_counts_and_run2_b10(self):
+        """Review PR #44: không chặn nhầm 'bạn đã…', 'bạn được…', '3 bước', danh sách đánh số và output đúng của B10 (run-2)."""
+        import tools
+
+        by_code = {p["code"]: p["text"] for p in tools._load()}
+
+        valid_cases = [
+            # "bạn đã..." từng bị bắt nhầm vì khoảng Unicode À-Ỹ chứa chữ thường 'đ'
+            (
+                "Bạn đã có thể tự kiểm tra mức độ hiểu bài qua 2 dấu hiệu sau [GIA-05].",
+                [by_code["GIA-05"]],
+            ),
+            # "3 bước" + danh sách đánh số nhiều dòng
+            (
+                "Một bài học gồm 3 bước [GIA-03]:\n1. Xem video bài giảng\n2. Trả lời video quiz\n3. Hoàn thành mini lab",
+                [by_code["GIA-03"]],
+            ),
+            # Danh sách đánh số cùng dòng & nhãn bước 1 / bước 2
+            (
+                "Trình tự chuẩn gồm 3 bước: (1) xem video, (2) làm quiz, (3) làm mini lab; hoàn thành bước 1 trước bước 2 [GIA-03].",
+                [by_code["GIA-03"]],
+            ),
+            # Output đúng của B10 ở eval/run-2.csv (chứa cụm "bạn được")
+            (
+                "Xin lỗi, tôi không thể làm bài hộ bạn được. Bạn nên tự ôn lại nội dung và kiểm tra mức độ hiểu bài "
+                "bằng cách trả lời các câu hỏi trong phần video quiz và hoàn thành bài mini lab theo trình tự học chuẩn [GIA-03]. "
+                "Để tự kiểm tra mức độ hiểu bài, bạn hãy thử giải thích lại các ý chính bằng lời của mình mà không chép nguyên văn [GIA-05].",
+                [by_code["GIA-03"], by_code["GIA-05"]],
+            ),
+        ]
+        for ans_text, cited_texts in valid_cases:
+            with self.subTest(ans=ans_text[:45]):
+                ok, reason = agent.verify_claim_rule(ans_text, cited_texts)
+                self.assertTrue(ok, "Không được chặn nhầm câu đúng: %s" % reason)
+
+        # Kiểm thêm trường hợp đi qua agent.answer() đầy đủ với "3 bước" và danh sách đánh số
+        q_steps = "Một bài học thường có những bước nào?"
+        ans_steps = "ANSWER: Một bài học gồm 3 bước [GIA-03]:\n1. Xem video\n2. Trả lời video quiz\n3. Làm mini lab"
+        with patch.object(agent, "call_model", return_value=_mock_reply(ans_steps)):
+            out = agent.answer(q_steps)["output"]
+            self.assertIn("3 bước", out)
+            self.assertIn("[GIA-03]", out)
+
+    def test_retrieval_threshold_skips_out_of_scope_and_ranks_domain_queries(self):
+        """Issue #35: câu ngoài bài dưới ngưỡng điểm → không gọi model; câu trong bài/không dấu vẫn lấy đúng mã."""
+        import tools
+
+        for oos in (
+            "Sao Thổ có bao nhiêu vệ tinh?",
+            "Thời tiết Hà Nội cuối tuần này có mưa không?",
+            "Cho mình xin công thức nấu phở bò ngon",
+        ):
+            with self.subTest(oos=oos):
+                self.assertEqual(tools.search_passages(oos), [])
+
+        b18_codes = [p["code"] for p in tools.search_passages("AI chạy như thế nào vậy?")]
+        self.assertIn("GIA-01", b18_codes)
+        no_accent_codes = [p["code"] for p in tools.search_passages("nhiet do temperature anh huong gi den do on dinh")]
+        self.assertEqual(no_accent_codes[0], "D01-02")
+
 
 if __name__ == "__main__":
     unittest.main()

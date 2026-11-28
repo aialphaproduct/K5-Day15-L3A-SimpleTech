@@ -1,0 +1,37 @@
+id,query,expected_code,style
+R01,"LLM tạo câu trả lời bằng cách nào?",GIA-01,chuan
+R02,"mo hinh ngon ngu lon du doan token tiep theo nhu the nao",GIA-01,khong_dau
+R03,"Trợ giảng AI phải làm gì khi đoạn bài không có căn cứ?",GIA-02,chuan
+R04,"tro giang co duoc tu suy doan khi bai khong noi khong",GIA-02,khong_dau
+R05,"Quy trình học một bài trên pre-class gồm mấy bước?",GIA-03,chuan
+R06,"trinh tu xem video lam quiz va mini lab nhu the nao",GIA-03,khong_dau
+R07,"Hạn nộp bài thực hành và đổi phòng học xem ở đâu?",GIA-04,chuan
+R08,"han nop lab va lich hoc bu lay theo nguon nao",GIA-04,khong_dau
+R09,"Làm sao tự kiểm tra xem mình đã thật sự hiểu video chưa?",GIA-05,dien_dat_khac
+R10,"dau hieu hieu bai sau khi xem video la gi",GIA-05,khong_dau
+R11,"Cơ chế Attention giúp mô hình hiểu nghĩa của từ trong câu như thế nào?",D01-01,chuan
+R12,"Tại sao cùng một chữ đặt ở hai ngữ cảnh khác nhau lại hiểu nghĩa khác nhau?",D01-01,dien_dat_khac
+R13,"Hạ temperature thấp xuống có giúp AI trả lời đúng sự thật hơn không?",D01-02,chuan
+R14,"nhiet do temperature anh huong gi den do on dinh cua token",D01-02,khong_dau
+R15,"Tại sao câu trả lời của mô hình bị cắt cụt giữa chừng?",D01-03,dien_dat_khac
+R16,"kiem tra stop_reason va max_tokens khi nao",D01-03,khong_dau
+R17,"Nếu nhét quá nhiều thông tin thừa vào cửa sổ ngữ cảnh thì sao?",D01-04,dien_dat_khac
+R18,"context window chua nhung thanh phan gi",D01-04,khong_dau
+R19,"Vì sao AI đôi khi nói nghe rất mượt mà vẫn bịa sai sự thật?",D01-05,dien_dat_khac
+R20,"knowledge cutoff va hallucination la gi",D01-05,khong_dau
+R21,"Vì sao mô hình ngôn ngữ không tự nhớ lịch sử trò chuyện giữa hai lượt API?",D01-06,chuan
+R22,"Ai là nơi giữ lịch sử hội thoại để gửi lại mỗi khi người dùng hỏi tiếp?",D01-06,dien_dat_khac
+R23,"Chi phí gọi API giữa token đầu vào và đầu ra khác nhau thế nào?",D01-07,chuan
+R24,"Khi chọn tier model có nên lúc nào cũng lấy model mạnh nhất không?",D01-07,dien_dat_khac
+R25,"Gắn tools và vòng lặp giúp mô hình làm được gì khác với chỉ đoán từ trí nhớ?",D01-08,chuan
+R26,"Khi xác định bài toán AI nên bắt đầu từ công nghệ hay nỗi đau người dùng?",D02-01,chuan
+R27,"Khi nào nên chọn rule hoặc workflow cố định thay vì dùng agent tự chọn bước?",D02-02,chuan
+R28,"Điểm người duyệt HITL cần đặt trước những hành động nào của hệ thống AI?",D02-03,chuan
+R29,"Mẫu ReAct phối hợp Reason, Act và Observe trong vòng lặp ra sao?",D03-01,chuan
+R30,"Làm sao tránh vòng lặp agent chạy vô hạn hoặc đốt token ngoài kiểm soát?",D03-02,dien_dat_khac
+N01,"Sao Thổ có bao nhiêu vệ tinh?",NONE,ngoai_bai
+N02,"Thời tiết Hà Nội cuối tuần này có mưa không?",NONE,ngoai_bai
+N03,"Cho mình xin công thức nấu phở bò ngon",NONE,ngoai_bai
+N04,"Đội bóng nào vô địch World Cup gần nhất?",NONE,ngoai_bai
+N05,"Giá vàng miếng SJC sáng nay là bao nhiêu?",NONE,ngoai_bai
+N06,"Đổi mật khẩu WiFi ký túc xá ở đâu?",NONE,ngoai_bai
