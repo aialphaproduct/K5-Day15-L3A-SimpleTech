@@ -5,7 +5,7 @@
 
 ## 1. Dataset → xử lý
 
-Tại CP2, trợ giảng tra 5 đoạn bài mẫu có mã. Nhật ký pre-class đã ẩn danh được dùng để đếm nhu cầu hỏi bài. Nguồn và giới hạn của từng tập được ghi trong [data card](../data/DATA_CARD.md).
+Tại CP2, trợ giảng tra 5 đoạn bài mẫu giả; sang CP3 đã thay bằng **20 đoạn viết lại (`tu_viet`)** trong `data/lessons/passages.csv` theo danh mục bài học thật Day01–Day04 và quy tắc trang pre-class (giữ 5 mã `GIA-01`–`GIA-05` để tương thích bộ câu thử CP2, thêm 15 đoạn `D01-01`–`D04-02`). Nhật ký pre-class đã ẩn danh chỉ dùng để đếm nhu cầu hỏi bài. Nguồn và giới hạn của từng tập được ghi trong [data card](../data/DATA_CARD.md).
 
 ## 2. Bộ câu thử dựng ra sao
 
@@ -34,11 +34,11 @@ Tại CP2, trợ giảng tra 5 đoạn bài mẫu có mã. Nhật ký pre-class 
 
 | Lượt | Run ID | Model | Cấu hình (prompt / công cụ / thay đổi) | Đạt / tổng | % | Đạt chuẩn? |
 |---|---|---|---|---|---|---|
-| 1 | | | | __/__ | | |
-| 2 | | | | __/__ | | |
+| 1 | `run-1@20261127-214416` | `gemini-3.1-flash-lite` | 20 đoạn `tu_viet`, `search_passages` overlap cơ bản, `SYSTEM` prompt gốc | 18/23 | 78% | Chưa (`thuong` 89%, `kho` 73%, `tu_choi` 67%) |
+| 2 | `run-2@20261127-215239` | `gemini-3.1-flash-lite` | 1 cải tiến: `search_passages` IDF + giữ viết tắt `AI`/phân biệt dấu tiếng Việt + `SYSTEM` prompt 4 đường đi §6 | 22/23 | 96% | Đạt (`thuong` 100%, `kho` 91%, `tu_choi` 100%) |
 
 Lượt chạy lại vì lỗi kỹ thuật, lượt sau CP4: ghi thêm dòng, không sửa dòng cũ.
 
 ## 6. Lỗi chính
 
-Tóm 2–3 dòng từ `eval/report.md`: nhóm lỗi lớn nhất · đã sửa gì · còn lại gì.
+Từ [eval/report.md](report.md): Lượt 1 có 5 lỗi (4 câu do prompt cũ ép chỉ viết *"Không có trong bài."* hoặc không hỏi lại khi mơ hồ: B10, B15, B16, B23; 1 câu B18 do `search_passages` bỏ chữ `AI` và khớp nhầm `chạy`/`chảy`). Sau 1 lần cải tiến `tools.py` + `agent.py`, 4/5 lỗi hết hoàn toàn (0 câu tệ đi), tổng đạt 22/23 (96%), chỉ còn 1 lỗi B15 do nhầm từ *"kiểm lại"* sang `[GIA-05]` (*"kiểm tra hiểu bài"*).

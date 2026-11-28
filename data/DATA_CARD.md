@@ -14,14 +14,14 @@
 
 ## Dataset 2 · Đoạn bài cho trợ giảng (`data/lessons/passages.csv`)
 
-|                     |                                                                                                                                            |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| Dùng để làm gì      | căn cứ cho công cụ `search_passages` / `get_passage` và bộ câu thử                                                                         |
-| Từ đâu              | **GIẢ**: 5 đoạn mẫu nhóm dựng để luồng chạy được trước CP2. **Phải thay** bằng đoạn bài thật đã viết lại (không copy nguyên tài liệu khoá) |
-| Xử lý những bước gì | (nhóm điền) lấy đoạn từ bài → viết lại ngắn → gắn mã → kiểm lại từng đoạn có đúng bài không                                                |
-| Số dòng / số đoạn   | 5 (giả)                                                                                                                                    |
-| Nhãn                | `synthetic` cho đoạn giả; `tu_viet` cho đoạn nhóm viết lại                                                                                 |
-| Giới hạn            | đoạn giả không phải nội dung khoá; mọi số đo trên đoạn giả chỉ để kiểm luồng                                                               |
+|                     |                                                                                                                                                                                                                                               |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Dùng để làm gì      | căn cứ cho công cụ `search_passages` / `get_passage` và bộ câu thử                                                                                                                                                                            |
+| Từ đâu              | Nhóm tự viết lại (`tu_viet`, không copy nguyên văn tài liệu khoá) theo cấu trúc bài học thật (`lesson_id`, `kc_code`) và quy trình học của khoá AI20K K5 trong `data/preclass/` (`README.md`, `answers.csv`, `chat.csv`): tập trung Day01–Day04 (chiếm 66% tổng số câu hỏi trợ giảng) và quy tắc trang pre-class. |
+| Xử lý những bước gì | Đối chiếu top bài/video nhiều câu hỏi (`tutor_counts.txt`) và danh mục `kc_code` trong `answers.csv` → tóm tắt viết lại mỗi ý kiến thức thành 1 đoạn ngắn 2 câu → gắn mã đoạn (`GIA-01`–`GIA-05`, `D01-01`–`D04-02`) → kiểm lại không chứa nội dung tài liệu nguyên văn và không lộ đáp án câu `kho`. Giữ 5 mã `GIA-01`–`GIA-05` (đã thay hoàn toàn chữ `(GIẢ)` bằng nội dung viết lại) để tương thích bộ câu thử và `metric_spec.yaml` đã chốt ở CP2. |
+| Số dòng / số đoạn   | 20 đoạn (`GIA-01`–`GIA-05`: 5 đoạn nền tảng & quy tắc pre-class; `D01-01`–`D01-08`: 8 đoạn Day01; `D02-01`–`D02-03`: 3 đoạn Day02; `D03-01`–`D03-02`: 2 đoạn Day03; `D04-01`–`D04-02`: 2 đoạn Day04)                                          |
+| Nhãn                | `tu_viet` (toàn bộ 20/20 đoạn; không còn đoạn `nhom_viet_gia` hay `(GIẢ)`)                                                                                                                                                                     |
+| Giới hạn            | Mới bao phủ 4 ngày học nhiều câu hỏi nhất (Day01–Day04) và quy tắc chung trang pre-class; chưa phủ Day05–Day13 hay các chủ đề ML ngoài khoá (nên câu hỏi ngoài phạm vi này sẽ kích hoạt nhánh "Không có trong bài").                           |
 
 ## Dataset 3 · Bộ câu thử (`eval/benchmark.csv`)
 

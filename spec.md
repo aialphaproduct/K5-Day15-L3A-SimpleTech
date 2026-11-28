@@ -83,7 +83,7 @@ flowchart TD
   | Chỉ trả lời có căn cứ | Mã trích dẫn phải thuộc đoạn đã tìm (`agent.py`) |
   | Không làm hộ | Câu tu_choi trong bộ câu thử (B10–B12) |
 
-- **Phần nào còn giả:** đoạn bài trong `data/lessons/passages.csv` là **giả**; phải thay bằng đoạn thật đã viết lại. Model: chưa nối (chế độ giả đang chạy). **[nhóm nối model bằng `.env`, không commit key]**
+- **Phần nào còn giả:** `data/lessons/passages.csv` đã thay bằng **20 đoạn viết lại (`tu_viet`)** theo danh mục bài học Day01–Day04 và quy tắc pre-class (xem `data/DATA_CARD.md`). `codebase/ai.py` đã hỗ trợ gọi model thật qua `.env` (`openai`, `gemini`, `anthropic`, `ollama`, `deepseek`, `openrouter`, `groq`); giữ chế độ giả khi chưa điền `.env`. **[nhóm điền `.env` trên máy, không commit key]**
 
 ## §5. Chỗ khó — 4 lớp + kịch bản + tấn công
 
@@ -110,7 +110,7 @@ flowchart TD
 ## §7. Đánh giá & chuẩn "đạt"
 - Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 23 câu (thuong 9 · kho 11 · tu_choi 3), gồm 14 câu `tu_viet` và 9 câu `nguoi_dung` (2 từ P1, 2 từ P2, 2 từ P3, 2 từ P4, 1 theo ghi nhận ở commit `a36ef5a`) · metric: `eval/metric_spec.yaml` (3 metric)
 - **Chuẩn "đạt" (đã chốt, giữ nguyên đến 23:59 Thứ Bảy 28/11):** "Đạt khi ≥ 90% câu thuong có mã đoạn đúng, 100% câu tu_choi không làm hộ, và ≥ 80% câu kho không bịa thông tin." Metric: `trich_dung_ma`, `khong_bia`, `dung_y_tra_loi` (`eval/metric_spec.yaml`).
-- Kết quả: lượt 1 __/__ · lượt 2 __/__ — **chưa chạy** (chờ model thật và đoạn bài thật).
+- Kết quả: lượt 1 **18/23 (78%)** (`run-1@20261127-214416`: thuong 8/9, kho 8/11, tu_choi 2/3 — chưa đạt) · lượt 2 **22/23 (96%)** (`run-2@20261127-215239`: thuong 9/9, kho 10/11, tu_choi 3/3 — **đạt chuẩn §7**) với `gemini-3.1-flash-lite`. Chi tiết lỗi và cải tiến: `eval/report.md`.
 
 ## §8. Chi phí khi dùng thật
 - Persona + giá: `cost/personas.yaml` · **chưa điền** (chờ model thật)
@@ -142,3 +142,5 @@ flowchart TD
 | 27/11 | Sửa nguồn B20–B21 thành `nguoi_dung` và cập nhật tỷ lệ lên 7/21 | Nhóm xác nhận TV4 đã phỏng vấn trực tiếp P4 |
 | 27/11 | Gộp hai bộ câu thử, giữ B20–B21 của P2 và chuyển hai câu P4 sang B22–B23 | Giữ đủ nội dung hai nhánh và mã riêng cho từng câu |
 | 27/11 | Cập nhật mục CP2 trong README và luồng web dùng AI giả ở §4 | Để đội trưởng lấy liên kết, chép chuẩn đạt và chạy lại hai tình huống mẫu |
+| 27/11 | Thay 5 đoạn giả trong `data/lessons/passages.csv` bằng 20 đoạn `tu_viet` (Day01–Day04 + quy tắc pre-class) và viết phần gọi model thật trong `codebase/ai.py` | Hoàn thiện #8 và phần code của #9 trước khi chạy eval CP3; giữ mã `GIA-01`–`GIA-05` để tương thích bộ câu thử & metric CP2 |
+| 27/11 | Chạy eval lượt 1 (`run-1`: 18/23 = 78%), cải tiến `codebase/tools.py` (IDF, giữ viết tắt `AI`, phân biệt dấu) và `codebase/agent.py` (`SYSTEM` prompt 4 đường đi §6), chạy lượt 2 (`run-2`: 22/23 = 96%) | Hoàn thiện #9 và #10; khắc phục 4/5 lỗi lượt 1 (B10, B16, B18, B23) và đạt chuẩn §7 với 0 câu tệ đi |
