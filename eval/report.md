@@ -8,16 +8,16 @@
 | Lượt | Run ID | Đạt / tổng | % | thuong | kho | tu_choi | So với chuẩn "đạt" |
 |---|---|---|---|---|---|---|---|
 | 1 | `run-1@20261127-214416` | 18/23 | 78% | 8/9 (89%) | 8/11 (73%) | 2/3 (67%) | chưa đạt |
-| 2 | `run-2@20261127-215239` | 22/23 | 96% | 9/9 (100%) | 10/11 (91%) | 3/3 (100%) | đạt |
-| 3 *(sau #32)* | `run-3@20261128-081047` | 22/23 | 96% | 9/9 (100%) | 10/11 (91%) | 3/3 (100%) | đạt *(xem lưu ý B06)* |
+| 2 | `run-2@20261127-215239` | 22/23 | 96% | 9/9 (100%) | 10/11 (91%) | 3/3 (100%) | đạt theo nhóm pass; đúng ý chưa đủ mẫu |
+| 3 *(sau #32)* | `run-3@20261128-081047` | 22/23 | 96% | 9/9 (100%) | 10/11 (91%) | 3/3 (100%) | **chưa đạt metric mã (8/9)**; pass 22/23 |
 | 4 *(27 đoạn)* | `run-4@20261128-115005` | 21/23 | 91% | 8/9 (89%) | 10/11 (91%) | 3/3 (100%) | **chưa đạt** *(chấm tạm)* |
 | 5 *(28 đoạn)* | `run-5@20261128-122015` | 21/23 | 91% | 8/9 (89%) | 10/11 (91%) | 3/3 (100%) | **chưa đạt** *(chấm tạm)* |
 
 - Model đo cả 3 lượt: `gemini-3.1-flash-lite`, 0 lỗi kỹ thuật ở cả ba lượt.
 - Chi tiết theo 3 metric CP2 (`eval/metric_spec.yaml`):
   - `trich_dung_ma` (ngưỡng ≥ 90% câu `thuong`): lượt 1 **8/9 (89%)** → lượt 2 **9/9 (100%)** → lượt 3 **8/9 (88,9%)** theo cách tính chặt `metric_spec.yaml` dòng 18 vì ở lượt 3 model trả nhãn `NO_BASIS` cho `B06` (đạt 100% `pass_criterion` riêng của `B06` nhưng không kèm `[GIA-04]`; cả 8/8 câu `thuong` có mã kỳ vọng `B01–B05, B17–B19` đều trích đúng mã).
-  - `khong_bia` (ngưỡng ≥ 80% `kho`, 100% `tu_choi`): lượt 1 theo tiêu chí từng câu đạt `kho` **8/11 (73%)**, `tu_choi` **2/3 (67%)** → lượt 2 & lượt 3 đều đạt `kho` **10/11 (91%)**, `tu_choi` **3/3 (100%)** (ở lượt 3 mọi output không có mã đều đi qua nhãn `NO_BASIS | CLARIFY | REFUSE` do code kiểm soát).
-  - `dung_y_tra_loi`: rà trên 9 câu `thuong` đạt **8/9** ở lượt 1 → **9/9** ở lượt 2 & lượt 3 *(chưa đủ mẫu 20 câu `thuong` và chờ người thứ hai — Khổng Tiến Dương — chấm độc lập 5 câu ở `#12`)*.
+  - `khong_bia` (ngưỡng ≥80% `kho`, 100% `tu_choi`): điểm **theo tiêu chí riêng từng câu** ở lượt 1 là `kho` 8/11, `tu_choi` 2/3; lượt 2–3 là `kho` 10/11, `tu_choi` 3/3. Đây **không phải kết quả chấm độc lập metric `khong_bia`**: định nghĩa CP2 còn yêu cầu lời báo thiếu căn cứ/chuyển TA và kiểm nội dung không bịa. Cần người đọc đối chiếu riêng các điều kiện đó; kết quả cơ học ở `final-audit.md` không thay chấm nghĩa. Nhãn do code kiểm soát ở lượt 3 cũng không chứng minh các câu có mã đều đúng.
+  - `dung_y_tra_loi`: rà trên 9 câu `thuong` đạt **8/9** ở lượt 1 → **9/9** ở lượt 2 & lượt 3 *(chưa đủ mẫu 20 câu `thuong`; người thứ hai đã báo khớp 5/5 ở lượt 2, xem `eval/README.md` mục 3)*.
 - Chi phí token trung bình / câu: lượt 1 `283` vào / `29` ra → lượt 2 `582` vào / `48` ra → lượt 3 (`#32`) **`464` vào (-20%) / `20` ra (-58%)** vì các nhánh `NO_BASIS | CLARIFY | REFUSE` chỉ sinh 2–4 token nhãn, phần lời do code tự điền.
 
 Kết quả từng câu: [eval/run-1.csv](run-1.csv), [eval/run-2.csv](run-2.csv), [eval/run-3.csv](run-3.csv). Trace: [traces/run-1.jsonl](../traces/run-1.jsonl), [traces/run-2.jsonl](../traces/run-2.jsonl), [traces/run-3.jsonl](../traces/run-3.jsonl).
@@ -68,8 +68,8 @@ Kết quả từng câu: [eval/run-1.csv](run-1.csv), [eval/run-2.csv](run-2.csv
 
 | Bộ câu thử | Run ID | Tổng | `thuong` (ngưỡng ≥ 90%) | `kho` (ngưỡng ≥ 80%) | `tu_choi` (ngưỡng 100%) | Chuẩn §7 |
 |---|---|---:|---:|---:|---:|---|
-| Bộ cũ — Lượt 2 (`benchmark.csv`, 23 câu) | `run-2@20261127-215239` | 22/23 (96%) | 9/9 (100%) | 10/11 (91%) | 3/3 (100%) | Đạt |
-| Bộ cũ — Lượt 3 tại `adf1a17` (`benchmark.csv`, 23 câu) | `run-3@20261128-081047` | 22/23 (96%) | 9/9 (100%) | 10/11 (91%) | 3/3 (100%) | Đạt *(lưu ý B06)* |
+| Bộ cũ — Lượt 2 (`benchmark.csv`, 23 câu) | `run-2@20261127-215239` | 22/23 (96%) | 9/9 (100%) | 10/11 (91%) | 3/3 (100%) | Đạt theo nhóm pass; đúng ý chưa đủ mẫu |
+| Bộ cũ — Lượt 3 tại `adf1a17` (`benchmark.csv`, 23 câu) | `run-3@20261128-081047` | 22/23 (96%) | 9/9 (100%) | 10/11 (91%) | 3/3 (100%) | Chưa đạt metric mã: 8/9; pass 22/23 |
 | **Bộ kín #33 tại `adf1a17` (`benchmark_heldout.csv`, 15 câu)** | `run-1@20261128-085312` | **13/15 (87%)** | **5/7 (71%)** | **5/5 (100%)** | **3/3 (100%)** | **Chưa đạt** *(thiếu nhóm `thuong`, cần 7/7)* |
 
 ### Giải thích chênh lệch (từ trace `traces/run-heldout.jsonl`)
@@ -98,13 +98,16 @@ Kết quả từng câu: [eval/run-1.csv](run-1.csv), [eval/run-2.csv](run-2.csv
 
 `python eval/gate.py eval/run-N.csv --base eval/run-M.csv` chấm bằng code (đúng mã, đúng loại phản hồi, không bịa số/ngày), so với lượt gốc và thoát mã 1 khi nhóm nào dưới chuẩn §7 hoặc có câu tụt.
 
+Bảng theo cổng bản sửa sau CP4 (thêm điều kiện mã CP2). Bản cũ của cổng, dùng đến CP4, từng cho lượt 3 QUA.
+
 | Chạy trên | Code chấm đạt | Kết luận |
 |---|---|---|
-| Lượt 1 | 19/23 | CHẶN (`thuong` 8/9, `tu_choi` 2/3) |
-| Lượt 2 so lượt 1 | 22/23 | QUA |
-| Lượt 3 so lượt 2 | 22/23 | QUA |
-| Lượt 4 so lượt 3 | 21/23 | CHẶN (B18 tụt, `thuong` 8/9) |
-| Bộ kín | 13/15 | CHẶN (`thuong` 5/7) |
+| Lượt 1 | 19/23 | CHẶN (mã 8/9, `thuong` 8/9, `tu_choi` 2/3) |
+| Lượt 2 so lượt 1 | 22/23 | QUA phần cơ học, không thay metric CP2 |
+| Lượt 3 so lượt 2 | 22/23 | CHẶN (mã 8/9) |
+| Lượt 4 so lượt 3 | 21/23 | CHẶN (B18 tụt, mã 7/9, `thuong` 8/9) |
+| Lượt 5 so lượt 4 | 21/23 | CHẶN (mã 7/9, `thuong` 8/9) |
+| Bộ kín | 13/15 | CHẶN (mã 5/7, `thuong` 5/7) |
 
 - **Đối chiếu với điểm đã chấm:** `python eval/gate.py --calibrate` khớp 83/84 (lượt 1–3 và bộ kín; không tính lượt 4 vì chưa có người chấm). Lệch: B23 lượt 1, code cho đạt.
 - **Giới hạn:** luật viết sau khi đã xem các lượt này nên mức khớp là lạc quan; code không chấm được nghĩa câu trả lời; chưa gắn CI; không tự sửa prompt hay đoạn bài.
@@ -115,3 +118,12 @@ Kết quả từng câu: [eval/run-1.csv](run-1.csv), [eval/run-2.csv](run-2.csv
 - **Vòng V4** (bản demo, model theo `.env`): LLM đọc câu trượt của bộ câu thử rồi viết prompt mới; code chấm lại cả hai bộ. Bộ câu thử 21/23 → 21/23, bộ kín 13/15 → 13/15, chi phí ~$0,014. **Loại** vì không đạt thêm câu nào. LLM viết prompt không được xem bộ kín. Prompt đang dùng giữ nguyên.
 - **Giới hạn:** mỗi bộ chạy một lần; mã ở `codebase/improve.py`.
 
+
+## 9. Đính chính sau CP4 trên feat/final
+
+- Điểm `pass` 18/23 → 22/23 ở lượt 1 → 2 giữ nguyên; đây là hồ sơ cải tiến R5 đã có trước CP4.
+- Kết luận “lượt 3 đạt” trước đây chỉ dựa theo `pass`. Theo chuẩn mã CP2, B06 thiếu mã: 8/9 <90%, nên **chưa đạt**. Lượt 4–5 có 7/9 đủ mã theo yêu cầu từng câu (B06, B18 thiếu). Bộ kín 5/7 là phép đo riêng.
+- `dung_y_tra_loi` có 9 câu thường, chưa đủ mẫu 20 theo chuẩn đã chốt. Không gộp bộ kín hoặc lấy việc trích đúng mã làm bằng chứng đúng ý.
+- `khong_bia` cần kiểm nội dung và lời báo thiếu căn cứ/chuyển TA. [Kiểm toán](final-audit.md) chỉ kiểm điều kiện cơ học, không thay người chấm nghĩa. Điểm theo tiêu chí riêng B15/B16 không tự thay thế định nghĩa metric.
+- Nguồn ngoài nhóm kiểm chứng được 4/23. B17 còn chờ xác minh; P4 được nhóm xác nhận lại sau CP4 nhưng chưa có ghi chép gốc (nếu chấp nhận: 6/23); P3 là thành viên nhóm. Không sửa nhãn gốc hoặc đáp án của các lượt cũ để làm đẹp tỷ lệ.
+- Cổng `gate.py` báo QUA chỉ là qua luật hình thức riêng, **không phải đạt toàn bộ metric CP2**. Mức khớp 83/84 sau khi đã xem dữ liệu không là bằng chứng độc lập.
