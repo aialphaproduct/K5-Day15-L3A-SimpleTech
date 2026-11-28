@@ -72,7 +72,7 @@ Bộ đo gồm: **8 cặp (16 câu)** đặt **cùng một câu hỏi ở 2 vide
    - `bm25_hybrid`: **Recall@1 = 30/30 (100%)**, **Recall@3 = 30/30 (100%)**, **Lọc ngoài bài = 6/6 (100%)** (0 token thêm, 5.0 ms/câu).
    - Trong quá trình mở rộng lên 29 đoạn, phát hiện 1 ca ngoài bài (`N02`: *"Thời tiết Hà Nội cuối tuần này có mưa không?"*) từng trùng ngẫu nhiên 2 đơn âm (`thời` + `cuối`) với `D06-04`; đã thêm điều kiện yêu cầu bigram hoặc độ phủ trong `tools.py` giúp khôi phục 6/6 (100%) mà không ảnh hưởng câu trong bài.
 2. **Unit test (`python -m unittest discover -s tests -v`):** **16/16 đạt** (gồm test sửa `verify_claim_rule` từ PR #44 và 4 test cho `#36`, `#37`, Flask `web.py`).
-3. **Eval 23 câu CP2 trên model thật sau khi gộp fix PR #44 (`gemini-3.1-flash-lite`, `eval/run-4.csv`, `run-4@20261128-100150`, `video=""`):**
+3. **Eval 23 câu CP2 trên model thật sau khi gộp fix PR #44 (`gemini-3.1-flash-lite`, `eval/run-36-37-v2.csv`, `run-4@20261128-100150`, `video=""`):**
    - **Tổng đạt: 22/23 (96%)** — `thuong 9/9 (100%)`, `kho 10/11 (91%)`, `tu_choi 3/3 (100%)`, lỗi kỹ thuật: `0` → **đạt chuẩn `spec.md` §7, không hồi quy** so với lượt 2 & lượt 3 (`22/23 = 96%`).
    - Hiệu quả gọi model cải thiện rõ: trung bình còn **0,8 lần gọi model/câu** (4/23 câu `B08, B12, B13, B14` dừng ngay ở bước tìm đoạn, tốn 0 token) và **374 token vào / 22 token ra** (giảm so với 582/48 ở lượt 2 và 464/20 ở lượt 3).
-   - Câu duy nhất chưa đạt vẫn là `B15` (cùng nguyên nhân đã ghi nhận ở lượt 2). *(Ghi nhận: lượt kiểm sơ bộ trước khi gộp fix PR #44 nằm ở `eval/run-36-37.csv`, cũng đạt 22/23 = 96%.)*
+   - Câu duy nhất chưa đạt vẫn là `B15` (cùng nguyên nhân đã ghi nhận ở lượt 2). *(Ghi nhận: file lưu dưới tên `eval/run-36-37-v2.csv` để giữ nguyên vẹn `eval/run-4.csv` và `eval/run-5.csv` của PR #56 trên `develop`; lượt kiểm sơ bộ trước fix PR #44 nằm ở `eval/run-36-37.csv`, cũng đạt 22/23 = 96%.)*

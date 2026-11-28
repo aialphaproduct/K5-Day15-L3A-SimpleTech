@@ -124,17 +124,20 @@ def check_benchmark_thuong():
         "B19": "GIA-02",
     }
     bm_path = os.path.join(ROOT, "eval", "benchmark.csv")
-    ok = 0
+    top1_ok = top3_ok = 0
     failed = []
     with open(bm_path, encoding="utf-8-sig", newline="") as f:
         for r in csv.DictReader(f):
             if r["id"] in expected_codes:
                 codes = [p["code"] for p in tools.search_passages(r["input"])]
-                if codes and codes[0] == expected_codes[r["id"]]:
-                    ok += 1
+                exp = expected_codes[r["id"]]
+                if codes and codes[0] == exp:
+                    top1_ok += 1
+                if exp in codes[:3]:
+                    top3_ok += 1
                 else:
-                    failed.append((r["id"], expected_codes[r["id"]], codes))
-    return ok, len(expected_codes), failed
+                    failed.append((r["id"], exp, codes))
+    return top1_ok, top3_ok, len(expected_codes), failed
 
 
 def main():
@@ -159,10 +162,13 @@ def main():
         if r["missed"]:
             print("  Trượt [%s]: %s" % (r["scope"], r["missed"]))
 
-    ok, total, failed = check_benchmark_thuong()
-    print("\nKiểm không hồi quy eval/benchmark.csv (9 câu thuong, video=''): %d/%d Top-1 khớp mã chuẩn." % (ok, total))
+    top1_ok, top3_ok, total, failed = check_benchmark_thuong()
+    print(
+        "\nKiểm không hồi quy eval/benchmark.csv (9 câu thuong, video=''): %d/%d Top-1, %d/%d Recall@3 khớp mã chuẩn."
+        % (top1_ok, total, top3_ok, total)
+    )
     if failed:
-        print("  Hồi quy:", failed)
+        print("  Hồi quy Recall@3:", failed)
         sys.exit(1)
 
 

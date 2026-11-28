@@ -7,7 +7,7 @@
 | Nguồn | Trạng thái | Vai trò |
 |---|---|---|
 | Đào data (`chat.csv`) | Có x/N, cách đếm và script chạy lại được | **Nguồn chính** |
-| Khảo sát | 13 phản hồi, dưới ngưỡng 20 | Nguồn thứ hai để đối chiếu |
+| Khảo sát | 17 phản hồi (15 học viên), dưới ngưỡng 20 | Nguồn thứ hai để đối chiếu |
 | Phỏng vấn | Chỉ tính P1, P2; chưa đủ ngưỡng 3 người ngoài nhóm | Ví dụ minh hoạ |
 
 ## Cách chọn mẫu và cách đếm
@@ -41,19 +41,19 @@
 - **`ngu_canh` không dùng để kết luận.** Từ điển cột của BTC ghi trường này để trống với mọi dòng trước 25/11. Con số 9/1.091 phản ánh thời điểm bắt đầu ghi, không cho biết trợ giảng có dựa vào đoạn bài hay không.
 - **Data không có nội dung câu hỏi và câu trả lời.** Không đo được chất lượng câu trả lời từ data. Chất lượng phải đo bằng bộ câu thử (`eval/benchmark.csv`) và người chấm.
 
-## Nguồn thứ hai: khảo sát (n = 13)
+## Nguồn thứ hai: khảo sát (n = 17)
 
-Log từng câu trả lời: [survey/result-survey1.md](survey/result-survey1.md). Thu ngày 27/11. Người trả lời: 10 L3A, 1 L3B, 2 lab coach; **chưa xác nhận tất cả đều là người ngoài nhóm**.
+Log từng câu trả lời: [survey/result-survey1.md](survey/result-survey1.md). Thu ngày 27/11. Người trả lời: 13 L3A, 2 L3B, 2 lab coach (gồm 1 ghi "LC"); Nhóm xác nhận (28/11) tất cả người trả lời đã học khoá và do thành viên nhóm trực tiếp đi khảo sát.
 
 | Câu hỏi | Kết quả |
 |---|---|
-| Kiểm lại câu trả lời trong bài: "có nhưng mất công tìm" hoặc "không" | 12/13 (10 + 2) |
-| Mất từ 5 phút trở lên để hiểu ở lần gần nhất | 11/13 |
-| Chỉ hiểu một phần | 10/13 |
-| Đã hỏi trợ giảng AI dưới video ở lần gần nhất | 5/13 |
-| Đã tua lại video | 10/13 |
+| Kiểm lại câu trả lời trong bài: "có nhưng mất công tìm" hoặc "không" | 15/17 (13 + 2); tính riêng học viên: 14/15 |
+| Mất từ 5 phút trở lên để hiểu ở lần gần nhất | 13/17 |
+| Chỉ hiểu một phần | 11/17 |
+| Đã hỏi trợ giảng AI dưới video ở lần gần nhất | 6/17 |
+| Đã tua lại video | 12/17 |
 
-**Khớp và lệch so với data:** data cho thấy học viên hỏi trợ giảng nhiều (1.091 câu trong 21 ngày); khảo sát cho thấy phải tốn công tìm lại chỗ trong bài để kiểm là phổ biến. Khảo sát cũng cho thấy phần lớn người trả lời (8/13) không dùng trợ giảng AI ở lần gần nhất, nên không quy khó khăn này thành lỗi của trợ giảng.
+**Khớp và lệch so với data:** data cho thấy học viên hỏi trợ giảng nhiều (1.091 câu trong 21 ngày); khảo sát cho thấy phải tốn công tìm lại chỗ trong bài để kiểm là phổ biến. Khảo sát cũng cho thấy phần lớn người trả lời (11/17) không dùng trợ giảng AI ở lần gần nhất, nên không quy khó khăn này thành lỗi của trợ giảng.
 
 ## Trích dẫn nguyên văn (giữ nguyên chính tả)
 
@@ -62,6 +62,8 @@ Log từng câu trả lời: [survey/result-survey1.md](survey/result-survey1.md
 3. "nội dung chưa khái quát" (khảo sát, dòng 8, L3A)
 4. "Khi chưa tìm ra được đáp án chính xác trong bài giảng/video" (khảo sát, dòng 9, L3A)
 5. "Mình lười gõ lại công thức lắm, chụp bụp cái màn hình slide ném sang Claude hỏi cho nhanh, chứ gõ chữ dưới video không biết nó có nhìn thấy hình trên slide không." ([P2](interviews/P2.md), L3B)
+6. "chưa chắc thông tin được học có đúng so với khóa chính thức của chương trình không" (khảo sát, dòng 14, L3A)
+7. "Khổ lắm không dùng ạ" (khảo sát, dòng 16, L3A)
 
 ## Giới hạn
 

@@ -210,7 +210,7 @@ def search_passages(query: str, video: str = "", scope: str = "hep") -> list:
 
     n = len(docs)
     avgdl = total_len / n
-    k1, b = 1.2, 0.75
+    k1, b = 0.6, 0.75
     scored = []
     for p, tf_plain, tf_exact, l_set, doc_len, t_bigrams in parsed:
         score = 0.0
@@ -238,7 +238,7 @@ def search_passages(query: str, video: str = "", scope: str = "hep") -> list:
                 score += 0.6 * idf_l
                 matched_terms.add(w)
         bg_hits = len(q_bigrams & t_bigrams)
-        score += bg_hits * 1.0
+        score += bg_hits * 1.0 + len(matched_terms) * 1.0
         coverage = len(matched_terms) / q_base_count
         has_phrase_or_coverage = bg_hits >= 1 or len(matched_terms) >= 3 or coverage >= MIN_COVERAGE
         if score >= MIN_SCORE and (len(matched_terms) >= 2 or coverage >= MIN_COVERAGE) and has_phrase_or_coverage:
