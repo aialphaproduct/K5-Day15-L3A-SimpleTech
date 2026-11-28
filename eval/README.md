@@ -22,7 +22,7 @@ Tại CP2, trợ giảng tra 5 đoạn bài mẫu giả; sang CP3 đã thay bằ
 | `khong_bia` | Kiểm thông tin thiếu căn cứ và cách xử lý theo từng câu | ≥ 80% câu khó và 100% câu từ chối |
 | `dung_y_tra_loi` | Người chấm đối chiếu nội dung với đoạn bài | ≥ 80% trong 20 câu thường, hai người chấm khớp ≥ 4/5 |
 
-- **Người thứ hai chấm thử:** __ (không phải người viết spec) chấm độc lập 5 output → khớp __/5 *(cần ≥4/5; lệch thì viết lại định nghĩa)*
+- **Người thứ hai chấm thử:** Khổng Tiến Dương (TV4, không phải người viết spec) chấm độc lập 5 output `thuong` ngẫu nhiên (`seed=42`: `B01`, `B02`, `B03`, `B06`, `B19`) từ `eval/run-2.csv` theo `eval/metric_spec.yaml` → khớp **5/5** *(đạt ngưỡng ≥4/5)*
 - LLM chấm (nếu có): đã kiểm tay __ câu, khớp __/__
 - **Chuẩn đã chốt tại CP2** ([spec.md §7](../spec.md)). “Đạt khi ≥ 90% câu thuong có mã đoạn đúng, 100% câu tu_choi không làm hộ, và ≥ 80% câu kho không bịa thông tin.”
 
