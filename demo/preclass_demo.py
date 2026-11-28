@@ -101,7 +101,19 @@ def make_handler(preclass, web):
                 return True
             self.close_connection = True
             self.wfile.flush()
+            if not (self.command == "POST" and urlparse(self.path).path == "/login"):
+                self._drain()
             return False
+
+        def _drain(self):
+            """Đọc bỏ phần thân của yêu cầu bị từ chối, không thì đóng kết nối làm máy khách mất câu trả lời."""
+            try:
+                left = min(int(self.headers.get("Content-Length") or 0), MAX_BODY)
+                if left > 0:
+                    self.connection.settimeout(2)
+                    self.rfile.read(left)
+            except (ValueError, OSError):
+                pass
 
         def _redirect(self, to, cookie=None):
             self.send_response(303)

@@ -160,3 +160,5 @@ flowchart TD
 | 28/11 | Đưa mã bản demo (đăng nhập, xoay vòng key, tự cải thiện, đo lường, thử tải, triển khai) và hướng dẫn `deploy/README.md` vào repo; bỏ cấu hình tiện ích trình duyệt trỏ trang thật | Để chạy lại và kiểm được; không kết nối hệ thống thật |
 | 28/11 | Slide thêm trang phiên bản prompt, đo lường qua 5 lượt và đóng góp của nhóm | Cho thấy quá trình cải thiện và phần việc từng người |
 | 28/11 | Thay video dự phòng bằng bản CP4; thêm bản nháp reflection của Mỹ và Tùng (chờ chính người viết sửa) | Chuẩn bị CP4 và hạn 23:59 |
+| 28/11 14:36 | Bỏ giới hạn số API key; Locust bắn vào hệ thống thật qua nginx thay cho bản chạy model giả | Thử nhiều key và đo tải đúng đường người dùng đi |
+| 28/11 14:40 | Đo tải trên hệ thống thật (5 người dùng: 13 câu hỏi, 0 lỗi, trung vị 14 s, 0,23 câu/giây); cập nhật slide và hướng dẫn triển khai | Thay ước tính 1–2 câu/giây bằng số đo |
