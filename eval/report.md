@@ -10,6 +10,8 @@
 | 1 | `run-1@20261127-214416` | 18/23 | 78% | 8/9 (89%) | 8/11 (73%) | 2/3 (67%) | chưa đạt |
 | 2 | `run-2@20261127-215239` | 22/23 | 96% | 9/9 (100%) | 10/11 (91%) | 3/3 (100%) | đạt |
 | 3 *(sau #32)* | `run-3@20261128-081047` | 22/23 | 96% | 9/9 (100%) | 10/11 (91%) | 3/3 (100%) | đạt *(xem lưu ý B06)* |
+| 4 *(27 đoạn)* | `run-4@20261128-115005` | 21/23 | 91% | 8/9 (89%) | 10/11 (91%) | 3/3 (100%) | **chưa đạt** *(chấm tạm)* |
+| 5 *(28 đoạn)* | `run-5@20261128-122015` | 21/23 | 91% | 8/9 (89%) | 10/11 (91%) | 3/3 (100%) | **chưa đạt** *(chấm tạm)* |
 
 - Model đo cả 3 lượt: `gemini-3.1-flash-lite`, 0 lỗi kỹ thuật ở cả ba lượt.
 - Chi tiết theo 3 metric CP2 (`eval/metric_spec.yaml`):
@@ -82,3 +84,34 @@ Kết quả từng câu: [eval/run-1.csv](run-1.csv), [eval/run-2.csv](run-2.csv
 
 - **Chưa kín hoàn toàn:** 15 câu mang nguồn `sinh_seed` do Claude soạn nháp từ `data/lessons/passages.csv` sau khi đã đọc `agent.py`, `tools.py` và bộ 23 câu cũ (không phải câu mới hoàn toàn thu từ học viên chưa tiếp xúc hệ thống).
 - **Cỡ mẫu nhóm `thuong` nhỏ (`n = 7`):** Để đạt ngưỡng ≥ 90% bắt buộc đúng 7/7; chỉ 2 câu trượt truy xuất đã kéo tỷ lệ xuống 71%.
+
+## 6. Lượt 4: thêm 7 đoạn bài cho phần 1 của Day01
+
+- **Đổi gì:** `data/lessons/passages.csv` từ 20 lên 27 đoạn (`D01-09`–`D01-15`, viết lại từ lời giảng phần 1, chờ người đối chiếu video). Không đổi `agent.py`, `tools.py`, bộ câu thử hay chuẩn đạt.
+- **Vì sao:** hỏi về nội dung phần 1 (AI, Machine Learning, vì sao AI bùng nổ) trước đó trả “Không có trong bài”.
+- **Kết quả (`run-4@20261128-115005`, 0 lỗi kỹ thuật, `479` token vào / `25` ra):** 21/23. `thuong` 8/9, `kho` 10/11, `tu_choi` 3/3. **Chưa đạt** chuẩn §7 ở nhóm `thuong`. Tính chặt theo `trich_dung_ma` (B06 không kèm mã) là 7/9.
+- **Câu tệ đi:** `B18` “AI chạy như thế nào vậy?” giờ lấy `D01-09`, `D01-11` thay vì `GIA-01`. Không sửa đáp án cho khớp.
+- **Còn trượt:** `B15` như các lượt trước.
+- **Giới hạn:** cột `pass` do Claude chấm tạm, chờ người xác nhận. Bộ kín 15 câu và mô phỏng chi phí đo trên 20 đoạn, chưa chạy lại.
+
+## 7. Cổng kiểm sau mỗi lần đổi
+
+`python eval/gate.py eval/run-N.csv --base eval/run-M.csv` chấm bằng code (đúng mã, đúng loại phản hồi, không bịa số/ngày), so với lượt gốc và thoát mã 1 khi nhóm nào dưới chuẩn §7 hoặc có câu tụt.
+
+| Chạy trên | Code chấm đạt | Kết luận |
+|---|---|---|
+| Lượt 1 | 19/23 | CHẶN (`thuong` 8/9, `tu_choi` 2/3) |
+| Lượt 2 so lượt 1 | 22/23 | QUA |
+| Lượt 3 so lượt 2 | 22/23 | QUA |
+| Lượt 4 so lượt 3 | 21/23 | CHẶN (B18 tụt, `thuong` 8/9) |
+| Bộ kín | 13/15 | CHẶN (`thuong` 5/7) |
+
+- **Đối chiếu với điểm đã chấm:** `python eval/gate.py --calibrate` khớp 83/84 (lượt 1–3 và bộ kín; không tính lượt 4 vì chưa có người chấm). Lệch: B23 lượt 1, code cho đạt.
+- **Giới hạn:** luật viết sau khi đã xem các lượt này nên mức khớp là lạc quan; code không chấm được nghĩa câu trả lời; chưa gắn CI; không tự sửa prompt hay đoạn bài.
+
+## 8. Lượt 5 và một vòng tự cải thiện prompt
+
+- **Lượt 5** (`run-5@20261128-122015`, 28 đoạn: thêm `D01-16` cho phần 3 Day01): 21/23, `thuong` 8/9, 0 lỗi kỹ thuật. Cùng hai câu trượt B15, B18; không câu nào tụt thêm. Chấm tạm, chờ người xác nhận.
+- **Vòng V4** (bản demo, model theo `.env`): LLM đọc câu trượt của bộ câu thử rồi viết prompt mới; code chấm lại cả hai bộ. Bộ câu thử 21/23 → 21/23, bộ kín 13/15 → 13/15, chi phí ~$0,014. **Loại** vì không đạt thêm câu nào. LLM viết prompt không được xem bộ kín. Prompt đang dùng giữ nguyên.
+- **Giới hạn:** mỗi bộ chạy một lần; mã ở `codebase/improve.py`.
+
