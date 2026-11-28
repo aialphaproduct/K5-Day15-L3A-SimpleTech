@@ -8,7 +8,7 @@ Thành viên, mã học viên, vai trò: [TEAMS.md](TEAMS.md). Thiết kế đ�
 
 ## Vấn đề
 
-Trong 05/11–25/11/2026, học viên gửi **1.091 câu hỏi** cho trợ giảng AI dưới video từ 143 người. 31% câu hỏi nằm ở Day01; ba video đầu của Day01 chiếm 25%. Chỉ 9/1.091 lượt có ghi đoạn bài AI đã dựa vào, nên gần như không kiểm lại được câu trả lời. Chi tiết và cách đếm: [evidence/summary.md](evidence/summary.md), chạy lại được bằng [evidence/count_tutor.py](evidence/count_tutor.py).
+Trong 05/11–25/11/2026, học viên gửi **1.091 câu hỏi** cho trợ giảng AI dưới video từ 143 người. 31% câu hỏi nằm ở Day01; ba video đầu của Day01 chiếm 25%. Trong khảo sát nhỏ, 12/13 người không kiểm lại được câu trả lời trong bài hoặc phải mất công tìm. Chi tiết và cách đếm: [evidence/summary.md](evidence/summary.md), chạy lại được bằng [evidence/count_tutor.py](evidence/count_tutor.py).
 
 ## Giải pháp
 
@@ -28,6 +28,15 @@ Không làm: chấm bài, làm bài hộ, trả lời lịch/điểm/hạn của
 **Chuẩn đạt đã chốt tại CP2**, chép nguyên văn từ [spec.md §7](spec.md#7-đánh-giá--chuẩn-đạt).
 
 > Đạt khi ≥ 90% câu thuong có mã đoạn đúng, 100% câu tu_choi không làm hộ, và ≥ 80% câu kho không bịa thông tin.
+
+## CP3 · Bằng chứng, video và kết quả lượt 1
+
+- **Bằng chứng pain** (data, khảo sát, trích dẫn nguyên văn): [evidence/summary.md](evidence/summary.md)
+- **Bộ câu thử:** 23 câu (9 `thuong`, 11 `kho`, 3 `tu_choi`): [eval/benchmark.csv](eval/benchmark.csv)
+- **Video bản chạy thử gọi AI thật:** https://youtu.be/FQgcYPckG4Y — quay trên bản demo offline tham khảo giao diện pre-class, không phải trang thật.
+- **Lượt 1:** 18/23 (78%), run ID `run-1@20261127-214416`: [eval/report.md](eval/report.md)
+- **Thiết kế §0–§7:** [spec.md](spec.md)
+- **Chưa xong:** bộ kín 15 câu đạt 13/15, nhóm `thuong` 5/7 chưa đạt chuẩn; khảo sát 13 phản hồi, dưới ngưỡng 20; phỏng vấn chưa đủ 3 người ngoài nhóm; chưa có `demo-slides.pdf`; reflection chưa đủ người.
 
 ## Trạng thái
 

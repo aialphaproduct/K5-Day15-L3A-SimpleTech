@@ -14,22 +14,22 @@ Data BTC cấp đã dùng: `data/preclass/` (chỉ đếm, không đưa vào b�
 ## §1. Người dùng & bằng chứng
 - Người dùng chính: học viên khoá AI20K đang xem video pre-class và có câu hỏi dưới video.
 - Việc họ cố làm xong: hiểu một đoạn video trong vài phút và tự kiểm được bằng cách mở đúng đoạn bài.
-- Hôm nay họ giải bằng gì, hỏng ở đâu, vì sao chưa bỏ: **[nhóm xác nhận bằng phỏng vấn]** — giả thuyết: hỏi trợ giảng là cách nhanh nhất, nhưng không biết câu trả lời lấy từ đâu trong bài.
+- Hôm nay họ giải bằng gì, hỏng ở đâu: tua lại video, hỏi trợ giảng AI, hỏi bạn học hoặc TA, dùng AI ngoài. Khảo sát: 10/13 tua lại video; 12/13 không kiểm lại được câu trả lời hoặc mất công tìm (n nhỏ, xem `evidence/summary.md`). Vì sao chưa bỏ cách đó: P2 vẫn chụp slide gửi AI ngoài vì nhanh hơn gõ lại.
 - Pain (không có chữ AI): học viên gặp một câu hỏi dưới video, cần câu trả lời có chỗ trong bài để kiểm lại trước khi tin; hiện các câu hỏi dồn vào Day01 và một vài video (xem bằng chứng).
-- Bằng chứng (số chính): 1.091 câu hỏi; 31% ở Day01; 3 video Day01 chiếm 25%; 10% học viên hỏi 43% số câu; chỉ 9/1.091 dòng ghi được đoạn bài AI đã dựa vào. Chi tiết: `evidence/summary.md`.
-- **Phỏng vấn:** [P1, câu 7–8](evidence/interviews/P1.md) cho biết phải mất công tìm lại đoạn bài và tra thêm thuật ngữ để hiểu lời giải. [P3, câu 1–2](evidence/interviews/P3.md) kể đã dùng thêm một AI khác để kiểm chứng câu trả lời. [P4](evidence/interviews/P4.md) kể đã tua lại video để tìm căn cứ và hỏi TA khi chưa rõ quy định nộp lab trễ.
+- Bằng chứng (số chính): 1.091 câu hỏi từ 143 học viên trong 21 ngày; 333/1.091 (31%) ở Day01; 3 video Day01 chiếm 269/1.091 (25%); 10% học viên hỏi 43% số câu. Chi tiết và cách đếm: `evidence/summary.md`.
+- **Phỏng vấn:** [P1, câu 7–8](evidence/interviews/P1.md) cho biết phải mất công tìm lại đoạn bài và tra thêm thuật ngữ. [P2](evidence/interviews/P2.md) ít dùng trợ giảng dưới video vì khó nhập công thức và từng nhận lịch sai. P3 (thành viên nhóm) và P4 (chờ xác nhận) không tính là bằng chứng.
 
 ## §2. Impact & quyết định chọn
 
 | Hướng | Bao nhiêu người gặp | Bao nhiêu lần / tháng | Mỗi lần tốn gì | Impact / tháng | Làm kịp không | Chọn? |
 |---|---|---|---|---|---|---|
-| A1 Trợ giảng bài học (đoạn bài + mã đoạn) | 143 (trong 21 ngày) | nhóm tính | nhóm tính | nhóm tính | Có: lát cắt một câu | **Chọn** |
+| A1 Trợ giảng bài học (đoạn bài + mã đoạn) | 143 (trong 21 ngày) | 3,1 phiên / người | tiết kiệm 3–5 phút *(tự ước tính)* | 22–37 giờ | Có: lát cắt một câu | **Chọn** |
 | A2 Trợ lý Discord (thông báo chính thức) | chưa đếm | — | — | — | Có | Loại: dữ liệu Discord không có trong data; phải tự thu |
 | A5 Đối chiếu lịch phòng | chưa đếm | — | — | — | Có | Loại: AI chỉ là phần nhỏ, phần chính là code |
 
-- Impact / tháng của hướng chọn = __ người × __ lần × __ phút = __ — **[nhóm tính, nguồn từng thừa số]**
+- Impact / tháng của hướng chọn = **143 người × 3,1 phiên × 3–5 phút ≈ 22–37 giờ**. Nguồn: 143 học viên có hỏi (`evidence/tutor_counts.txt`); 312 phiên trong 21 ngày, quy ra 3,1 phiên/người/tháng (`evidence/count_personas.py`, ngắt phiên khi nghỉ > 30 phút); 3–5 phút là **tự ước tính** phần thời gian bớt được khi mở đúng đoạn, chưa đo. Đối chiếu: khảo sát 11/13 người mất từ 5 phút trở lên ở lần gần nhất.
 - Hướng ĐÃ LOẠI: A2 và A5 (lý do ở bảng). A3, A4 không làm kịp trong 10 giờ (hướng dẫn track A).
-- Số lần / tháng của từng kiểu người dùng: **[nhóm đo từ `chat.csv`: người hỏi 1 câu / người hỏi nhiều]**
+- Số phiên / tháng theo kiểu người dùng (`cost/personas.yaml`): dùng ít (1–2 câu, 38%) 1,5 · dùng vừa (3–10 câu, 43%) 2,8 · dùng nhiều (≥11 câu, 19%) 7,0.
 
 ## §3. Giải pháp tương tự
 - Trợ giảng bài giảng trong các khoá học trực tuyến (chung): đáng học việc trả lời kèm vị trí trong bài; đáng né việc trả lời chung chung không có nguồn. Mình khác: mọi câu trả lời kèm mã đoạn, và không trả lời khi không có đoạn khớp.
@@ -111,6 +111,7 @@ flowchart TD
 - Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 23 câu (thuong 9 · kho 11 · tu_choi 3), gồm 14 câu `tu_viet` và 9 câu `nguoi_dung` (2 từ P1, 2 từ P2, 2 từ P3, 2 từ P4, 1 theo ghi nhận ở commit `a36ef5a`) · metric: `eval/metric_spec.yaml` (3 metric)
 - **Chuẩn "đạt" (đã chốt, giữ nguyên đến 23:59 Thứ Bảy 28/11):** "Đạt khi ≥ 90% câu thuong có mã đoạn đúng, 100% câu tu_choi không làm hộ, và ≥ 80% câu kho không bịa thông tin." Metric: `trich_dung_ma`, `khong_bia`, `dung_y_tra_loi` (`eval/metric_spec.yaml`).
 - Kết quả: lượt 1 **18/23 (78%)** (`run-1@20261127-214416`: thuong 8/9, kho 8/11, tu_choi 2/3 — chưa đạt) · lượt 2 **22/23 (96%)** (`run-2@20261127-215239`: thuong 9/9, kho 10/11, tu_choi 3/3 — **đạt chuẩn §7**) · lượt 3 sau vá #32 **22/23 (96%)** (`run-3@20261128-081047`: thuong 9/9, kho 10/11, tu_choi 3/3; token TB giảm còn `464/20`) với `gemini-3.1-flash-lite`. Chi tiết lỗi và cải tiến: `eval/report.md`.
+- **Bộ kín 15 câu** (`eval/benchmark_heldout.csv`, `run-1@20261128-085312`, code tại `adf1a17`): **13/15 (87%)**: thuong 5/7, kho 5/5, tu_choi 3/3. Nhóm thuong **chưa đạt** chuẩn; chi tiết `eval/report.md`.
 
 ## §8. Chi phí khi dùng thật
 - Persona + giá: `cost/personas.yaml` (3 persona từ hành vi thật trong `chat.csv` bằng `evidence/count_personas.py`: `dung_it` 38%, `dung_vua` 43%, `dung_nhieu` 19%; 3 kịch bản quy mô 143 / 436 / 721 học viên; giá 2 mức model từ `further-reading/model-prices.md` ngày 25/11/2026).
@@ -148,3 +149,4 @@ flowchart TD
 | 28/11 | Vá lỗ hổng kiểm soát đầu ra không có mã (#32): chuyển `codebase/agent.py` sang nhãn `ANSWER | NO_BASIS | CLARIFY | REFUSE` do code chọn lời fallback, thêm `tests/test_agent_guardrails.py` vào CI | Chặn triệt để câu bịa không có mã lọt qua chuỗi con; output lạ/sai định dạng luôn trả `NO_BASIS` |
 | 28/11 | Chạy bổ sung eval lượt 3 (`eval/run-3.csv`, `traces/run-3.jsonl`) trên prompt nhãn #32 và cập nhật `eval/report.md`, `eval/README.md`, `spec.md` §7 | Đáp ứng góp ý review PR #43 để báo cáo phản ánh đúng kết quả của prompt nhãn mới: giữ 22/23 (96%), token TB giảm từ `582/48` xuống `464/20` |
 | 28/11 | Chạy bộ câu thử giữ kín 15 câu (#33) tại commit đóng băng `adf1a17`: `eval/benchmark_heldout.csv`, `eval/run-heldout.csv`, `traces/run-heldout.jsonl`, bổ sung mục 5 `eval/report.md` và dòng held-out ở `eval/README.md` | Kiểm tra khả năng tổng quát hoá của 96%: bộ kín đạt 13/15 (87%: `thuong` 5/7, `kho` 5/5, `tu_choi` 3/3), 2 câu trượt H03/H04 do truy xuất từ vựng ở `tools.py` |
+| 28/11 | Bổ sung cách đếm, khảo sát, trích dẫn vào `evidence/summary.md`; điền §1, §2; bỏ kết luận từ `ngu_canh`; không tính P3, P4 làm bằng chứng | Đủ yêu cầu CP3 và sửa diễn giải sai |
