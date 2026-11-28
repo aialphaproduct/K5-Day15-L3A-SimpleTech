@@ -38,6 +38,7 @@ Tại CP2, trợ giảng tra 5 đoạn bài mẫu giả; sang CP3 đã thay bằ
 | 2 | `run-2@20261127-215239` | `gemini-3.1-flash-lite` | 1 cải tiến: `search_passages` IDF + giữ viết tắt `AI`/phân biệt dấu tiếng Việt + `SYSTEM` prompt 4 đường đi §6 | 22/23 | 96% | Đạt (`thuong` 100%, `kho` 91%, `tu_choi` 100%) |
 | 3 | `run-3@20261128-081047` | `gemini-3.1-flash-lite` | Vá #32: giao thức nhãn `ANSWER \| NO_BASIS \| CLARIFY \| REFUSE` do code kiểm soát lời fallback (`464/20` token TB) | 22/23 | 96% | Đạt theo `pass` (`thuong` 100%, `kho` 91%, `tu_choi` 100%; xem lưu ý B06 ở `report.md`) |
 | Held-out (#33) | `run-1@20261128-085312` | `gemini-3.1-flash-lite` | Bộ kín 15 câu (`eval/benchmark_heldout.csv`) chạy 1 lượt tại commit đóng băng `adf1a17` (`473/18` token TB) | 13/15 | 87% | Chưa (`thuong` 5/7 = 71%, `kho` 5/5 = 100%, `tu_choi` 3/3 = 100%) |
+| 4 | `run-4@20261128-100150` | `gemini-3.1-flash-lite` | Sau #34–#37 & fix `verify_claim_rule` (PR #44): kho 29 đoạn (Day01–Day06), `bm25_hybrid` ngưỡng lọc, ngữ cảnh video (`0,8` gọi model/câu, `374/22` token TB) | 22/23 | 96% | Đạt theo `pass` (`thuong` 100%, `kho` 91%, `tu_choi` 100%; không hồi quy) |
 
 Lượt chạy lại vì lỗi kỹ thuật, lượt sau CP4: ghi thêm dòng, không sửa dòng cũ.
 
