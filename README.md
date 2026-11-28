@@ -34,6 +34,7 @@ Không làm: chấm bài, làm bài hộ, trả lời lịch/điểm/hạn của
 - **Bằng chứng pain** (data, khảo sát, trích dẫn nguyên văn): [evidence/summary.md](evidence/summary.md)
 - **Bộ câu thử:** 23 câu (9 `thuong`, 11 `kho`, 3 `tu_choi`): [eval/benchmark.csv](eval/benchmark.csv)
 - **Video bản chạy thử gọi AI thật:** https://youtu.be/FQgcYPckG4Y — quay trên bản demo offline tham khảo giao diện pre-class, không phải trang thật.
+- **Bản demo và triển khai AWS:** [deploy/README.md](deploy/README.md). Chạy tại máy: `python -m pip install -r requirements.txt` rồi `python demo/preclass_demo.py`, mở http://localhost:8780/ (mật khẩu trong `logs/credentials.txt`). Test: `python -m unittest discover -s tests`.
 - **Lượt mới nhất (5, 28 đoạn):** 21/23, `thuong` 8/9 chưa đạt chuẩn (chấm tạm): [eval/report.md](eval/report.md)
 - **Lượt 1:** 18/23 (78%), run ID `run-1@20261127-214416`: [eval/report.md](eval/report.md)
 - **Thiết kế §0–§7:** [spec.md](spec.md)

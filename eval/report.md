@@ -113,5 +113,5 @@ Kết quả từng câu: [eval/run-1.csv](run-1.csv), [eval/run-2.csv](run-2.csv
 
 - **Lượt 5** (`run-5@20261128-122015`, 28 đoạn: thêm `D01-16` cho phần 3 Day01): 21/23, `thuong` 8/9, 0 lỗi kỹ thuật. Cùng hai câu trượt B15, B18; không câu nào tụt thêm. Chấm tạm, chờ người xác nhận.
 - **Vòng V4** (bản demo, model theo `.env`): LLM đọc câu trượt của bộ câu thử rồi viết prompt mới; code chấm lại cả hai bộ. Bộ câu thử 21/23 → 21/23, bộ kín 13/15 → 13/15, chi phí ~$0,014. **Loại** vì không đạt thêm câu nào. LLM viết prompt không được xem bộ kín. Prompt đang dùng giữ nguyên.
-- **Giới hạn:** mỗi bộ chạy một lần; mã của vòng này và bản triển khai chưa đưa vào repo.
+- **Giới hạn:** mỗi bộ chạy một lần; mã ở `codebase/improve.py`.
 

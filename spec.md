@@ -157,3 +157,4 @@ flowchart TD
 | 28/11 | Thêm cổng kiểm `eval/gate.py`: code chấm phần kiểm được, chặn khi dưới chuẩn hoặc tụt so với lượt trước | Cần biết một thay đổi làm tốt hơn hay tệ đi trước khi giữ; lượt 4 bị chặn vì B18 |
 | 28/11 | Thêm đoạn `D01-16`, chạy lượt 5: 21/23, thuong 8/9 | Phủ phần 3 của Day01 |
 | 28/11 | Bản demo thêm đăng nhập, xoay vòng tối đa 5 API key, lịch sử hỏi, vòng tự cải thiện prompt (V4 bị loại); đưa lên máy AWS sau đăng nhập, có Prometheus, Grafana, Jaeger, Locust | Cho giám khảo dùng thử và xem vận hành |
+| 28/11 | Đưa mã bản demo (đăng nhập, xoay vòng key, tự cải thiện, đo lường, thử tải, triển khai) và hướng dẫn `deploy/README.md` vào repo; bỏ cấu hình tiện ích trình duyệt trỏ trang thật | Để chạy lại và kiểm được; không kết nối hệ thống thật |

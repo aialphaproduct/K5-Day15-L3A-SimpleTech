@@ -1,0 +1,25 @@
+# Prometheus + Grafana + Jaeger cho bản demo. Demo chạy ngoài Docker ở cổng 8780; mọi cổng chỉ mở cho máy này.
+# Chạy: docker compose -f observability/docker-compose.yml up -d
+# Dừng: docker compose -f observability/docker-compose.yml down
+name: st-observability
+services:
+  prometheus:
+    image: prom/prometheus:v3.16.0
+    ports: ["127.0.0.1:9092:9090"]
+    volumes: ["./prometheus.yml:/etc/prometheus/prometheus.yml:ro"]
+    extra_hosts: ["host.docker.internal:host-gateway"]
+  grafana:
+    image: grafana/grafana:13.2.4
+    ports: ["127.0.0.1:3002:3000"]
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on: [prometheus]
+  jaeger:
+    image: jaegertracing/jaeger:2.23.0
+    ports:
+      - "127.0.0.1:16688:16686"
+      - "127.0.0.1:4320:4318"
