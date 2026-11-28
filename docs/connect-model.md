@@ -1,5 +1,7 @@
 # Nối model vào `codebase/ai.py`
 
+> **Bản hiện tại đã có mã nối model:** làm theo [hướng dẫn chạy lại](reproduce.md), điền `.env` và thử nối. Phần ví dụ starter bên dưới giữ để tham khảo; không cần chép đè `ai.py` đã triển khai. Tên model và tuyên bố chạy thử trong tài liệu starter không phải xác nhận mới của nhóm về trạng thái API hiện tại.
+
 > Làm ở guide bước 3.3. **Nên xong tối Thứ Sáu 27/11 trước khi ngủ** (sáng Thứ Bảy 28/11 không có lớp). Kẹt quá 20 phút thì hỏi ngay.
 
 Mục tiêu: `call_model()` trong `codebase/ai.py` gọi model thật và trả về câu trả lời kèm **số token** đo được. Prompt và luồng là phần nhóm tự viết trong `codebase/agent.py`. File này chỉ lo phần kết nối.
