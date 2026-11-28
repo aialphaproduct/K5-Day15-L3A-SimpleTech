@@ -9,6 +9,7 @@ Quy tắc chặn rủi ro (spec.md §4):
 """
 import os
 import re
+import unicodedata
 
 from ai import call_model
 from tools import search_passages
@@ -41,20 +42,77 @@ CONTROLLED_MESSAGES = {
 CITE = re.compile(r"\[([A-Za-z0-9\-]+)\]")
 NUM_RE = re.compile(r"\b\d+(?:[.,:/]\d+)*%?\b")
 DAY_RE = re.compile(r"\b(?:thứ\s+(?:hai|ba|tư|năm|sáu|bảy|[2-7])|chủ\s+nhật|hôm\s+nay|ngày\s+mai)\b", re.IGNORECASE)
-PERSON_RE = re.compile(r"\b(?:bạn|anh|chị|học\s+viên)\s+([A-ZÀ-Ỹ][a-zà-ỹ]+)\b")
+# Chỉ lấy 1 từ ngay sau "bạn|anh|chị|học viên" trên cùng dòng rồi kiểm hoa/thường bằng Unicode trong Python
+# (không dùng khoảng [A-ZÀ-Ỹ] vì khoảng Unicode À..Ỹ chứa cả chữ thường như 'đ').
+PERSON_RE = re.compile(r"\b(?:bạn|anh|chị|học[ \t]+viên)[ \t]+([^\W\d_]+)", re.IGNORECASE)
+# Bỏ qua số thứ tự trong danh sách đánh số (1. ..., 2) ..., (1) ...) và nhãn mục (bước 1, phần thứ 2...)
+LIST_PREFIX_RE = re.compile(r"(?:^|\n)[ \t]*(?:[-*•][ \t]+)?(?:\(\d+\)|\d+[.):])[ \t]+")
+INLINE_LIST_RE = re.compile(r"(?:(?<=[:;,])[ \t]*\d+[.)][ \t]+|(?<=\s)\d+\)[ \t]+|\(\d+\)(?=[ \t]))")
+ORDINAL_LABEL_RE = re.compile(
+    r"\b(?:bước|dấu\s+hiệu|phần|mục|ý|cách|tầng|trục|đường\s+đi|loại|nhóm|lớp|điều\s+kiện|ví\s+dụ)\s+(?:thứ\s+)?\d+\b",
+    re.IGNORECASE,
+)
+LIMIT_MOD_RE = re.compile(
+    r"(?:tối\s+đa|tối\s+thiểu|ít\s+nhất|nhiều\s+nhất|cố\s+định|giới\s+hạn|quá|hơn|dưới|trên|không\s+quá)[ \t]+$",
+    re.IGNORECASE,
+)
+COUNT_NOUN_RE = re.compile(
+    r"\b\d+[ \t]+(?:bước|dấu\s+hiệu|ý|cách|phần|mục|tầng|trục|đường\s+đi|loại|nhóm|hành\s+động|thành\s+phần|ví\s+dụ|nguồn|vai\s+trò|tiêu\s+chí|lần|lượt)\b",
+    re.IGNORECASE,
+)
+VI_NUM_WORDS = {
+    "một": "1",
+    "hai": "2",
+    "ba": "3",
+    "bốn": "4",
+    "tư": "4",
+    "năm": "5",
+    "sáu": "6",
+    "bảy": "7",
+    "tám": "8",
+    "chín": "9",
+    "mười": "10",
+}
 LABEL_RE = re.compile(
     r"^\s*(ANSWER|NO_BASIS|CLARIFY|REFUSE)(?:(?:\s*:\s*|\s*\r?\n\s*)(.*)|\.?\s*)?$",
     re.IGNORECASE | re.DOTALL,
 )
 
 
+def _is_proper_name(word: str) -> bool:
+    """Tên riêng viết hoa chữ cái đầu (vd An, Đạt, Minh, A); bỏ qua chữ thường ('đã', 'được') và từ viết tắt ('AI', 'LLM')."""
+    w = unicodedata.normalize("NFC", word)
+    return bool(w) and w[0].isupper() and (len(w) == 1 or w[1:].islower())
+
+
+def _strip_ordinals_and_counts(text: str) -> str:
+    """Loại số thứ tự danh sách (1., 2), (1), bước 1) và số đếm cấu trúc (3 bước, 2 dấu hiệu) không đi kèm từ giới hạn."""
+    cleaned = LIST_PREFIX_RE.sub("\n", text)
+    cleaned = INLINE_LIST_RE.sub(" ", cleaned)
+    cleaned = ORDINAL_LABEL_RE.sub(" ", cleaned)
+
+    def _keep_if_limit(match):
+        prefix = cleaned[max(0, match.start() - 25):match.start()]
+        if LIMIT_MOD_RE.search(prefix):
+            return match.group(0)
+        return " "
+
+    return COUNT_NOUN_RE.sub(_keep_if_limit, cleaned)
+
+
 def verify_claim_rule(answer_text: str, cited_texts: list) -> tuple:
     """Luật kiểm chứng nội dung rẻ (Issue #34): 0 token, <1ms, chặn số/ngày/giờ/tên riêng không có trong đoạn trích."""
-    ans_clean = CITE.sub("", answer_text)
-    src_joined = " ".join(cited_texts)
+    ans_clean = unicodedata.normalize("NFC", CITE.sub("", answer_text))
+    src_joined = unicodedata.normalize("NFC", " ".join(cited_texts))
     src_low = src_joined.lower()
 
-    extra_nums = sorted(set(NUM_RE.findall(ans_clean)) - set(NUM_RE.findall(src_joined)))
+    src_nums = set(NUM_RE.findall(src_joined))
+    for word, digit in VI_NUM_WORDS.items():
+        if re.search(r"\b" + word + r"\b", src_low):
+            src_nums.add(digit)
+
+    ans_for_nums = _strip_ordinals_and_counts(ans_clean)
+    extra_nums = sorted(set(NUM_RE.findall(ans_for_nums)) - src_nums)
     if extra_nums:
         return False, "số/ngày/giờ không có trong đoạn trích: %s" % extra_nums
 
@@ -64,7 +122,7 @@ def verify_claim_rule(answer_text: str, cited_texts: list) -> tuple:
     if extra_days:
         return False, "mốc thời gian không có trong đoạn trích: %s" % extra_days
 
-    extra_names = [n for n in PERSON_RE.findall(ans_clean) if n.lower() not in src_low]
+    extra_names = [n for n in PERSON_RE.findall(ans_clean) if _is_proper_name(n) and n.lower() not in src_low]
     if extra_names:
         return False, "tên riêng không có trong đoạn trích: %s" % extra_names
 

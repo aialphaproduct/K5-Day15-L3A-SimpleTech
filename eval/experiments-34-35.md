@@ -47,4 +47,5 @@
 
 - **Chọn `verify_claim_rule` chạy mặc định** sau bước kiểm mã `cited <= allowed`:
   - Chặn **100% lỗi rủi ro cao nhất** theo `spec.md` §9 (bịa ngày nộp, giờ, điểm số, tên học viên không có trong đoạn trích) với **0% chặn nhầm**, **0 ms độ trễ thêm**, **0 token thêm** — giữ nguyên chi phí đơn vị khi mô phỏng 50 phiên (`cost/`).
+  - Bổ sung kiểm Unicode (`isupper`/`islower` sau chuẩn hoá NFC thay cho khoảng `À-Ỹ`) để không bắt nhầm `"bạn đã…"`, `"bạn được…"`, và bỏ qua số thứ tự danh sách (`1.`, `(1)`, `bước 1`) cùng số đếm cấu trúc (`3 bước`, `2 dấu hiệu`) khi không đi kèm từ chỉ giới hạn (như `"tối đa 5 bước"`).
   - Bổ sung công tắc môi trường **`ENABLE_LLM_VERIFY=1`** (mặc định tắt) cho phép bật thêm lượt LLM chấm (đạt 10/10 gồm cả lỗi đảo nghĩa `V16`–`V20`) khi triển khai trên tài khoản trả phí chịu được thêm ~235 token và độ trễ 1 lượt gọi model.

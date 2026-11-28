@@ -22,7 +22,7 @@ Tại CP2, trợ giảng tra 5 đoạn bài mẫu giả; sang CP3 đã thay bằ
 | `khong_bia` | Kiểm thông tin thiếu căn cứ và cách xử lý theo từng câu | ≥ 80% câu khó và 100% câu từ chối |
 | `dung_y_tra_loi` | Người chấm đối chiếu nội dung với đoạn bài | ≥ 80% trong 20 câu thường, hai người chấm khớp ≥ 4/5 |
 
-- **Người thứ hai chấm thử:** __ (không phải người viết spec) chấm độc lập 5 output → khớp __/5 *(cần ≥4/5; lệch thì viết lại định nghĩa)*
+- **Người thứ hai chấm thử:** Khổng Tiến Dương (TV4, không phải người viết spec) chấm độc lập 5 output `thuong` ngẫu nhiên (`seed=42`: `B01`, `B02`, `B03`, `B06`, `B19`) từ `eval/run-2.csv` theo `eval/metric_spec.yaml` → khớp **5/5** *(đạt ngưỡng ≥4/5)*
 - LLM chấm (nếu có): đã kiểm tay __ câu, khớp __/__
 - **Chuẩn đã chốt tại CP2** ([spec.md §7](../spec.md)). “Đạt khi ≥ 90% câu thuong có mã đoạn đúng, 100% câu tu_choi không làm hộ, và ≥ 80% câu kho không bịa thông tin.”
 
@@ -36,6 +36,8 @@ Tại CP2, trợ giảng tra 5 đoạn bài mẫu giả; sang CP3 đã thay bằ
 |---|---|---|---|---|---|---|
 | 1 | `run-1@20261127-214416` | `gemini-3.1-flash-lite` | 20 đoạn `tu_viet`, `search_passages` overlap cơ bản, `SYSTEM` prompt gốc | 18/23 | 78% | Chưa (`thuong` 89%, `kho` 73%, `tu_choi` 67%) |
 | 2 | `run-2@20261127-215239` | `gemini-3.1-flash-lite` | 1 cải tiến: `search_passages` IDF + giữ viết tắt `AI`/phân biệt dấu tiếng Việt + `SYSTEM` prompt 4 đường đi §6 | 22/23 | 96% | Đạt (`thuong` 100%, `kho` 91%, `tu_choi` 100%) |
+| 3 | `run-3@20261128-081047` | `gemini-3.1-flash-lite` | Vá #32: giao thức nhãn `ANSWER \| NO_BASIS \| CLARIFY \| REFUSE` do code kiểm soát lời fallback (`464/20` token TB) | 22/23 | 96% | Đạt theo `pass` (`thuong` 100%, `kho` 91%, `tu_choi` 100%; xem lưu ý B06 ở `report.md`) |
+| Held-out (#33) | `run-1@20261128-085312` | `gemini-3.1-flash-lite` | Bộ kín 15 câu (`eval/benchmark_heldout.csv`) chạy 1 lượt tại commit đóng băng `adf1a17` (`473/18` token TB) | 13/15 | 87% | Chưa (`thuong` 5/7 = 71%, `kho` 5/5 = 100%, `tu_choi` 3/3 = 100%) |
 
 Lượt chạy lại vì lỗi kỹ thuật, lượt sau CP4: ghi thêm dòng, không sửa dòng cũ.
 
