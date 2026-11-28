@@ -36,6 +36,8 @@ Tại CP2, trợ giảng tra 5 đoạn bài mẫu giả; sang CP3 đã thay bằ
 |---|---|---|---|---|---|---|
 | 1 | `run-1@20261127-214416` | `gemini-3.1-flash-lite` | 20 đoạn `tu_viet`, `search_passages` overlap cơ bản, `SYSTEM` prompt gốc | 18/23 | 78% | Chưa (`thuong` 89%, `kho` 73%, `tu_choi` 67%) |
 | 2 | `run-2@20261127-215239` | `gemini-3.1-flash-lite` | 1 cải tiến: `search_passages` IDF + giữ viết tắt `AI`/phân biệt dấu tiếng Việt + `SYSTEM` prompt 4 đường đi §6 | 22/23 | 96% | Đạt (`thuong` 100%, `kho` 91%, `tu_choi` 100%) |
+| 3 | `run-3@20261128-081047` | `gemini-3.1-flash-lite` | Vá #32: giao thức nhãn `ANSWER \| NO_BASIS \| CLARIFY \| REFUSE` do code kiểm soát lời fallback (`464/20` token TB) | 22/23 | 96% | Đạt theo `pass` (`thuong` 100%, `kho` 91%, `tu_choi` 100%; xem lưu ý B06 ở `report.md`) |
+| Held-out (#33) | `run-1@20261128-085312` | `gemini-3.1-flash-lite` | Bộ kín 15 câu (`eval/benchmark_heldout.csv`) chạy 1 lượt tại commit đóng băng `adf1a17` (`473/18` token TB) | 13/15 | 87% | Chưa (`thuong` 5/7 = 71%, `kho` 5/5 = 100%, `tu_choi` 3/3 = 100%) |
 
 Lượt chạy lại vì lỗi kỹ thuật, lượt sau CP4: ghi thêm dòng, không sửa dòng cũ.
 
