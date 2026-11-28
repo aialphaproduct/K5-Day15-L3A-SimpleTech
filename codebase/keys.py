@@ -1,4 +1,4 @@
-"""Kho tối đa 5 API key, xoay vòng và tự chuyển key khi một key bị giới hạn hoặc hỏng.
+"""Kho API key (không giới hạn số lượng), xoay vòng và tự chuyển key khi một key bị giới hạn hoặc hỏng.
 
 Key lưu ở logs/api-keys.json (không commit, quyền 600). Trang admin chỉ thấy 4 ký tự cuối.
 Kho rỗng hoặc mọi key bị tắt thì dùng API_KEY trong .env như trước. Provider và model vẫn theo .env.
@@ -14,7 +14,6 @@ import ai
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STORE = os.environ.get("KEYS_FILE") or os.path.join(ROOT, "logs", "api-keys.json")
-MAX_KEYS = 5
 COOLDOWN = {"limit": 60, "bad": 600, "server": 15}
 PROVIDERS = ("call_openai", "call_claude", "call_gemini")
 
@@ -52,7 +51,7 @@ def listing():
             "uses": _state(k["id"])["uses"], "fails": _state(k["id"])["fails"], "error": _state(k["id"])["error"],
             "cooling": max(0, int(_state(k["id"])["until"] - now)),
         } for k in _load()]
-    return {"keys": items, "max": MAX_KEYS, "provider": ai.MODEL_PROVIDER, "model": ai.MODEL_NAME,
+    return {"keys": items, "provider": ai.MODEL_PROVIDER, "model": ai.MODEL_NAME,
             "env_key": bool(_ENV_KEY)}
 
 
@@ -62,8 +61,6 @@ def add(key, label=""):
         return {"error": "Key không đúng dạng (10–300 ký tự, không có khoảng trắng)."}
     with _lock:
         items = _load()
-        if len(items) >= MAX_KEYS:
-            return {"error": "Đã đủ %d key, xoá bớt rồi thêm." % MAX_KEYS}
         if any(k["key"] == key for k in items):
             return {"error": "Key này đã có trong danh sách."}
         items.append({"id": secrets.token_hex(4), "label": str(label or "")[:40], "key": key, "enabled": True})

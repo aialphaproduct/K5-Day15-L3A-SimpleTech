@@ -3,8 +3,9 @@
     DEMO_PASSWORD=... ADMIN_PASSWORD=... locust -f loadtest/locustfile.py --host http://127.0.0.1:8780
     thêm --headless -u 20 -r 5 -t 60s --csv loadtest/result để chạy không giao diện (giao diện: cổng 8089)
 
-Mỗi lượt hỏi gọi model theo cấu hình máy chủ: đo sức chịu tải thì chạy máy chủ với MODEL_PROVIDER=fake,
-nếu không sẽ tốn token thật và chạm giới hạn của key. Máy chủ chứng chỉ tự ký thì đặt INSECURE_TLS=1.
+Mỗi lượt hỏi gọi model theo cấu hình máy chủ. Bắn vào hệ thống thật thì tốn token, chạm giới hạn của key và
+các lượt này hiện trên trang đo lường (mã học viên HV-load...): bắt đầu với ít người dùng. Chỉ muốn đo máy chủ
+thì chạy một bản riêng với MODEL_PROVIDER=fake. Máy chủ chứng chỉ tự ký thì đặt INSECURE_TLS=1.
 """
 import os
 import random

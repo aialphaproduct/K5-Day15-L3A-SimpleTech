@@ -30,10 +30,11 @@ class KeysTest(unittest.TestCase):
         keys._runtime.clear()
         keys._turn = 0
 
-    def test_at_most_five_and_never_returns_full_key(self):
-        for i in range(5):
-            self.assertEqual(keys.add("fake-key-number-%d" % i), {"ok": True})
-        self.assertIn("error", keys.add("fake-key-number-6"))
+    def test_many_keys_and_never_returns_full_key(self):
+        for i in range(30):
+            self.assertEqual(keys.add("fake-key-number-%02d" % i), {"ok": True})
+        self.assertEqual(len(keys.listing()["keys"]), 30)
+        self.assertIn("error", keys.add("fake-key-number-00"))
         self.assertNotIn("fake-key-number", json.dumps(keys.listing()))
         self.assertIn("error", keys.add("có khoảng trắng"))
 

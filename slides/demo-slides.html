@@ -328,15 +328,15 @@
   <div class="formula" style="margin:6px 0 18px">
     <div class="factor"><b>Người dùng</b><br>HTTPS qua Cloudflare</div><div class="op">→</div>
     <div class="factor"><b>EC2 Red Hat</b><br>nginx · đăng nhập 2 vai trò</div><div class="op">→</div>
-    <div class="factor"><b>Trợ giảng</b><br>tối đa 5 API key xoay vòng</div><div class="op">→</div>
+    <div class="factor"><b>Trợ giảng</b><br>API key xoay vòng, không giới hạn số lượng</div><div class="op">→</div>
     <div class="factor out"><b>Đo</b><br>Prometheus · Grafana · Jaeger</div>
   </div>
   <div class="cols">
-    <div class="card"><div class="big">0 / 323</div><div class="sub">lỗi / yêu cầu khi thử tải Locust 30 người dùng, khoảng 45 giây</div></div>
-    <div class="card"><div class="big">37 ms</div><div class="sub">95% yêu cầu trả về dưới mức này</div></div>
-    <div class="card"><div class="big">4</div><div class="sub">API key đã thử gọi được; bị giới hạn thì chuyển key kế</div></div>
+    <div class="card"><div class="big">0 / 23</div><div class="sub">lỗi / yêu cầu khi thử tải <b>hệ thống thật</b>: 5 người dùng, khoảng 60 giây, trong đó 13 câu hỏi gọi Gemini</div></div>
+    <div class="card"><div class="big">14 s</div><div class="sub">thời gian trả lời giữa (p50) của một câu hỏi; 95% dưới 35 s</div></div>
+    <div class="card"><div class="big">0,23</div><div class="sub">câu hỏi mỗi giây; 5 API key cùng được dùng, không key nào báo lỗi</div></div>
   </div>
-  <p style="margin-top:18px;font-size:17px"><span class="warn">Giới hạn:</span> thử tải dùng <b>model giả</b> nên chỉ đo máy chủ. Với model thật, các câu hỏi xử lý lần lượt, ước chừng 1–2 câu mỗi giây (tự ước tính). Một máy, chưa có dự phòng.</p>
+  <p style="margin-top:18px;font-size:17px"><span class="warn">Giới hạn:</span> chậm khi đông người vì các câu hỏi xử lý lần lượt; một lượt đo ngắn, mẫu nhỏ; một máy, chưa có dự phòng. Đo riêng máy chủ bằng model giả (30 người dùng): 0/323 lỗi, p95 37 ms.</p>
   <p class="sub">Địa chỉ demo: tutor.tamiload.com (cần tài khoản). Bản chạy riêng, không kết nối trang pre-class thật.</p>
   <div class="src">Nguồn: Locust trên máy chủ 28/11 · deploy/README.md · loadtest/locustfile.py</div><div class="page">6b</div>
 </section>
